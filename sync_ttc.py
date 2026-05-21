@@ -17,7 +17,9 @@ COL_ENG_TITLE  = 1
 COL_ENGLISH    = 2
 COL_ZH_NAME    = 6
 COL_CHINESE    = 7
-COL_COMMENTARY = 8
+COL_COMMENTARY    = 8
+COL_DISCUSSION    = 9
+COL_EN_DISCUSSION = 10
 
 # Chinese ordinals for chapters 1-81, longest-first to prevent prefix clashes
 # e.g. "第二十" must be checked before "第二"
@@ -54,9 +56,13 @@ def strip_ordinal(zh_name):
 # CJK Radicals Supplement → standard CJK equivalents
 # These variant forms can appear in spreadsheet data and look subtly different
 _CJK_RADICAL_FIX = str.maketrans({
-    '⺠': '民',  # ⺠ → 民
-    '⺾': '筵',  # ⽾ → 竵 (竹)
-    '⽎': '民',  # 民 kangxi radical form
+    '⺟': '母',  # U+2E9F
+    '⺠': '民',  # U+2EA0
+    '⺾': '艹',  # U+2EBE
+    '⻄': '西',  # U+2EC4
+    '⻑': '長',  # U+2ED1
+    '⻝': '食',  # U+2EDD
+    '⽎': '民',  # U+2F4E Kangxi radical
 })
 
 def normalize_cjk(text):
@@ -117,6 +123,8 @@ def parse_sheet(csv_text):
             'english':     to_br(first(COL_ENGLISH)),
             'chinese':     to_br(concat(COL_CHINESE, '\n')),
             'commentary':  to_br(concat(COL_COMMENTARY, '\n\n')),
+            'discussion':    to_br(concat(COL_DISCUSSION, '\n\n')),
+            'en_discussion': to_br(concat(COL_EN_DISCUSSION, '\n\n')),
         }
 
     return result
@@ -144,7 +152,7 @@ def main():
 
     for ch_num in sorted(sheet):
         data = sheet[ch_num]
-        for field in ('title', 'classical', 'english', 'chinese', 'commentary'):
+        for field in ('title', 'classical', 'english', 'chinese', 'commentary', 'discussion', 'en_discussion'):
             val = data.get(field, '')
             if not val:
                 continue
