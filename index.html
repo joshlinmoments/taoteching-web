@@ -44,7 +44,7 @@
       position: relative; z-index: 2;
       text-align: center; width: 100%; max-width: 640px; padding: 20px 28px;
     }
-    #l-calligraphy { height: 100px; width: auto; margin-bottom: 14px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)); }
+    #l-calligraphy { height: 130px; width: auto; margin-bottom: 14px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)); }
     .l-en  { font-family: 'Spectral SC', serif; font-size: 20px; color: rgba(255,255,255,0.80); font-weight: 300; letter-spacing: 0.18em; margin-bottom: 18px; }
     .l-rule { width: 50px; height: 1px; background: rgba(255,255,255,0.35); margin: 0 auto 14px; }
     .l-desc { font-size: 13px; font-style: italic; color: rgba(255,255,255,0.50); line-height: 1.8; font-weight: 300; margin-bottom: 36px; }
@@ -1331,11 +1331,15 @@ chapters.forEach((ch, i) => {
 function enterPresent(startIdx) {
   presentIdx = (startIdx !== undefined) ? startIdx : (currentChIdx || 0);
   document.getElementById('present-overlay').classList.add('active');
+  document.getElementById('reader').style.visibility = 'hidden';
+  document.getElementById('landing').style.visibility = 'hidden';
   document.body.style.overflow = 'hidden';
   renderSlide();
 }
 function exitPresent() {
   document.getElementById('present-overlay').classList.remove('active');
+  document.getElementById('reader').style.visibility = '';
+  document.getElementById('landing').style.visibility = '';
   document.body.style.overflow = '';
 }
 
