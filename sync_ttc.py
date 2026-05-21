@@ -73,6 +73,12 @@ def to_br(text):
             .replace('\r\n', '\n').replace('\r', '\n')
             .replace('\n', '<br>').replace('`', "'"))
 
+def to_plain(text):
+    """Strip all line breaks — for fields that should be a single paragraph."""
+    return (normalize_cjk(text)
+            .replace('\r\n', ' ').replace('\r', ' ').replace('\n', ' ')
+            .replace('`', "'").strip())
+
 
 def fetch_csv():
     print("  Connecting to Google Sheets...")
@@ -122,7 +128,7 @@ def parse_sheet(csv_text):
             'title':       to_br(first(COL_ENG_TITLE)),
             'english':     to_br(first(COL_ENGLISH)),
             'chinese':     to_br(concat(COL_CHINESE, '\n')),
-            'commentary':  to_br(concat(COL_COMMENTARY, '\n\n')),
+            'commentary':  to_plain(concat(COL_COMMENTARY, ' ')),
             'discussion':    to_br(concat(COL_DISCUSSION, '\n\n')),
             'en_discussion': to_br(concat(COL_EN_DISCUSSION, '\n\n')),
         }
