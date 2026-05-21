@@ -1241,7 +1241,13 @@ function buildSidebar() {
         `<span class="ch-item-en">${ch.title || '—'}</span>` +
         `<span class="ch-item-classical">${ch.classical || '第'+ch.num+'章'}</span>` +
       `</div>`;
-    div.onclick = () => openChapter(i);
+    div.onclick = () => {
+      openChapter(i);
+      if (window.innerWidth <= 640) {
+        document.getElementById('sidebar').classList.add('collapsed');
+        localStorage.setItem('sidebar-collapsed', 'true');
+      }
+    };
     div.addEventListener('dblclick', () => enterPresent(i));
     navList.appendChild(div);
   });
