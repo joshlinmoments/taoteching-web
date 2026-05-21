@@ -1343,7 +1343,7 @@ chapters.forEach(ch => {
     `<div class="ch-discussion" data-field="discussion">${ch.discussion}</div></div>` : '';
 
   const enDisSec = ch.en_discussion ?
-    `<div class="ch-section"><div class="ch-section-label">Tao Learning Book Club · Discussion</div>` +
+    `<div class="ch-section"><div class="ch-section-label">Guang Ming Advanced Academy · Discussion</div>` +
     `<div class="ch-en-discussion" data-field="en_discussion">${ch.en_discussion}</div></div>` : '';
 
   card.innerHTML = header + `<div class="ch-body">${engSec + cnSec + cmtSec + disSec + enDisSec}</div>`;
@@ -1511,7 +1511,7 @@ function renderSlide() {
 
   const enDisSec = ch.en_discussion ?
     `<div class="slide-section${showEnDis?'':' hidden'}" id="slide-en-dis">` +
-      `<div class="slide-section-label">Tao Learning Book Club · Discussion</div>` +
+      `<div class="slide-section-label">Guang Ming Advanced Academy · Discussion</div>` +
       `<div class="slide-en-discussion">${ch.en_discussion}</div>` +
     `</div>` : '';
 
