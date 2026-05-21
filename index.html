@@ -36,38 +36,39 @@
     #landing {
       position: fixed; inset: 0;
       display: flex; align-items: center; justify-content: center;
-      background: #fff; z-index: 10;
+      background: #0a1616; z-index: 10;
       transition: opacity 0.3s;
     }
     #landing.hidden { display: none; }
     #landing-bg {
       position: absolute; inset: 0; width: 100%; height: 100%;
-      object-fit: cover; object-position: center 25%;
-      opacity: 0.13; pointer-events: none;
+      object-fit: cover; object-position: center 35%;
+      opacity: 0.82; pointer-events: none;
     }
     #landing-inner {
       position: relative; z-index: 2;
       text-align: center; width: 100%; max-width: 640px; padding: 20px 28px;
     }
-    .l-cjk { font-size: 68px; color: var(--blue); font-weight: 300; letter-spacing: 0.18em; line-height: 1; margin-bottom: 10px; }
-    .l-en  { font-family: 'Spectral SC', serif; font-size: 22px; color: var(--text-mid); font-weight: 300; letter-spacing: 0.15em; margin-bottom: 18px; }
-    .l-rule { width: 50px; height: 1px; background: var(--teal); margin: 0 auto 14px; }
-    .l-desc { font-size: 14px; font-style: italic; color: var(--text-muted); line-height: 1.8; font-weight: 300; margin-bottom: 36px; }
+    #l-calligraphy { height: 100px; width: auto; margin-bottom: 14px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)); }
+    .l-en  { font-family: 'Spectral SC', serif; font-size: 20px; color: rgba(255,255,255,0.80); font-weight: 300; letter-spacing: 0.18em; margin-bottom: 18px; }
+    .l-rule { width: 50px; height: 1px; background: rgba(255,255,255,0.35); margin: 0 auto 14px; }
+    .l-desc { font-size: 13px; font-style: italic; color: rgba(255,255,255,0.50); line-height: 1.8; font-weight: 300; margin-bottom: 36px; }
     #l-select {
       width: 100%; padding: 14px 18px;
       font-family: 'Spectral', serif; font-size: 16px;
-      background: var(--bg); border: 1px solid var(--border);
-      border-radius: 4px; color: var(--text); outline: none;
+      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.28);
+      border-radius: 4px; color: rgba(255,255,255,0.90); outline: none;
       cursor: pointer; margin-bottom: 28px;
       transition: border-color 0.2s, box-shadow 0.2s;
       appearance: auto;
     }
-    #l-select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(98,149,149,0.12); }
+    #l-select option { background: #1a2e2e; color: #fff; }
+    #l-select:focus { border-color: var(--teal-light); box-shadow: 0 0 0 3px rgba(98,173,173,0.18); }
     #l-btn-present {
       display: inline-flex; align-items: center; gap: 6px;
       padding: 8px 22px; border-radius: 3px;
-      background: transparent; color: var(--text-muted);
-      border: 1px solid var(--border); cursor: pointer;
+      background: transparent; color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.25); cursor: pointer;
       font-family: 'Spectral SC', serif; font-size: 12px; letter-spacing: 0.1em;
       transition: all 0.2s;
     }
@@ -233,9 +234,9 @@
 
 <!-- ══ LANDING PAGE ══ -->
 <div id="landing">
-  <img id="landing-bg" src="hero.png" alt="">
+  <img id="landing-bg" src="bg-dark.png" alt="">
   <div id="landing-inner">
-    <div class="l-cjk">道德經</div>
+    <img id="l-calligraphy" src="calligraphy.png" alt="道德經">
     <div class="l-en">Tao Te Ching</div>
     <div class="l-rule"></div>
     <p class="l-desc">81 chapters on the Way, Virtue, and the nature of all things.<br>English translation with Chinese original text and commentary.</p>
@@ -1176,7 +1177,7 @@ function openChapter(idx) {
   document.getElementById('reader').classList.add('active');
   buildSidebar();
   renderChapter();
-  if (localStorage.getItem('sidebar-collapsed') === 'true') {
+  if (localStorage.getItem('sidebar-collapsed') !== 'false') {
     document.getElementById('sidebar').classList.add('collapsed');
   }
 }
@@ -1270,8 +1271,8 @@ function renderChapter() {
   const disSec = hasDis || true ?
     `<div id="sec-dis">` +
       `<div class="dis-tabs">` +
-        `<button class="dis-tab-btn${currentDis==='zh'?' active':''}" onclick="switchDis('zh')">道學讀書會</button>` +
-        `<button class="dis-tab-btn${currentDis==='en'?' active':''}" onclick="switchDis('en')">Guang Ming · Discussion</button>` +
+        `<button class="dis-tab-btn${currentDis==='zh'?' active':''}" onclick="switchDis('zh')">道學讀書會討論摘要</button>` +
+        `<button class="dis-tab-btn${currentDis==='en'?' active':''}" onclick="switchDis('en')">English Discussion</button>` +
       `</div>` +
       `<div class="dis-panel${currentDis==='zh'?'':' hidden'}" id="dis-zh">${zhContent}</div>` +
       `<div class="dis-panel${currentDis==='en'?'':' hidden'}" id="dis-en">${enContent}</div>` +
@@ -1379,12 +1380,12 @@ function renderSlide() {
     `</div>` : '';
   const disSec = ch.discussion ?
     `<div class="slide-section${pShowDis?'':' hidden'}" id="slide-dis">` +
-      `<div class="slide-section-label">道學讀書會 · Discussion</div>` +
+      `<div class="slide-section-label">道學讀書會討論摘要</div>` +
       `<div class="slide-discussion">${ch.discussion}</div>` +
     `</div>` : '';
   const enDisSec = ch.en_discussion ?
     `<div class="slide-section${pShowEnDis?'':' hidden'}" id="slide-en-dis">` +
-      `<div class="slide-section-label">Guang Ming Advanced Academy · Discussion</div>` +
+      `<div class="slide-section-label">English Discussion</div>` +
       `<div class="slide-en-discussion">${ch.en_discussion}</div>` +
     `</div>` : '';
 
