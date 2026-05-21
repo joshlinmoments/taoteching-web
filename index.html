@@ -191,6 +191,7 @@
     .ch-english    { font-size:15px; line-height:2.05; color:var(--text-mid); font-weight:300; }
     .ch-chinese    { font-size:15.5px; line-height:2.1; color:var(--text); letter-spacing:0.06em; }
     .ch-commentary { font-size:13.5px; line-height:1.95; color:var(--text-muted); font-style:italic; font-weight:300; }
+    .ch-discussion { font-size:14px; line-height:2.0; color:var(--text-mid); font-weight:300; }
     mark { background:var(--highlight); color:var(--teal); border-radius:2px; padding:0 1px; }
 
     /* ══ NO RESULTS ══ */
@@ -307,6 +308,9 @@
       font-size: clamp(14px, 1.25vw, 18px); line-height: 2.05; color: var(--text-muted);
       font-style: italic; font-weight: 300;
     }
+    .slide-discussion {
+      font-size: clamp(14px, 1.2vw, 17px); line-height: 2.1; color: var(--text-mid); font-weight: 300;
+    }
 
     /* hide/show sections */
     .slide-section.hidden { display: none; }
@@ -416,6 +420,7 @@
     <button class="present-view-btn on" id="btn-show-en" onclick="toggleView('en')">English</button>
     <button class="present-view-btn on" id="btn-show-cn" onclick="toggleView('cn')">原文</button>
     <button class="present-view-btn on" id="btn-show-cmt" onclick="toggleView('cmt')">注釋</button>
+    <button class="present-view-btn on" id="btn-show-dis" onclick="toggleView('dis')">討論</button>
     <span id="present-progress"></span>
     <button id="btn-exit-present" onclick="exitPresent()">✕ Exit</button>
   </div>
@@ -463,6 +468,7 @@ const introSections = [
     english: `The Tao that can be spoken is not the Eternal Tao; <br>The Name that can be named is not the Eternal Name. <br>Non-being: is the name for the primordial state of Heaven and Earth; <br>Being: is the name for the source of all creations. <br>Therefore: Dwell constantly in Non-being to contemplate its subtle Mystery; <br>Dwell constantly in Being to observe its boundless Manifestations. <br>These two, though different in name, emerge from the same Origin; <br>Together, they are called the Mystery. Mystery upon Mystery, <br>The Gateway to all wonders of the Universe.`,
     chinese: `道可道，非常道。名可名，非常名。 <br>無，名天地之始；有，名萬物之母。 <br>故常無，欲以觀其妙；常有，欲以觀其徼。 <br>此兩者同出而異名，同謂之玄。玄之又玄，眾妙之門。`,
     commentary: `可以用言語表達出來的道，就不是永恆不變的「道」；可以被定義稱呼的名，就不是永恆不變的「名」。「無」是用來形容天地渾沌未開的初始狀態，而「有」則是萬物具象生長後的根源。因此，我們常從「無」中去觀察道那深不可測的奧妙，也常從「有」中去觀察到道孕育萬物的廣大無邊。這兩者雖然名稱不同，其實都源自於同一個根源，同樣可以稱之為「玄」。這種深奧再深奧、難以窮盡的境界，正是通往宇宙萬物一切奧祕的正門。`
+    discussion: `「道可道，非常道；名可名，非常名。」《道德經》以這一句話開篇，便已點出了整部經典最核心的氣息：真正的道，是無法被語言完整捕捉的。這看似是一個哲學謎語，但細細品味，卻發現它說的，正是我們每個人在日常生活中都曾體驗卻難以言說的東西。<br><br>我們人類，天生喜歡定義事物。看到一朵花，就說「這是玫瑰」；認識一個人，就給他貼上「開朗」或「保守」的標籤；面對新情況，也總想先問「這是什麼？這屬於哪一類？」定義讓我們有安全感，讓這個龐大而複雜的世界顯得有序可掌握。然而，老子在兩千五百年前便點出了一個深刻的矛盾：定義，本身就是一種限制。<br><br>想像桌上放著一個造型別致的陶瓷壺。當我們稱它為「茶壺」，它的想像空間便悄悄縮小了——它的功能被限定在泡茶、倒水之間。然而，如果我們不急著替它命名，這個壺可以是一件藝術品，可以當花瓶、當樂器，甚至在緊急時刻可以是防身工具。名字給了它身份，卻同時收窄了它的無限可能。「名可名，非常名」說的正是這個道理：任何名稱和定義，都只能捕捉到事物的一個面向，而非它的全貌。<br><br>這個道理，用在人身上更令人深思。我們常說某人「很懶」、「天生就學不來」、「這輩子大概就這樣了」。但這些話，真的準確嗎？還是說，我們只是以某個片刻、某個有限的角度，就對一個活生生的人蓋棺論定？更深一層，我們是否也用同樣的方式對待自己？「我沒辦法上台說話」、「我不擅長讀書」、「我就是這種個性，改不了了」——這些自我定義一旦在心裡扎根，往往會成為真實的枷鎖。道學讀書會探討這一章時，點出了現代人一個普遍的困境：我們習慣在真正認識一個人之前，就先用一套既定的標籤去「理解」對方。這樣的「理解」，其實不是真正的認識，而是一種遮蔽。<br><br>老子說「常無欲以觀其妙，常有欲以觀其徼」。「常無」，是以空杯的心態去觀察，不帶預設，不貼標籤，才能看見事物最幽微、最真實的本質——那個無法言說的「妙」。這不是叫我們放棄判斷，而是提醒我們：在下定義之前，先給自己一點空間，讓事物自己說話。一歲的嬰兒看所有人都是一樣的，不會因為對方是總裁還是清潔工就特別有差別，這種純粹的眼光，正是老子說的「常無」的狀態。我們在成長的過程中，慢慢學會了區分、比較、評判，卻也在這個過程中，漸漸失去了看見事物本真的能力。<br><br>《道德經》的智慧早已在世界各地留下深遠的印記，只是許多人不知道源頭在哪裡。功夫巨星李小龍有一句傳遍全球的名言：「Be water, my friend——像水一樣。」水，沒有固定形狀，放入圓容器是圓的，放入方容器是方的；平靜時如鏡面，激動時能摧山裂石。這正是《道德經》「上善若水」的精髓。李小龍將道家思想全面融入武術，創造出以「截拳道」聞名的武學體系，其中最核心的理念是：攻守不是兩件對立的事，而是渾然一體的存在。出拳攻擊時，另一手同步防守；踢擊的同時，全身協調流動。這種「攻即是守、守即是攻」的整體觀，讓中國武術在全球武術界獨樹一幟，而它的哲學根源，正是老子的陰陽思想：萬物皆由相對而相成，沒有單純的攻，也沒有單純的守。<br><br>二十世紀最重要的心理學家之一榮格，也深受道家思想的影響。他在著作中提及，一本名為《太乙金華宗旨》的中國道家典籍，徹底改變了他對人類心靈的理解。榮格後來發展出的「陰影」、「原型」、「集體無意識」等心理學核心概念，都與道家的陰陽觀念有著驚人的對應。他認為，人的心靈中同時存在著光明與黑暗、意識與無意識，而整合這兩個面向，正是心理健康的關鍵——這與道家所說的「知常容」何其相似。換句話說，許多我們以為是「現代西方心理學」的智慧，其實早在兩千五百年前就深藏在這部薄薄的《道德經》之中。<br><br>「不要以外表來評判一個人的深度。」禪宗的《六祖壇經》記載了一個令人動容的故事：禪宗六祖慧能，出身貧寒，目不識丁，只是一個靠劈柴賣薪維生的樵夫。然而，正是這個不識字的年輕人，體悟了「本來無一物，何處惹塵埃」的深刻道理，成為禪宗的傳承者。當時那些飽讀詩書、道理說得滔滔不絕的修行者，反而沒能悟道。這個故事以震撼人心的方式告訴我們：智慧與文憑無關，與外貌無關，與社會地位無關。如果我們以「這個人學歷不高」、「這個人年紀太輕」、「這個人沒什麼經歷」去預設他的深度，我們可能錯失的，恰恰是最真實的智慧。<br><br>《孟子》中也有一個值得細細思量的故事：曾子與柳下惠面對戰亂，各自做出了截然不同的選擇。曾子選擇留守，與主人共進退；柳下惠選擇先行離開，妥善安排好家務再說。乍看之下，兩人的行為似乎相互矛盾——難道忠誠不是美德？難道先離開不是懦弱？然而孟子說，兩人都是對的。曾子的身份是下屬，守護是他的本分；柳下惠是長者，保全自身是他的智慧。這個故事深刻地說明：真正的道德，不是一個可以套用在所有人身上的固定公式，而是在深刻理解自身處境之後，做出的最誠實的回應。我們不能只看行為的表面，就急著給一個人貼上「對」或「錯」的標籤。<br><br>在這個被無數標籤和評判充斥的時代——社群媒體上充斥著「成功的定義」、「正確的生活方式」、「你應該長成的樣子」——《道德經》第一章帶給我們的，不是一個新的答案，而是一種提問的能力：這個定義，真的完整嗎？這個標籤，真的公平嗎？我所看見的，真的是全部嗎？道，不在某一個「正確的定義」裡，而在不斷願意鬆開那些以為正確的定義的過程中。保持開放，保持謙遜，這不是軟弱，而是真正開始接近道的第一步。玄之又玄，眾妙之門——門，從來都不是用定義打開的，而是用一顆願意放空的心。`
   },
   {
     num: 2,
@@ -471,6 +477,7 @@ const introSections = [
     english: `When everyone under Heaven recognizes beauty as beauty, the concept of ugliness arises. <br>When everyone recognizes goodness as goodness, the concept of badness arises.<br>Thus, Being and Non-being give birth to each other; <br>Difficult and easy complete each other. <br>Long and short define each other; <br>High and low lean toward each other. <br>Sound and tone harmonize with each other; <br>Front and back follow each other.<br><br>Therefore, the Sage abides in Non-action (Wu-Wei) and carries out the teaching without words.<br>The myriad things arise, and he does not turn away; <br>He nurtures them but does not possess them; <br>He acts but does not cling to his own ability; <br>His work is accomplished, but he claims no credit.<br>Precisely because he does not claim credit, <br>His merit never fades away.`,
     chinese: `天下皆知美之為美，斯惡已。<br>皆知善之為善，斯不善已。<br>故有無相生，難易相成，長短相較，高下相傾，音聲相和，前後相隨。<br>是以聖人處無為之事，行不言之教；萬物作焉而不辭，<br>生而不有，為而不恃，功成而弗居。夫唯弗居，是以不去。`,
     commentary: `當天下人都知道什麼是「美」的時候，醜的觀念也就產生了；當大家都公認什麼是「善」的時候，不善的定義也就隨之出現。 這說明了世間的價值判斷都是相對的。因此，有與無相互產生，難與易相互完成，長與短相互比較，高與下相互依存，聲音相互和諧，前後相互跟隨。 基於這種體悟，聖人以「無為」的態度處理事務，施行「不言」的教化。 他順應萬物自然生長而不橫加干涉；有所作為卻不自恃己能，成就了功勞卻不據為己有。正因為他不居功、不執著於成就，所以他的功德與貢獻反而永遠不會消失。`
+    discussion: `「天下皆知美之為美，斯惡已；皆知善之為善，斯不善已。」《道德經》第二章以這句令人意外的話開場，第一次讀到往往覺得困惑：難道追求美好不是對的嗎？難道我們不應該肯定善良嗎？老子並不是在否定美與善，他是在揭示一個更深層的真相：一旦我們為事物建立了「標準」，比較就開始了，分別心就產生了，而煩惱，也就跟著來了。<br><br>試著回想這樣的場景：你用心烹調了一道菜，端上桌時，什麼感覺都沒有，只是自然地做該做的事。這一刻，心是寧靜的，是在「中道」上的。但如果有人嚐了一口說「好吃」，下一次你走進廚房時，心裡可能會開始有個念頭：「怎麼煮才好吃？上次他說好吃，這次會不會失望？」一個標準悄悄地建立了，「好吃」與「不好吃」的分別心，就這樣從稱讚中誕生。這並不是說讚美是壞事，而是提醒我們：當我們的心開始依賴「他人的標準」來評量自己時，自在就悄悄地離開了。<br><br>更廣泛地看，這種「設立標準即創造對立」的現象，遍布在我們的社會生活中。當一個社群中出現了「誰是最優秀的」這樣的標準，那些符合標準的人開始受到仰慕，不符合標準的人開始感到自卑，而衝突，往往就從這個落差中滋生。道學讀書會探討這一章時，提到了校園霸凌這個現代議題：霸凌的根源，不在行為者的惡意，而在他們心中深埋的分別心——「我比你強」或「我不如你，所以我要攻擊你」。真正要解決霸凌，不是靠更嚴格的規則和懲罰，而是從根本上去消除人心中製造高下、優劣的比較文化。孔子曾說：「聽訟，吾猶人也，必也使無訟乎。」意思是，他判案的能力和別人差不多，但他真正的目標，是讓訴訟根本不發生。最好的治理，是讓問題在源頭就消失，而不是在末端不斷補救。<br><br>「故有無相生，難易相成，長短相較，高下相傾，音聲相和，前後相隨。」老子列舉了六組對立的概念，但他說的是「相生」、「相成」、「相隨」，而非「相對立」。有與無不是敵人，而是彼此定義、彼此成就的夥伴。沒有「無」，哪知道什麼是「有」？沒有「難」，哪裡體會得到「易」？這種相對性，不是要讓我們陷入比較，而是讓我們看見：這個世界的豐富，正來自於不同角色的相互成就。<br><br>這一點，在合唱中表現得最為直觀。一首歌，如果所有人都只唱高音，可能刺耳難聽；如果所有人都唱低音，則可能沉悶無趣。正是高音與低音、主旋律與和聲的相互搭配，才成就了動人的音樂。沒有誰比誰更重要，只有各就其位的相互成全。這個道理放到人際關係、放到組織運作，同樣適用。美國太空總署（NASA）的工作中，太空人站在媒體的聚光燈下，但他們能安全升空，仰賴的是成千上萬名工程師、科學家，以及確保設施清潔運作的後勤人員。每一個人的工作都不可或缺，而真正有智慧的組織，懂得讓每個人都感受到自己的存在是有意義的，而不是建立一個讓人相互比較、相互競爭的排行榜。<br><br>「是以聖人處無為之事，行不言之教。」老子說，真正有智慧的人，是以「無為」的方式處事，以「不言」的方式教化。「無為」不是什麼都不做，而是不帶私心、不為了個人的名譽和利益而做。「不言之教」，是以身作則的力量，而非語言說教。現實生活中，我們都有這樣的體驗：長篇大論的說教，往往不及一個無聲的示範來得有力。如果你希望孩子養成閱讀的習慣，比起每天叫他「去讀書」，你每天自己坐下來靜靜閱讀，效果往往更深遠。環境無聲地塑造人，這就是「不言之教」的力量。<br><br>道場中流傳著一個前人的故事，最能詮釋「生而不有，為而不恃，功成而弗居」的精神。有一位早年為道場奉獻的長者，在生活最艱困的時期——窮到幾乎睡在橋下、道場數度因交不出租金而面臨被迫遷移的困境——依然沒有放棄，憑著誠信一步一步建立起信任，最終將自己名下的土地全數奉獻，建立了今日的道場。他從頭到尾從未問過「我能得到什麼？」，也從未因為付出而居功邀功。正因如此，他所成就的，不只是一塊土地、一間廟宇，而是無數人修行之路的起點。這種精神，讓人想起老子所說的「夫唯弗居，是以不去」——正因為從不把功勞攬在自己身上，所以那份功德，永遠都在，永遠都不會消逝。<br><br>「功成而弗居」放在現代，是一個很難修煉的功課。社群媒體的時代，我們習慣了記錄、發布、展示——「我做了這件事」、「我幫了這個人」、「你看我的貢獻」。這樣做未必是錯的，但老子提醒我們思考：在付出之後，那份執著於被認可、被記憶、被感謝的心，是否悄悄地削弱了付出本身的純粹？「生而不有，為而不恃，功成而弗居」，是一種讓善行持續流動的方式，不讓它停在自己手中，而讓它繼續往前流，去滋養更多的人。<br><br>還有一個關於「無為而成」的故事值得細細思量：有一位修道的前輩，因為周遭的人不斷向他求助，每一次都想辦法解決，每一次都在摸索中前進，日積月累下來，竟然成為了某個領域的專家，能力遠超自己原本的預期，最終在相關機構中擔任要職。他從未立定志向「我要成為這方面的專家」，能力卻在不知不覺中形成了——這正是「無為而無不為」的活生生詮釋。真正深厚的能力，往往不是「為了成為某某而努力」的結果，而是在無私付出、認真回應當下需要的過程中，自然而然積累出來的。<br><br>《道德經》第二章，是一個關於「放下執著」的邀請。不是叫我們放棄追求美好，而是提醒我們：當我們不再用分別心去比較高下、用結果來衡量意義，反而往往能做出最真實、最有力量的事。那些真正改變世界的人，大多不是因為渴望被記住而行動，而是因為眼前有需要，就去做了。`
   },
   {
     num: 3,
@@ -479,6 +486,7 @@ const introSections = [
     english: `Not exalting the talented prevents the people from contending . <br>Not prizing objects hard to come by prevents the people from becoming thieves. <br>Not displaying the desirable prevents the hearts of the people from being troubled.<br>Therefore, the Sage governs by: <br>Emptying their minds (of ego) and filling their bellies (with Inner Essence); <br>Weakening their worldly ambitions and strengthening their physical foundation (the bones).<br>He constantly keeps the people in a state of original purity,<br>Free from cunning and craving, <br>ensuring that even the scheming dare not act.  <br>Practice Non-action (Wu-Wei), and there is nothing that remains ungoverned.`,
     chinese: `不尚賢，使民不爭；<br>不貴難得之貨，使民不為盜；不見可欲，使民心不亂。<br>是以聖人之治，虛其心，實其腹，弱其志，強其骨。<br>常使民無知無欲。使夫智者不敢為也。為無為，則無不治。`,
     commentary: `如果不刻意推崇名聲才德，百姓就不會為了名利而鬥爭；如果不標榜稀有財寶的價值，百姓就不會生起貪念去偷竊；如果不顯露足以引起慾望的事物，民心就不會混亂。因此，聖人的治理是：淨化百姓的思想，讓他們生活飽暖足食，削弱競爭擴張的野心，並增強自立生存的體魄。透過這種方式，使百姓常保純樸的本性，沒有虛偽的巧詐與過度的貪欲。即使是有小聰明的人，也不敢胡作非為。當治理者順應自然、不亂加干預，天下就沒有治理不好的地方。`
+    discussion: `「不尚賢，使民不爭；不貴難得之貨，使民不為盜；不見可欲，使民心不亂。」《道德經》第三章，老子直指社會動盪的根源，不在於人性本惡，而在於我們所建構的價值系統，在無意之間製造了爭奪與不安。兩千五百年後，這段話讀來，竟像是對著現代社會的一面鏡子。<br><br>「不尚賢」——不崇尚、不過度推崇所謂的賢能之人。初讀這句話，許多人會感到困惑甚至反感：難道社會不應該尊重有才能的人嗎？難道我們不該鼓勵優秀？老子並不是說才能不重要，他反對的是對才能的「崇拜化」——當一個社會開始瘋狂追捧「成功人士的樣板」，將所有人按照同一套標準排列高下時，那些符合標準的人焦慮地想要維持地位，那些不符合標準的人則在自我懷疑和比較中消耗心力。結果，大家都在競爭，都在爭奪那個被社會定義為「賢」的位子，而真正的學習、真正的成長，反而退居其次。<br><br>這樣的現象，在亞洲的教育環境中尤為明顯。成績排名、升學壓力、「別人家的孩子」——這些存在於許多人成長記憶中的詞彙，正是「尚賢文化」在教育場域的具體展現。道學讀書會在探討這一章時，分享了一個真實的成長故事：試想一個學生，進入了一所菁英雲集的高中，同班同學幾乎都是各地的頂尖學生。在這樣的環境裡，原本對學習充滿熱情的人，可能漸漸陷入一種無力感——因為無論多努力，周圍的人似乎永遠更強、更快、更好。當「成為賢者」的壓力過大，有些人選擇了放棄，而這種放棄，不是因為能力不足，而是因為心裡的那把比較尺，讓人找不到屬於自己的意義與位置。<br><br>有一個頗具啟發性的跨文化教育實驗，值得我們思考：英國一所學校曾邀請中國數學教師，以亞洲的教學方法給學生授課一個月。結果，這批學生在考試中的成績，比起使用英式教法的學生高出了大約百分之十五。這個數字看似驚人，但英國教師和亞洲教師對這個結果的解讀，卻截然不同。亞洲教師認為這是教學方法的勝利；英國教師則說：成績提升，是應試訓練的效果，但這批學生的批判思維、自主學習能力和面對生活的靈活度，並沒有因此增加。到底哪一種教育更好？這個問題沒有簡單的答案，但老子「實其腹、強其骨」的整體觀給了我們一個方向：真正的培育，是充實一個人的根基，而非只是強化某一項可以被考核的技能。<br><br>這讓人聯想到頂尖棒球投手的訓練邏輯：訓練的方式並非只是瘋狂練習投球的那塊肌肉，而是全身肌肉的協調與整體力量的培養——核心肌群、腿部力量、肩膀穩定性，缺一不可。一個投手如果只練手臂，可能在某個賽季投得很猛，但很快就會因為肌肉不平衡而受傷。「強其骨」，強的是整體的根基，而非表面的強壯。這個道理放到人的成長上同樣適用：一個人如果只追求外在的成就指標，而忽略了內在的誠信、同理心與心理韌性，遲早會在某個時刻崩塌。<br><br>「使民無知無欲」——這是《道德經》第三章中最常被誤解的一句話，許多人讀到這裡，會直覺反應：這不就是愚民政策嗎？老子難道在鼓勵統治者讓人民保持無知，好讓他們更好控制？道學讀書會在討論這一章時，以一個貼近現代生活的例子加以澄清：近年來，東南亞詐騙集團的事件頻傳，許多受害者並不是因為愚笨才上當，而是因為心中有一個「高薪、輕鬆、在海外快速賺大錢」的妄念，被這個念頭驅使，才落入了精心設計的陷阱。受害者不缺智慧，缺的是對自身欲望的覺察——那個「我可以不勞而獲」、「這個機會只有我能把握」的妄念，蒙蔽了他們原本具備的判斷力。<br><br>老子說的「無知無欲」，不是讓人變成一張白紙，而是引導人們放下不切實際的「妄念」——那些建立在比較、恐懼、貪求之上的想望。當一個人心中充滿「我要比別人更成功」、「我一定要擁有那個別人有的東西」、「我不能落後」的念頭，他的智慧再高，也很容易被這些妄念所左右，做出傷害自己或他人的選擇。真正的智慧，是能讓聰明為善所用，而非為貪念所驅役。<br><br>孔子提出了一個值得現代人放在心上的自我觀察框架，他說修身之道要警惕四種內在狀態：目的性（凡事只想著「對我有什麼好處」）、分裂（把自己與他人截然對立）、固執的憤怒，以及對未知的恐懼。這四者，正是阻礙一個人看清現實、做出真實選擇的根源。對照《道德經》「使民無知無欲」的精神，可以發現，儒家與道家在這一點上有著深刻的呼應：真正的自由，不是想做什麼就做什麼，而是對自己的念頭有足夠的覺察，不被妄念牽著走。<br><br>第三章最後提到的「虛其心，實其腹，弱其志，強其骨」，常被解讀為一種保守的治民之術，但如果我們從個人修身的角度來看，卻能看到一個截然不同的境界。道場中有一位年長的女性義工，她的故事讓許多人深受感動。她原本只是一位普通的商店老闆娘，不懂烹飪，也沒有任何「有用」的技能。但因為心中有一個單純的心願——帶著家人一起出遊，同時服務更多人——她去考取了導遊執照，又因為道場需要素食，她開始學習素食料理。就這樣，一步接著一步，不是為了「成為什麼」，而只是因為眼前有需要，所以去做。幾年之後，她成為了道場中最具影響力的人物之一，讓許多人深受她的精神所感召。她從未設定過「我要成為領袖」的目標，卻在無私的付出中，自然而然地成就了別人無法企及的影響力。<br><br>這正是老子「無為而無不為」的現代詮釋。真正的成就，往往不是計劃出來的，而是在真誠地回應生命中每一個當下需要的過程中，一點一滴積累而成的。當我們不再把所有的精力放在「如何讓自己看起來更賢」，而是把心思放在「我現在能為眼前的人做什麼」，那種深沉而持久的影響力，才會自然地從我們身上流出來。<br><br>《道德經》第三章，不是一個消極的退縮之道，而是一個重新定位生命重心的邀請：從向外追逐「賢」的標籤，轉向向內充實真實的根基。不是為了比誰更強，而是讓自己成為一個能真實地給予、真實地陪伴的人。道，不在競爭的頂端，而在那些默默實踐、不求掌聲的生命裡。`
   },
   {
     num: 4,
@@ -487,6 +495,7 @@ const introSections = [
     english: `The Tao is an empty vessel,<br>Yet in its Use, it is inexhaustible and never needs to be refilled. <br>It is an abyss, seemingly the Progenitor of the myriad things.<br>It blunts the sharpness;<br>It unravels the knots; <br>It tempers the brightness; <br>It merges itself with the dust.<br>Deep and translucent, it quietly endures. <br>I do not know whose child it is; <br>It seems to precede even the  Heavenly Ruler.`,
     chinese: `道沖而用之，或不盈，淵兮似萬物之宗。<br>挫其銳，解其紛，和其光，同其塵。<br>湛兮似或存。吾不知誰之子，象帝之先。`,
     commentary: `「道」雖然空虛，但它的作用卻無窮無盡，好像永遠不會枯竭；它博大深厚得如同萬物的祖宗。它能挫去鋒芒，消除紛擾，調和光輝，與塵俗融合為一。它清澈且隱約存在。我不知道它是從哪裡產生的，似乎在天帝出現之前就已經存在了。`
+    discussion: ``
   },
   {
     num: 5,
@@ -495,6 +504,7 @@ const introSections = [
     english: `Heaven and Earth are not "benevolent"; <br>They treat the myriad things as though they were straw dogs . <br>The Sage is not "benevolent"; <br>He treats the multitude as though they were straw dogs.<br>Is not the space between Heaven and Earth like a bellows? <br>It is empty, yet its supply never fails; <br>The more it is moved, the more it brings forth.<br>Much speech leads to exhaustion; <br>It is better to keep to the Center.`,
     chinese: `天地不仁，以萬物為芻狗；<br>聖人不仁，以百姓為芻狗。<br>天地之間，其猶橐龠乎？虛而不屈，動而愈出。<br>多言數窮，不如守中。`,
     commentary: `天地真的不仁慈嗎？對待萬物如同祭祀時用的草狗一樣，用過就丟掉了；聖人真的不仁慈嗎？對待萬物如同祭祀時用的草狗一樣，用過就丟掉了。（其實天地與聖人的愛是公平沒有偏狹的，所以完全隨著因果造化運行）天地之間，不就像是一個大風箱（橐龠）嗎？它內部空虛卻不會塌陷，只要一觸動，生機與能量就會源源不絕地產生。如果自以為是，妄作主張，反而會讓自己陷入困頓窮竭，不如保持內心的虛靜與平和，默守中庸之道。`
+    discussion: ``
   },
   {
     num: 6,
@@ -503,6 +513,7 @@ const introSections = [
     english: `The Valley Spirit never dies; <br>It is called the Mysterious Female. <br>The Gateway of the Mysterious Female;<br>Is the Root of Heaven and Earth. <br>Lingering and faint, it seems eternally present;<br>Use it as you will, it never runs dry.`,
     chinese: `谷神不死，是謂玄牝。<br>玄牝之門，是謂天地根。<br>綿綿若存，用之不勤。`,
     commentary: `位在谷地正位的真神是永恆不死的，這就叫做深遠奧妙的母體。這個深妙母體的門戶，就是天地的原始根源。它連綿不絕地存在著，彷彿若有若無，但它的作用卻是無窮無盡，無論如何使用都不會枯竭。`
+    discussion: ``
   },
   {
     num: 7,
@@ -511,6 +522,7 @@ const introSections = [
     english: `Heaven is eternal, Earth is lasting. <br>How do they remain eternal and lasting? <br>Because they do not live for themselves, <br>And so they can outlive themselves.<br>Therefore, the Sage puts himself last, yet finds himself in the foremost place; <br>He places his own self outside, yet finds his life preserved. <br>Is it not because he is selfless;<br>That his own self-fulfillment is attained?`,
     chinese: `天長地久。<br>天地所以能長且久者，以其不自生，故能長生。<br>是以聖人後其身而身先；外其身而身存。<br>非以其無私邪？故能成其私。`,
     commentary: `天地之所以能夠⻑久存在，是因為它們運作時並非為了自己的生存而刻意作為，而是自然地生養萬物，正因為不為<br>己，所以能永恆⻑生。聖人效法這種精神：在利益面前，他把自己放在眾人之後，結果反而受到推崇而領先；在安<br>危面前，他將自身的私利置之度外，結果反而能保全自身。這不正是因為他的無私嗎？但也正因為這種無私，反而<br>成就了他個人的圓滿。`
+    discussion: ``
   },
   {
     num: 8,
@@ -519,6 +531,7 @@ const introSections = [
     english: `The highest excellence is like water. <br>The goodness of water is that it benefits all things without striving;<br> It occupies the low places that all men disdain. <br>Thus, it is very near to the Tao.<br>In dwelling, be close to the earth; <br>In the mind, be close to the depths; <br>In dealing with others, be close to kindness; <br>In speech, be close to truth; <br>In government, be close to order; <br>In business, be close to competence; <br>In action, be close to timeliness. <br>It is because he does not strive that he is free from blame.`,
     chinese: `上善若水，水善利萬物而不爭，<br>處眾人之所惡，故幾於道。<br>居善地，心善淵，與善仁，言善信，<br>正善治，事善能，動善時。夫唯不爭，故無尤。`,
     commentary: `最崇高的善就像水一樣。水善於滋養萬物而不與萬物相爭，且甘願處於眾人所厭惡的卑下之地，所以水的本性最接<br>近於「道」。有道的人，像水一樣隨遇而安；內心有水一樣無量而不可測的善良；能像水一樣沒有分別心，與人交<br>往一視同仁；像水一樣有信，說話誠實守信用；能像水調節大氣環境一樣，使社會安定；能像水有很多作用一樣，<br>辦事盡其所⻑；能像水一樣順應天時，行動則能掌握時機。正因為水具有這種不與人爭奪的特質，所以才不會招致<br>怨恨，也不會犯下過失。`
+    discussion: ``
   },
   {
     num: 9,
@@ -527,6 +540,7 @@ const introSections = [
     english: `Better to stop in time than to fill a vessel to the brim. Over-sharpen a blade, and its edge will soon be lost. Fill your house with gold and jade, and you cannot guard it. To be rich, proud, and arrogant is to court your own ruin. When the work is done and fame is achieved, then withdraw; This is the Tao of Heaven.`,
     chinese: `持而盈之，不如其已；揣而銳之，不可長保。<br>金玉滿堂，莫之能守；富貴而驕，自遺其咎。<br>功遂身退，天之道。`,
     commentary: `執著於將容器裝得太滿，不如適可而止；將鋒芒磨得過於銳利，反而難以⻑久保持。即便金玉珍寶堆滿廳堂，也無<br>法永遠守住；富貴時若表現得驕縱，只會給自己招來禍害。在立下功勳、名聲成就之後，懂得不戀棧，主動退居幕<br>後而不居功，這才符合自然運行的天道規律。`
+    discussion: ``
   },
   {
     num: 10,
@@ -535,6 +549,7 @@ const introSections = [
     english: `Can you keep the unquiet soul (Hun and Po) in one embrace and hold fast to the Unity (the Tao)? Can you concentrate your breath until it is most supple, like a newborn babe? Can you cleanse your Inner Mirror (the Mystery) until it is without blemish? Can you love the people and rule the state through Non-action (Wu-Wei)? Can you play the "female part" as the Heavenly Gates open and close? Can you be enlightened in all directions, yet remain without (cunning) knowledge? To give birth and to nourish; To give birth without possessing; To act without clinging; To lead without dominating— This is what is called Mysterious Virtue (Xuan De).`,
     chinese: `載營魄抱一，能無離乎？專氣致柔，能如嬰兒乎？<br>滌除玄鑒，能無疵乎？愛民治國，能無為乎？<br>天門開闔，能為雌乎？明白四達，能無知乎？<br>生之畜之，生而不有，為而不恃，長而不宰，是謂玄德。`,
     commentary: `精神與肉體合一，能做到不分離嗎？集結精氣達到極致的柔和，能像嬰兒般純真自然嗎？洗淨內心深處的雜念而觀<br>照萬物，能做到沒有瑕疵嗎？愛護百姓與治理國家，能順應自然而不妄為嗎？感官與外界接觸、體察自然規律時，<br>能守靜謙卑像雌性般包容嗎？智慧通達四方，能不運用心機巧詐嗎？讓萬物生⻑發育，生養了萬物卻不佔為己有，<br>有所作為卻不仗恃才幹，身為萬物之⻑卻不主宰干涉，這就叫做深遠深厚的「玄德」。`
+    discussion: ``
   },
   {
     num: 11,
@@ -543,6 +558,7 @@ const introSections = [
     english: `Thirty spokes meet at the hub; But it is on the Empty Space (the Nothingness) that the usefulness of the wheel depends. We turn clay to make a vessel; But it is on the space where there is nothing that the usefulness of the vessel depends. We pierce doors and windows to make a house; It is on these empty spaces that the usefulness of the house depends. Therefore, while "Being" brings advantage, it is "Non-being" that provides the true utility`,
     chinese: `三十輻，共一轂，當其無，有車之用。 <br>埏埴以為器，當其無，有器之用。<br>鑿戶牖以為室，當其無，有室之用。 <br>故有之以為利，無之以為用。<br>`,
     commentary: `三十根輻條匯集在一個車軸轂中心，正是因為中心留有空虛處，車輪才能轉動，發揮車子的功用。揉和陶土製作器<br>皿，正是因為器皿中間有空虛處，才能用來盛裝東⻄，發揮器皿的功用。開鑿門窗建造房屋，正是因為室內留有空<br>虛處，人才能居住其中，發揮房屋的功用。所以，「有」給人帶來便利，是因為「無」發揮了它的實質功能。`
+    discussion: ``
   },
   {
     num: 12,
@@ -551,6 +567,7 @@ const introSections = [
     english: `The five colours blind the eye; The five sounds deafen the ear; <br>The five flavours dull the palate. Racing and hunting madden the mind; <br>Rare treasures hinder one's progress. Therefore, the Sage provides for the Belly (the Inner Self) and not for the Eye; He rejects the "outward" and chooses the "inward."<br>`,
     chinese: `五色令人目盲； 五音令人耳聾； 五味令人口爽； <br>馳騁畋獵，令人心發狂； 難得之貨，令人行妨。 <br>是以聖人為腹不為目，故去彼取此。 <br>`,
     commentary: `繽紛的色彩使人眼花繚亂而失去辨色力；嘈雜的音樂使人聽覺麻木而失去辨音力；濃郁的滋味使人味覺遲鈍而⻝不<br>知味；縱情於騎馬狩獵，會使人心境放蕩而狂亂不安；稀有珍貴的財寶，會使人行為偏差而誤入歧途。因此，聖人<br>的治理是為了求得溫飽、充實內在，而不追求感官欲望的誘惑，所以會捨棄外在的物欲，選擇內在的質樸。`
+    discussion: ``
   },
   {
     num: 13,
@@ -560,6 +577,7 @@ const introSections = [
     english: `"Favour and disgrace are like fear; Great disaster is like the body." What is meant by "Favour and disgrace are like fear"? Favour is something inferior; getting it brings fear, and losing it brings fear. What is meant by "Great disaster is like the body"? The reason I suffer great disaster is that I have a body (an ego). If I had no body (no attachment to self), what disaster could there be? Therefore, only he who values the world as he values his own life can be entrusted with the world; Only he who loves the world as he loves his own life can be the guardian of the world.<br><br>We look at it and do not see it; its name is the Invisible (Yi). We listen to it and do not hear it; its name is the Inaudible (Xi). We touch it and do not feel it; its name is the Formless (Wei). These three cannot be further scrutinized, for they are blended into One. Its upper part is not bright; its lower part is not dark. Continuous, unnamable, it returns again to Nothingness. It is the formless form, the imageless image; it is the Indefinable. Face it and you see no front; follow it and you see no back. Hold fast to the Ancient Tao to manage the things of today. To know the Origin is to hold the Thread of the Tao.`,
     chinese: `寵辱若驚，貴大患若身。<br>何謂寵辱若驚？<br>寵為下，辱為上。 <br>得之若驚，失之若驚，是謂寵辱若驚。 <br><br>何謂貴大患若身？<br>吾所以有大患者，為吾有身，<br>及吾無身，吾有何患？<br>故貴以身為天下者，可寄天下；<br>愛以身為天下者，可以托天下。`,
     commentary: `聖人對待他人的寵愛與羞辱，總是戒慎得像是被驚嚇一樣，就像面臨失去身體的禍患。為何戒慎寵愛與羞辱呢？受寵愛是讓人捧在心頭上，會使自己的心高高在上，然而害怕失去光環，害怕會就此走下坡；被人侮辱像是讓人踐踏在地上，使自己自怨自艾，苦惱憂愁，感覺很低下，就會想要往上爬，得到更多權力。所以無論寵愛或羞辱，得到讓人驚恐、失去也讓人驚恐，驚恐在起伏當中迷失了自我，就像失去這個身體一樣。為什麼說要把害怕失去這個身體呢？我之所以會有大憂患，是因為我有這具肉身與私心；如果我能超脫自我的執著，我還有什麼好憂慮的呢？所以，一個能像珍惜自己生命一樣去珍惜天下的人，才可把天下委託給他；一個能像愛護自己一樣去愛護天下的人，才值得把天下託付給他。`
+    discussion: ``
   },
   {
     num: 14,
@@ -568,6 +586,7 @@ const introSections = [
     english: `The ancient masters of the Tao were subtle, mysterious, and profound; their depth was beyond understanding. Because they are hard to understand, I can only describe their appearance: Cautious, like one crossing a frozen stream in winter; Watchful, like one who fears his neighbors on all sides; Respectful, like a guest; Yielding, like ice that is about to melt; Simple, like the Uncarved Block (the Original Self); Hollow, like a valley; Muddled, like turbid water. Who can make the turbid water clear? By remaining still, it gradually becomes clear. Who can make the still move? By being stirred, it gradually comes to life. Those who keep this Tao do not desire to be full. Because they are never full, they can be renewed when they are worn.<br><br>Reach the extreme of Emptiness; hold fast to Quietness. The ten thousand things arise together; I observe their return. Though all things flourish, each returns to its Root. Returning to the root is called Quietness; it means returning to one's Destiny (Heavenly Decree). Returning to Destiny is the Eternal Law. To know the Eternal is to be enlightened; not to know the Eternal leads to disaster. To know the Eternal is to be all-embracing; Being all-embracing, one is impartial; Being impartial, one is kingly; Being kingly, one is of Heaven; Being of Heaven, one is of the Tao; Being of the Tao, one endures forever; though the body perishes, the True Self is never destroyed.`,
     chinese: `視之不見，名曰夷；<br>聽之不聞，名曰希；<br>搏之不得，名曰微。<br>此三者不可致詰，故混而為一。<br><br>其上不皦，其下不昧。<br>繩繩兮不可名，復歸於無物。<br>是謂無狀之狀，無象之象，是謂惚恍。<br>迎之不見其首，隨之不見其後。<br>執古之道，以禦今之有。能知古始，是謂道紀。`,
     commentary: `看它看不見，稱它為「無相」；聽它聽不到，稱它為「無聲」；摸它摸不著，稱它為「無形」。這三種特性就是道的本體，是無法追根究底的，因為它們原本就是渾然一體的。它的上方並不顯得光亮，下方也不會有陰影。它綿延不絕，無法用言語形容，想要探其究竟，又發現它終究只是一團虛無。這就是所謂沒有形狀的形狀、沒有物象的意象，也就是所謂的「恍惚」。迎面去追隨它，看不見它的開端；跟隨在它背後，也看不見它的結尾。只要掌握自古以來就存在的「道」，就能駕馭現實世界的萬事萬物。能夠瞭解宇宙原始的開端，這就叫做掌握了「道」的脈絡法則。`
+    discussion: ``
   },
   {
     num: 15,
@@ -576,6 +595,7 @@ const introSections = [
     english: `As for the best rulers, the people only know they exist. The next best, they love and praise. The next, they fear. The next, they despise. If you do not trust enough, you will not be trusted. But of the best, when their work is done and their task is accomplished, The people all say, "It happened to us Naturally (Ziran)." <br><br>When the Great Tao was lost, benevolence and righteousness appeared. When cleverness and knowledge arose, great hypocrisy followed. When the six family relationships were no longer in harmony, "filial piety" and "parental love" were preached. When the state fell into disorder, "loyal ministers" appeared.`,
     chinese: `古之善為士者，微妙玄通，深不可識。<br>夫唯不可識，故強為之容。<br>豫兮若冬涉川；猶兮若畏四鄰；<br>儼兮其若客；渙兮其若冰之將釋；<br>敦兮其若樸；曠兮其若谷；渾兮其若濁。<br><br>孰能濁以止，靜之徐清。<br>孰能安以久，動之徐生。<br>保此道者，不欲盈。<br>夫唯不盈，故能弊不新成。`,
     commentary: `古代擅⻑悟道修身的人，其智慧微妙深邃、通達圓明，深奧到讓人無法輕易揣測。正因為無法完全描述，只能勉強形容他的樣子：他處事謹慎，如同古時「豫獸」等到冬天結冰才過河一樣；他慎獨的功夫，如同古時「猶獸」下山不敢驚擾村里百姓一樣；他莊重肅穆，如同在別人家做客一樣受人景仰；他灑脫自然，面對外緣干擾，心卻如同春天的冰消融散開；他敦厚的本性，如同未經雕琢的素材；他胸懷廣闊，如同空曠的山谷；他渾厚包容，如同混濁在污濁當中的水一樣。誰能在混濁中，不失本心，等待水慢慢澄澈、清濁分明？誰能在安定中持久，使生機慢慢萌發？能保有這個道的人，不會追求自滿。正因為不自滿，便能夠保守舊有（弊）的道心，而不隨人心（新）流轉，而成就真道。`
+    discussion: ``
   },
   {
     num: 16,
@@ -584,6 +604,7 @@ const introSections = [
     english: `Discard "sagehood" and "wisdom," and the people will benefit a hundredfold. Discard "benevolence" and "righteousness," and the people will return to filial piety and love. Discard "ingenuity" and "profit," and there will be no more thieves. These three are outward forms and are not sufficient. Therefore, let people have something to hold on to: See the Simple Self, embrace the Uncarved Block, reduce selfishness, and have few desires.`,
     chinese: `致虛極，守靜篤。<br>萬物並作，吾以觀其復。夫物芸芸，各復歸其根。<br>歸根曰靜，靜曰覆命。覆命曰常，知常曰明。<br>不知常，妄作凶。<br>知常容，容乃公，公乃全，全乃天，<br>天乃道，道乃久，沒身不殆。`,
     commentary: `若心靈能達到極致的虛無，能保守恆久的寧靜，在萬物蓬勃生⻑的同時，就能真正地觀察到它們往復循環的規律。<br>萬物雖然紛雜繁多，最終都要各自回歸到它們的根源。回歸根源稱為「靜」，這就叫做回歸生命的本源。回歸生命<br>本源才是永恆不變的常理，知道常理的人，才稱得上「明理」。如果不明白常理而胡作非為，就會招致災禍。明白<br>了永恆的常理就能包容萬物，能包容就能公正無私，公正就能周全，周全就符合自然天理，符合天理就契合了道，<br>契合了道就能⻑久，即使肉身消亡也不會陷入危險。`
+    discussion: ``
   },
   {
     num: 17,
@@ -592,6 +613,7 @@ const introSections = [
     english: `Exterminate (worldly) learning and there will be no more sorrow. How much difference is there between a "yes" and a "no"? How much difference is there between "good" and "evil"? What the world fears, one cannot but fear; but how vast is the wilderness of delusion! The multitude are happy, as though enjoying a great feast or climbing a tower in spring. I alone am still, like a child who has not yet smiled; I am listless, like one who has no home to return to. The multitude have enough and to spare; I alone seem to have lost everything. Mine is the mind of an idiot—so dull and muddled! The world is bright; I alone am dark. The world is sharp; I alone am blunt. I am drifting, like the ocean; blown about, like the wind. Everyone has a purpose; I alone am stubborn and uncouth. I alone am different from others, for I value the Mother (the Tao) that nurses me.`,
     chinese: `太上，不知有之；<br>其次親之，譽之；<br>其次，畏之；其次，侮之。<br>故信不足，焉有不信。猶兮其貴言。<br>功成事遂，百姓皆謂：我自然。`,
     commentary: `上古的有德之君，無為而治，百姓暗受他的恩惠，卻不知道他的存在；再其次的賢君，尚能以德行親近百姓，而獲<br>得百姓讚揚；再次一等的國君，就以明確的賞罰去治理，百姓都畏懼他；最差一等的國君，僅以權術愚弄人民，終<br>遭百姓輕蔑侮辱。如果統治者不能守信，自然就得不到百姓的信任，所以上位者必須時時謹慎言行，才稱得上是人<br>民的君主。當大功告成後，百姓甚至不曉得是國君的功勞，只覺得覺得：「這不是很自然的事嗎？」`
+    discussion: ``
   },
   {
     num: 18,
@@ -600,6 +622,7 @@ const introSections = [
     english: `The all-embracing quality of the Great Virtue (De) follows alone from the Tao. The Tao is eluding and vague. Vague and eluding, yet within it is the Form. Eluding and vague, yet within it is the Substance. Deep and obscure, yet within it is the Essence. The Essence is quite real; within it is the Evidence (Truth). From ancient times until now, its Name has never passed away. It is through this that we observe the Origin of all things. How do I know the Origin of all things? By this Tao.`,
     chinese: `大道廢，有仁義；<br>智慧出，有大偽；<br>六親不和，有孝慈；<br>國家昏亂，有忠臣。<br>`,
     commentary: `當自然無為的「大道」被廢棄、不再作為社會準則時，才需要刻意提倡「仁義」來維持秩序；當人們開始崇尚聰明<br>與權謀智慧時，虛偽造假的風氣也就隨之產生；當家族成員之間失去自然的和睦，才顯現出所謂的「孝順」與「慈<br>愛」；當國家陷入昏庸混亂的局面，才表現出所謂的「忠臣」。這說明了當這些刻意的道德標準出現時，往往反映<br>出社會最本質的純樸與和諧已經失落。`
+    discussion: ``
   },
   {
     num: 19,
@@ -608,6 +631,7 @@ const introSections = [
     english: `"Yield and remain whole; bend and be straight; Empty and be full; wear out and be new; Have little and gain; have much and be confused."Therefore, the Sage embraces the One (the Tao) and becomes a model for the world. He does not show himself, therefore he is enlightened; He does not justify himself, therefore he is distinguished; He does not boast of himself, therefore he is given credit; He does not pride himself, therefore he is a leader. It is because he does not strive that no one in the world can strive against him. Truly, the ancient saying "Yield and remain whole" is no empty phrase. It is the way to Complete Return.`,
     chinese: `絕聖棄智，民利百倍；<br>絕仁棄義，民復孝慈；<br>絕巧棄利，盜賊無有。<br>此三者，以為文不足，故令有所屬。<br>見素抱樸，少思寡欲。`,
     commentary: `拋棄自作聰明的聖明與才智，百姓反而能獲得百倍的利益；拋棄刻意標榜的仁義道德，百姓反而能回歸自然天性的<br>孝順與慈愛；拋棄投機取巧與對功利的追求，盜賊也就不會再出現。這三者如果只是作為政令條文、書本知識是不<br>夠的，所以要讓百姓的心有所歸屬：外表呈現質樸，內心保持純真，減少私心，淡化欲望。`
+    discussion: ``
   },
   {
     num: 20,
@@ -616,6 +640,7 @@ const introSections = [
     english: `To speak little is to follow Nature (Ziran). A hurricane does not last the whole morning; A rainstorm does not last the whole day. Who creates these? Heaven and Earth. If Heaven and Earth cannot make things last forever, how much less can man? Therefore, he who follows the Tao is one with the Tao; He who follows Virtue (De) is one with Virtue; He who follows Loss is one with Loss. He who is one with the Tao, the Tao gladly welcomes. He who is one with Virtue, Virtue gladly welcomes. He who is one with Loss, Loss gladly welcomes. If you do not trust enough, you will not be trusted.<br><br>He who stands on tiptoe does not stand firm; He who takes long strides does not walk well. He who shows himself is not enlightened; He who justifies himself is not distinguished; He who boasts of himself is not given credit; He who prides himself is not a leader. In the eyes of the Tao, these are like "surplus food and parasitic growths." All creatures loathe them; therefore, he who has the Tao does not dwell in them.`,
     chinese: `絕學無憂。<br>唯之與阿，相去幾何？善之與惡，相去若何？<br>人之所畏，不可不畏。荒兮其未央哉！<br>眾人熙熙，如享太牢，如春登臺。<br>我獨泊兮其未兆，如嬰兒之未孩；<br>儽儽兮，若無所歸。<br><br>眾人皆有餘，而我獨若遺。<br>我愚人之心也哉！沌沌兮。<br>俗人昭昭，我獨若昏；俗人察察，我獨悶悶。<br>澹兮其若海，飂兮若無所止。<br>眾人皆有以，而我獨頑且鄙。我獨異於人，而貴食母。`,
     commentary: `學習不要受到文字障的障礙，才能沒有憂慮。「唯」與「阿」，雖皆是應答詞彙，但兩者在態度表現上相去甚遠。<br>「善」與「惡」，本是一線之間，但兩者相差沒有多少。人們所敬畏的事情，不可以不敬畏。世人總是沉迷在快樂<br>享受之中，就像享受豐盛的宴席（太牢）以及春天登高望遠一樣。只有我的心淡泊無欲，沒有什麼徵兆顯露，就像<br>剛出生的赤子，還不會笑的時候。總是意興闌珊的樣子，好像沒有歸宿，不去刻意選擇什麼，隨遇而安。<br><br>眾人都是追名逐利，志得意滿。唯獨我好像遺失了所有。我真有一顆愚人的心啊，混混沌沌的。世人都自以為聰明<br>清醒，唯獨我顯得昏庸迷糊；世人都斤斤計較、觀察細微，唯獨我像是沒有知識的人，不知道怎麼去計較。我心境<br>平淡得像大海，飄泊得像無處停留的風。眾人都有所作為與本事，唯獨我是那麼的笨拙粗鄙。我之所以與眾不同，<br>是因為我就像個嬰兒一樣，時時吸吮著上天老⺟供給的⺟乳。`
+    discussion: ``
   },
   {
     num: 21,
@@ -624,6 +649,7 @@ const introSections = [
     english: `There was something formlessly fashioned that existed before Heaven and Earth. Silent and void, it stands alone and unchanging; It pervades everywhere and never fails. It may be called the Mother of the World. I do not know its name; I call it "The Tao." If forced to describe it, I would call it "Great." Greatness means passing on; passing on means going far; going far means Returning. Therefore: The Tao is great; Heaven is great; Earth is great; and the King is great. In the universe, there are four powers, and the King is one of them. Man follows Earth; Earth follows Heaven; Heaven follows the Tao; The Tao follows its own Nature (Ziran).`,
     chinese: `孔德之容，惟道是從。道之為物，惟恍惟惚。<br>惚兮恍兮，其中有象；恍兮惚兮，其中有物。<br>杳兮冥兮，其中有精；其精甚真，其中有信。<br>自今及古，其名不去，以閱眾甫。<br>吾何以知眾甫之然哉？以此。`,
     commentary: `如何窺探「德」的真面目，完全是順從「道」而來的。道作為一個存在，是那樣的模糊不清、若有若無。在這種恍<br>恍惚惚的狀態中，卻隱約有形象存在；在這種若隱若現的狀態中，卻包含一切萬物。它是那樣的深遠幽暗，其中卻<br>含藏著最根本的精微能量；這種能量非常真實，而且充滿了恆久可信的規律。從古至今，道的名號永不消失，它讓<br>我們得以看見萬物的起源。我憑什麼能知道萬物起源的樣子呢？就是憑藉這個「道」。`
+    discussion: ``
   },
   {
     num: 22,
@@ -632,6 +658,7 @@ const introSections = [
     english: `Heaviness is the root of lightness; Stillness is the master of restlessness. Therefore, the Sage travels all day without leaving his baggage-wagon (his Inner Center). Though there are sights of glory, he remains quiet and indifferent. How is it that the lord of ten thousand chariots should behave lightly in the world? To be light is to lose one's Root; To be restless is to lose one's Mastery.`,
     chinese: `曲則全，枉則直，窪則盈，敝則新，少則多，多則惑。<br>是以聖人抱一為天下式。<br>不自見故明；不自是故彰；不自伐故有功；不自矜故長。<br>夫唯不爭，故天下莫能與之爭。<br>古之所謂「曲則全」者，豈虛言哉！誠全而歸之。`,
     commentary: `能受委曲的人反而能成就身心完整；能受冤枉的人反而成就內心坦蕩率直；能謙卑滴下才能盈滿功德，能汰舊才能<br>換新，追求得少反而能收穫多，追求過多反而會陷入迷惑。因此，聖人始終抱守那一貫的元神中道，而成為天下人<br>的楷模。不固執己見才能看得清明；不自以為是才能真正彰顯其德行；不誇耀自己的成就，功勞才能被認可；不驕<br>傲自滿，所以能⻑久立於人前，受人尊崇。正因為他不與人爭奪，所以天下沒有人能與其競爭。古人所說的「委屈<br>就是保全」，難道是虛假的空話嗎？只要你依照實行那麼，一切的圓滿那就什麼就全部都歸於你了。`
+    discussion: ``
   },
   {
     num: 23,
@@ -640,6 +667,7 @@ const introSections = [
     english: `A good traveler leaves no tracks; A good speaker makes no slips; A good counter uses no tallies. A good closer uses no bolts, yet no one can open what he has shut; A good binder uses no knots, yet no one can untie what he has bound. Therefore, the Sage is always a good helper of men, and so no one is rejected; He is always a good helper of things, and so nothing is cast away. This is called Double Illumination. Therefore, the good man is the teacher of the bad; The bad man is the material for the good. If one does not value the teacher or love the material, Though he be clever, he is greatly deluded. This is the Essential Secret.<br><br>He who knows the Masculine, yet keeps to the Feminine, becomes a Valley for the world. Being a Valley for the world, Eternal Virtue (De) never leaves him, and he becomes again like a Newborn Babe. He who knows the White, yet keeps to the Black, becomes a Model for the world. Being a Model for the world, Eternal Virtue never fails him, and he returns to the Infinite. He who knows Glory, yet keeps to Humility, becomes a Valley for the world. Being a Valley for the world, Eternal Virtue is sufficient, and he returns to the Uncarved Block (the Original State). When the Uncarved Block is divided, it becomes vessels. The Sage uses them to become the leader of ministers. Truly, a Great Carver does not cut (does not harm the original nature).`,
     chinese: `希言自然。<br>飄風不終朝，驟雨不終日。<br>孰為此者？天地。<br>天地尚不能久，而況於人乎？<br><br>故從事於道者，<br>道者同於道；德者同於德；失者同於失。<br>同於道者，道亦樂得之；<br>同於德者，德亦樂得之；<br>同於失者，失亦樂得之。信不足焉，有不信焉。`,
     commentary: `謹言慎行才是符合自然之道。狂風颳不了一個早晨，暴雨下不到一整天。是誰讓風雨發生的？是天地。連天地都不能⻑久的颳風下雨了，何況是人呢？所以，順從於大道的人合於道；追求美德的人合於美德；放任「失道」的人，那就同流合污了。與道同在的人，道也樂於接納他；與德同在的人，德也樂於接納他；與失同在的人，那麼失心逐欲也樂於接納他。（因為道看不到，只能透過感應覺悟，所以說信，要相信才行）若你信心不足的話，那麼道也無法使你相信。`
+    discussion: ``
   },
   {
     num: 24,
@@ -648,6 +676,7 @@ const introSections = [
     english: `Those who try to take the world and shape it to their will never succeed. The world is a Spiritual Vessel; it cannot be tampered with. He who tampers with it spoils it; he who grasps it loses it. For truly: "Some lead, some follow; some breathe hot, some breathe cold; Some are strong, some are weak; some rise up, some fall down." Therefore, the Sage discards the excessive, the extravagant, and the extreme.`,
     chinese: `跂者不立；跨者不行；<br>自見者不明；自是者不彰；<br>自伐者無功；自矜者不長。<br>其於道也，曰：「餘食贅行」。<br>物或惡之，故有道者不處。`,
     commentary: `踮起腳尖的人站不穩，大跨步前行的人走不遠；只執著於自己見解的人看不見自己真實的樣子，自以為是的人無法<br>得到他人的認同；自我誇耀的人反而讓人懷疑他的功勞，驕矜自滿的人則不再成⻑。從「道」的觀點來看，這就像<br>是吃飽了還要再吃的⻝物、多餘沒有必要的行為。萬物大多厭惡這些事物，所以有道的人不會讓自己處在這樣狀態。`
+    discussion: ``
   },
   {
     num: 25,
@@ -656,6 +685,7 @@ const introSections = [
     english: `He who helps a ruler through the Tao does not use weapons to conquer the world; For such things are apt to recoil. Where armies dwell, thorns and brambles grow; A great war is always followed by years of famine. A good leader achieves his aim and stops; he does not dare to rely on force. Achieve the aim but do not boast; Achieve the aim but do not pride yourself; Achieve the aim but do not be arrogant; Achieve the aim because it is necessary; Achieve the aim but do not use violence. For things that grow to their full strength soon begin to decay. This is called "Not following the Tao." What does not follow the Tao soon comes to an end.`,
     chinese: `有物混成，先天地生。<br>寂兮寥兮，獨立而不改，周行而不殆，可以為天下母。<br>吾不知其名，字之曰道，強為之名曰大。<br>大曰逝，逝曰遠，遠曰返。<br>故道大，天大，地大，人亦大。域中有四大，而人居其一焉。<br>人法地，地法天，天法道，道法自然。<br>`,
     commentary: `有一種渾然一體的力量，在天地之前就已經存在。它無聲無形，獨立且永恆不變，循環運行永不停止，是天下萬物<br>的⺟親。我不知道它的名字，稱它為「道」，再勉強稱它「大」。道廣大無邊，就是「逝」；無邊無際並包含萬物，<br>就是「遠」；而這廣大的道，就在自己內在本性中，所以是「返」。所以說能生天地萬物的道是最大的；能覆蓋一<br>切的天也是大的；能承載萬物的地也是大的、而能盡天地之德的聖人也是大的。宇宙中有這四種偉大的存在，而人<br>是其中之一。人效法大地，大地效法天，天效法自然之「道」，而「道」的本性就是自然而然、本就如此。`
+    discussion: ``
   },
   {
     num: 26,
@@ -664,6 +694,7 @@ const introSections = [
     english: `Fine weapons are instruments of evil, hated by all creatures. Therefore, those who possess the Tao have nothing to do with them. The civilized ruler honours the left in times of peace; at war, he honours the right. Weapons are instruments of evil, not the tools of a Sage. When he uses them, it is only because he cannot help it, and his core remains in peace and quietude. To him, victory is no cause for rejoicing. To rejoice in victory is to rejoice in the slaughter of men; and he who rejoices in slaughter will never fulfill the Heavenly Mission over the world.`,
     chinese: `重為輕根，靜為躁君。<br>是以君子終日行，不離輜重。<br>雖有榮觀，燕處超然。<br>奈何萬乘之主，而以身輕天下。<br>輕則失根，躁則失君。`,
     commentary: `沉穩是輕浮的根本，寧靜是躁動的主宰。因此有德的君子即便整天在外奔波，也不會離開載運軍需品的大車（即是<br>本性）。雖然有尊貴華麗的外表，他卻能超然物外，安然處之。無奈擁有萬輛兵車的大國之君，卻以輕浮的態度來<br>對待天下。輕浮草率就會失去根本，性格躁動就會失去主宰的地位。`
+    discussion: ``
   },
   {
     num: 27,
@@ -672,6 +703,7 @@ const introSections = [
     english: `The Tao is forever nameless. Though the Uncarved Block (the Original State) be small, no one in the world can master it. If rulers would but embrace it, the ten thousand creatures would flock to do them homage. Heaven and Earth would unite to send down gentle dew; and without laws, the people would dwell in natural harmony. Once the Block is carved, there are names (distinctions). As soon as there are names, one must know when to stop. To know when to stop is to remain free from danger. The Tao is to the world as the Great Ocean is to the rivers and streams.<br><br>He who knows others is wise; he who knows the Self (the Original Nature) is enlightened. He who conquers others has physical strength; he who conquers himself is truly strong. He who is content is rich; he who acts with spiritual vigour has Will. He who does not lose his True Center lasts long; he who dies but his True Self is not forgotten (remains in the Spirit) possesses real longevity.`,
     chinese: `善行無轍跡，善言無瑕謫，善數不用籌策；<br>善閉無關鍵，而不可開，善結無繩約，而不可解。<br><br>是以聖人常善救人，故無棄人；常善救物，故無棄物。是謂襲明。<br>故善人者，不善人之師；不善人者，善人之資。<br>不貴其師，不愛其資，雖智大迷，是謂要妙。`,
     commentary: `以至善行於天下的人，心中不會留下行善的痕跡；他所說的話都是本性流露，所以圓滿沒有瑕疵缺點；他所做的每件事都合於道，所以不必費盡心機的籌劃；他內心無虧，所以心門沒有上鎖，也沒法打開；他向上天立下普渡眾生的善愿，永遠不會忘記，所以也不必結繩立約，更沒有人能夠解除這個約定。<br><br>因此，聖人始終以至善之心去救渡他人，所以從未嫌棄任何人；發自內心保護萬事萬物，所以沒有被傷害或任意拋棄的動植物或事物，這就是他承襲古聖賢的明德。所以，善良的人可以作為不善之人的老師，而不善之人則是善良者引以為戒或教化的資源。但至善之人不執著於老師的地位，及擁有的資源。擁有大智慧卻看起來迷迷糊糊的，才是真正領悟到修道的精妙之處。`
+    discussion: ``
   },
   {
     num: 28,
@@ -680,6 +712,7 @@ const introSections = [
     english: `The Great Tao flows everywhere, like a river that can go to the left or the right. The ten thousand creatures rely upon it for life, and it denies none. When its work is done, it claims no credit. It nourishes all things but does not act as their master. Because it is always without desire, it may be called "Small." Because all things return to it, yet it remains without mastery, it may be called "Great." Therefore, the Sage never displays his own greatness, and thus his true Greatness is accomplished.`,
     chinese: `知其雄，守其雌，為天下谿。<br>為天下谿，常德不離，復歸於嬰兒。<br>知其白，守其黑，為天下式。<br>為天下式，常德不忒，復歸於無極。<br>知其榮，守其辱，為天下谷。<br>為天下谷，常德乃足，復歸於樸。<br>樸散則為器，聖人用之，則為官長，故大制不割。`,
     commentary: `雖知雄性的力量剛強，卻甘願守住雌性的柔弱，就像天下匯集溪水的溝壑。成為包容天下的溝壑，永恆的德行就不<br>會偏離，能回歸到嬰兒般純真的狀態。雖知明亮面的美好，卻甘願守住暗淡沉默，就能作為天下的楷模。能作為天<br>下楷模，永恆的德行就不會出差錯，能回歸到無極。雖知榮耀可貴，卻甘願守住卑下的屈辱，就像包容萬物的深谷。<br>能作為天下的深谷，永恆的德行便豐沛充足，能回歸到質樸的本性，如木頭保有原始的狀態，就能應用為各種器物。<br>而聖人保有質樸來治世，就能成為萬官的首⻑。因此大有作為的聖人，是保有本性完整樸素，而不願意切割雕琢。`
+    discussion: ``
   },
   {
     num: 29,
@@ -688,6 +721,7 @@ const introSections = [
     english: `He who holds fast to the Great Image (the Tao) will attract the whole world. They come and receive no hurt, finding instead rest, peace, and great abundance. Music and dainties may make the passer-by stop, but the words of the Tao seem insipid and without flavour. Looked at, it is not enough to be seen; listened to, it is not enough to be heard. But use it, and its bounty will never be exhausted.`,
     chinese: `將欲取天下而為之，吾見其不得已。<br>天下神器，不可為也，為者敗之，執者失之。<br>故物或行或隨；或呴或吹；或強或羸；或載或隳。<br>是以聖人去甚，去奢，去泰。`,
     commentary: `想要透過人為了私欲想奪取天下，在我看來是不可能的。天下是神聖的器物，不能由著主觀意志去強行控制的，想<br>要以武力控制它的人會失敗，想要以私欲佔有它的人會失望。因為世間萬物本來就有他的原理：想走前面卻仍有人<br>走你前面；想走後面卻還是有人跟隨；呼一口暖氣就有風將之吹散；想要變強確有人更強；想要扛重物，沒多久還<br>是得放下來。因此，聖人明白這個道理，就不會去做過分多餘的事、奢侈浪費、驕傲自大的心態。`
+    discussion: ``
   },
   {
     num: 30,
@@ -696,6 +730,7 @@ const introSections = [
     english: `What you would make to shrink, you must first allow to expand. What you would make weak, you must first let grow strong. What you would lay low, you must first let rise. What you would take from, you must first give to. This is called the Subtle Illumination. The soft and weak overcome the hard and strong. As the fish must not leave the deep pool, so must the sharpest instruments (power) of the State not be shown to the people.`,
     chinese: `以道佐人主者，不以兵強天下。其事好還。<br>師之所處，荊棘生焉。大兵之後，必有凶年。<br>故善者果而已，不以敢取強。<br>果而勿矜，果而勿伐，果而勿驕，果而不得已，是果而勿強。<br>物壯則老，是謂不道，不道早已。`,
     commentary: `用「道」輔佐君主的人，不會依靠武力橫行天下。因為動武這件事，往往會得到對等的報復。兩軍交戰之地，田地<br>荒廢，荊棘叢生；大規模戰爭之後，必定會接著出現災荒之年。所以，善於用兵的人只要達到目的就適可而止。不<br>敢憑仗軍力來逞強。任務達成了而不自滿、不張揚，也不驕傲，這就是任務達成卻不逞強。萬物壯大到了極點就會<br>趨向衰老，仗恃欺人、逞強好勝是不符合「道」的；不符合「道」的，很快就會衰亡。`
+    discussion: ``
   },
   {
     num: 31,
@@ -704,6 +739,7 @@ const introSections = [
     english: `The Tao is ever Non-action (Wu-Wei), yet nothing is left undone. If rulers could but hold fast to it, the ten thousand creatures would be transformed by themselves. If during this transformation, desires should arise, I would restrain them with the Nameless Simplicity (the Original State). The Nameless Simplicity brings the absence of desire; and without desire, there is stillness. Then the world will find its own equilibrium.<br><br>The man of Highest Virtue is not conscious of his virtue, and therefore he possesses true Virtue (De). The man of lowest virtue never loses sight of his "virtue," and therefore he lacks the true Virtue. Highest Virtue is Non-action and has no private ends to serve. Lowest virtue acts and has private ends to serve. Highest Benevolence acts but has no private ends. Highest Justice acts and has private ends. Highest Ritual acts, and when no one responds, it uses force to compel. Therefore: "When the Tao was obscured, then came the Virtue (De); When Virtue was lost, then came Benevolence; When Benevolence was lost, then came Justice; When Justice was lost, then came Ritual." Now Ritual is the mere husk of loyalty and trust, and the beginning of disorder. Foreknowledge is but the flower of the Tao, and the beginning of folly. Therefore, the Great Man dwells in the thick (the substance) and not in the thin (the husk); he dwells in the fruit and not in the flower. He rejects the one and chooses the other.`,
     chinese: `夫佳兵者，不祥之器，<br>物或惡之，故有道者不處。<br>君子居則貴左，用兵則貴右。<br>兵者不祥之器，非君子之器，不得已而用之，恬淡為上。<br><br>勝而不美，而美之者，是樂殺人。<br>夫樂殺人者，不可得志於天下。<br>吉事尚左，凶事尚右。<br>偏將軍居左，上將軍居右，言以喪禮處之。<br>殺人眾多，以悲哀泣之。戰勝則以喪禮處之。`,
     commentary: `精良的武器是極不吉祥的工具，萬物大多厭惡它，所以悟道的人不使用它。君子平時居處以左方為尊，用兵作戰時則以右方為尊。兵器是不吉祥的工具，不是君子所使用的，只有在迫不得已時才使用，且以保持恬淡平和的心態為上。即便獲勝也不該認為這是光彩的事，如果認為獲勝很光榮，那就是以殺人為樂。凡是以殺人為樂的人，是不可能在天下實現志向的。吉慶之事崇尚左方，凶喪之事則崇尚右方。在軍隊中，偏將軍位於左側，上將軍位於右側，這意味著是以喪禮的位次來安排兵事。殺傷了眾多人命，應該以悲哀的心情來悼念；即便戰爭獲勝，也應該用喪禮的儀式來對待。`
+    discussion: ``
   },
   {
     num: 32,
@@ -712,6 +748,7 @@ const introSections = [
     english: `Of old, these attained the One (the Tao): Heaven attained the One and became clear; Earth attained the One and became firm; The Spirits attained the One and became divine; The Valley attained the One and became full; The ten thousand creatures attained the One and became alive; Rulers attained the One and became the Rectors of the world. It is the One that brings this to pass. Without that which makes it clear, Heaven might rend; without that which makes it firm, Earth might burst. Therefore, the noble takes the humble as its root; the high takes the low as its foundation. This is why rulers call themselves "The Orphan" or "The Needy." Is this not taking humility as the root? Truly, the highest honour is to be without (worldly) honour. Do not desire to shine like jade, but be as simple as a common stone.`,
     chinese: `道常無名。樸雖小，天下不敢臣。<br>侯王若能守，萬物將自賓。<br>天地相合，以降甘露，民莫之令而自均。<br>始制有名，名亦既有，夫亦將知止。<br>知止可以不殆，譬道之在天下，猶川谷之於江海。`,
     commentary: `道永遠是質樸且沒有名稱的。這種質樸的狀態雖然看似微小卻孕育萬物，天下沒有誰敢把它看做下屬。侯王如果能<br>守住這份質樸，萬物自然成為你的賓客，歸順於你，。天地陰陽之氣相合，就會降下甘露，所以君王只要守道，百<br>姓不需要命令、指使，自然會取得平衡。自然創造萬物之後就產生了各種名相，既使有這些名相，就應懂得適可而<br>止，不要落入分別對待。懂得知止，才不會陷入危險，這就如同道存在於天下，萬物終將回歸於道，就像山谷的細<br>流，最後都將匯入能納百川的江河大海一樣。`
+    discussion: ``
   },
   {
     num: 33,
@@ -720,6 +757,7 @@ const introSections = [
     english: `In the Tao, reversal is the movement; Yielding (Weakness) is the tool. The ten thousand creatures under Heaven are born of Being (the Manifested); Being is born of Non-being (the Unmanifested/The Void).`,
     chinese: `知人者智，自知者明。<br>勝人者有力，自勝者強。<br>知足者富。強行者有志。<br>不失其所者久。死而不亡者壽。`,
     commentary: `能洞察他人善惡是非的人，是智的表現，能反省改過的人，才是真正明白自身本性。能戰勝別人的人是有力量的，<br>但是能克制自己欲望與弱點的人才算真正的強大。懂得滿足的人內心不匱乏，就是富有；堅持不懈地實踐的人就是<br>有志氣。一個凡事不背離「道」的人，才能真正的⻑久，即使肉體雖然消逝，但精神與道合一、永存人心的人，才<br>是真正的⻑壽。`
+    discussion: ``
   },
   {
     num: 34,
@@ -728,6 +766,7 @@ const introSections = [
     english: `When the highest type of student hears of the Tao, he tries hard to practice it. When the average type of student hears of the Tao, he believes some of it and doubts some of it. When the lowest type of student hears of the Tao, he laughs at it. If he did not laugh, it would not be enough to be the Tao. For there is a saying: The Way that is bright seems dark; The Way that goes forward seems to go back; The Way that is smooth seems rough. The highest Virtue (De) seems like a valley (hollow); The greatest purity seems sullied; A Virtue that is wide seems insufficient; A Virtue that is firm seems frail; A Virtue that is true seems changeful. The great square has no corners; The great vessel is the last to be finished; The great sound is hard to hear; The great Image has no form. The Tao is hidden and nameless; Yet it is the Tao alone that excels in bestowing and completing.`,
     chinese: `大道汎兮，其可左右。<br>萬物恃之以生而不辭，功成而不有。<br>愛養萬物，而不為主，常無欲，可名於小；<br>萬物歸之，而不為主，可名於大。<br>是以聖人，終不為大，故能成其大。`,
     commentary: `道廣闊流動，無處不在，可以左右互補交流。萬物依恃著它而生⻑，它從不推辭；成就了一切功德，它也爭名逐利。<br>它愛護滋養萬物，卻不自任為萬物的主宰，始終無私無欲，所以可以稱之為「小」；但萬物最終都歸向它，它卻仍<br>不主宰控制，這又可以稱之為「大」。因此，聖人始終不自以為大、不追求偉大的名相，反而因此成就了真正的偉<br>大。`
+    discussion: ``
   },
   {
     num: 35,
@@ -736,6 +775,7 @@ const introSections = [
     english: `The Tao gave birth to the One; the One gave birth to the Two; the Two gave birth to the Three; and the Three gave birth to the ten thousand creatures. The ten thousand creatures carry on their backs the Yin (Receptivity) and embrace in their arms the Yang (Creativity) and are blended by the Breath of the Void (Central Harmony). What men most loathe is to be "Orphaned," "Needy," or "Ill-provided." Yet kings and barons use these as their titles. For truly, "A thing may gain by being lost, or lose by being gained." What others have taught, I also teach: "A man of violence will come to a violent end." This I shall take as the father of my teaching.`,
     chinese: `執大象，天下往。往而不害，安平泰。<br>樂與餌，過客止。<br>道之出口，淡乎其無味，<br>視之不足見，聽之不足聞，用之不可既。`,
     commentary: `若能謹守那偉大的「道」，天下百姓都會前來歸附。大家前來歸附而互不傷害，如此就能過著安是平靜的太平生活。<br>這樣安樂的生活與物質的享受，因為這些美好，都像過客一樣短暫。若要說「道」是什麼味道，卻是平淡得沒有滋<br>味。看它看不見，聽它聽不到，然而實際運用起來，卻是無窮無盡、永遠不會耗竭的。`
+    discussion: ``
   },
   {
     num: 36,
@@ -744,6 +784,7 @@ const introSections = [
     english: `What is most soft in the world overcomes what is most hard. That which has No Substance (The Spirit) enters where there is no crevice. By this I know the benefit of Non-action (Wu-Wei). Few things under heaven are as instructive as the "Teaching without words," or as beneficial as Non-action.`,
     chinese: `將欲歙之，必固張之；將欲弱之，必固強之；<br>將欲廢之，必固興之；將欲取之，必固與之。<br>是謂微明。弱勝剛，柔勝強。<br>魚不可脫於淵，國之利器，不可以示人。`,
     commentary: `想要收縮它，必先擴張它；想要削弱它，必先增強它；想要廢棄它，必先興舉它；想要奪取它，必先給予它。這就<br>是所謂微妙的先見之明。柔弱的最終會戰勝剛強，柔軟的會戰勝強硬。魚不能離開深淵而生存，國家的制勝利器，<br>也不可以輕易展示出來。`
+    discussion: ``
   },
   {
     num: 37,
@@ -752,6 +793,7 @@ const introSections = [
     english: `Fame or one's own self, which is the dearer? One's self or possessions, which is the worthier? Gain or loss, which is the greater evil? Truly, a great love is bound to cost a great deal; A great hoard is bound to suffer a great loss. He who is content suffers no disgrace; He who knows when to stop is free from danger. It is thus that one can endure for long.`,
     chinese: `道常無為，而無不為。<br>侯王若能守之，萬物將自化，化而欲作。<br>吾將鎮之以無名之樸。<br>無名之樸，亦將不欲。不欲以靜，天下將自正。`,
     commentary: `道始終順應自然而不妄加干涉，但萬物卻都在它的運作下自然成就，沒有一件事不是它所完成的。侯王如果能守住<br>這種「無為」的原則，萬物將會自我生⻑演化。在演化過程中，如果萬物產生了過度的貪欲與妄念，我將用那不求<br>名分、純真質樸的「道」來安定它們。當這種無名的質樸使欲望消失，內心歸於平靜，天下萬物自然就會走向正軌，<br>呈現和諧安定的狀態。`
+    discussion: ``
   },
   {
     num: 38,
@@ -760,6 +802,7 @@ const introSections = [
     english: `Greatest perfection seems imperfect, yet its use is never exhausted. Greatest fullness seems empty, yet its use is never-ending. Greatest straightness seems crooked; Greatest skill seems clumsy; Greatest eloquence seems like a stutter. Movement overcomes cold; stillness overcomes heat. Only through Purity and Stillness can one become the Rectifier of the world.<br><br>When the Tao prevails in the world, the galloping horses are turned back to fertilize the fields with their dung. When the Tao does not prevail in the world, war-horses are bred on the borderlands. There is no greater sin than yielding to desire; No greater disaster than not knowing contentment; No greater misfortune than the greed for gain. Therefore, the contentment of knowing when one has enough is a lasting contentment.`,
     chinese: `上德不德，是以有德；下德不失德，是以無德。<br>上德無為，而無以為；下德為之，而有以為。<br>上仁為之，而無以為；上義為之，而有以為。<br>上禮為之，而莫之應，則攘臂而扔之。<br><br>故失道而後德，失德而後仁，失仁而後義，失義而後禮。<br>夫禮者，忠信之薄，而亂之首也。<br>前識者，道之華，而愚之始也。<br>是以大丈夫處其厚，不居其薄；<br>處其實，不居其華。`,
     commentary: `具備高尚品德的人，並不刻意表現德行，所以才真正擁有德；德行層次較低的人，執著於形式上的不失德，所以反而不具備真德。有德的人順應自然而不帶任何目的；無德之人做了善事，就會銘記自己做了有德之事。崇尚仁慈的人雖然去做了，但並非刻意為之；但崇尚義氣的人去做了，卻帶有應然的執著。崇尚禮的人去做了有禮的事，若得不到他人回應，就會露出手臂，要求別人也要回禮。所以，當人們失去了自然的「道」才強調「德」，失去了德才強調「仁」，失去了仁才強調「義」，失去了義才強<br>調「禮」。所謂的「禮」，是「忠信」當中最淡薄的，也是動亂的開端。那些在自認為高人一等的知見意識，只是道外在表層的虛華表象，更是愚昧與盲從的開始。因此，真正的大丈夫立身於厚實的自性，而不處於淺薄的知見；追求內容的真實，而不流於外在的浮華。所以他們捨棄前者（虛偽的外相），而選擇這個（敦厚的真理）。`
+    discussion: ``
   },
   {
     num: 39,
@@ -768,6 +811,7 @@ const introSections = [
     english: `Without leaving his door, he knows everything under heaven. Without looking out of his window, he sees the Tao of Heaven. The further one travels, the less one knows. Therefore, the Sage knows without travelling, Sees without looking, And accomplishes without acting.<br><br>In the pursuit of learning, every day something is acquired; In the pursuit of the Tao, every day something is dropped. Dropped and again dropped, until one reaches Non-action (Wu-Wei). By Non-action, there is nothing that is not done. The world is always won by those who do not meddle; As for those who meddle, they are never equal to the task of winning the world.`,
     chinese: `昔之得一者，天得一以清；地得一以寧；<br>神得一以靈；谷得一以盈；萬物得一以生；<br>侯王得一，以為天下貞。其致之一也。<br>天無以清，將恐裂；地無以寧，將恐發；<br>神無以靈，將恐歇；谷無以盈，將恐竭；<br>萬物無以生，將恐滅；侯王無以貞，而貴高將恐蹶。<br><br>故貴以賤為本，高以下為基。<br>是以侯王自稱孤、寡、不穀。<br>此非以賤為本耶？非乎？<br>故致數輿無輿。<br>是故不欲琭琭如玉，落落如石。`,
     commentary: `往昔凡是要得到「一」的：天得到一而清明，地得到一而安寧，神靈得到一而玄妙靈通，河谷得到一而充盈，萬物<br>得到一而生⻑，侯王得到一而得到天下人的尊敬。這些都是由「一」所達成的。如果天不清明，恐怕會崩裂；地不<br>安寧，恐怕會塌陷；神靈不顯靈，恐怕會消失；河谷不充盈，恐怕會枯竭；萬物不能生⻑，恐怕會滅絕；侯王不能<br>持手正道，而高貴的地位恐怕會遭致挫敗。<br><br>所以，顯貴是以卑賤為根本，高尚是以低下為基礎。因此侯王常自稱為孤家、寡人、不穀，這不正是以卑賤為根本<br>嗎？難道不是嗎？所以最高的榮譽反而是沒有讚譽。因此，不要看自己晶瑩華麗像玉石一般，而要看自己質樸厚實<br>質就像石頭一樣。`
+    discussion: ``
   },
   {
     num: 40,
@@ -776,6 +820,7 @@ const introSections = [
     english: `The Sage has no fixed heart of his own; He takes the heart of the people as his own. To those who are good, I am good; To those who are not good, I am also good; Thus, Virtue (De) is goodness. To those who are faithful, I am faithful; To those who are not faithful, I am also faithful; Thus, Virtue (De) is faithfulness. The Sage, in his dealings with the world, is humble and blends his heart with the world. The people all fix their eyes and ears upon him; And the Sage treats them all as his children.`,
     chinese: `反者道之動；<br>弱者道之用。<br>天下萬物，生於有，有生於無。`,
     commentary: `循環往復、向對立面轉化，是「道」運動變化的規律；柔弱謙下、不偏激爭奪，是「道」發揮作用的體現。天下萬<br>物都產生於具象的「有」（太極），而「有」則是產生於無形無象的「無」。`
+    discussion: ``
   },
   {
     num: 41,
@@ -784,6 +829,7 @@ const introSections = [
     english: `Between birth and death, Three in ten are followers of life; Three in ten are followers of death; And those whose movements lead them to the land of death are also three in ten. Why is this? Because they live their lives too intensely. But I have heard that he who is a good preserver of his life Never meets tiger or wild bull when he travels, And is not touched by weapons of war on the battlefield. The wild bull finds no place to thrust its horns; The tiger finds no place to set its claws; The weapon finds no place to lodge its point. And why? Because in him there is no place for death.<br><br>The Tao gives them life; Virtue (De) nurses them; The world of matter shapes them; their environment completes them. Therefore, among the ten thousand creatures, there is none that does not pay homage to the Tao and assign a high value to Virtue. This homage to the Tao and valuing of Virtue is not commanded by anyone, but is always so, naturally of itself. Thus, the Tao gives them life, but it is Virtue that nurses them, raises them, fosters them, shelters them, feeds them, and protects them. To give life but not to own; To act but not to rely on one's ability; To lead but not to master; This is what is called Mysterious Virtue (Xuan De).`,
     chinese: `上士聞道，勤而行之；中士聞道，若存若亡；<br>下士聞道，大笑之，不笑不足以為道。<br><br>故建言有之：<br>明道若昧；進道若退；夷道若類；上德若谷；<br>大白若辱；廣德若不足；建德若偷；<br>質真若渝；大方無隅；大器晚成；大音希聲；大象無形；<br>道隱無名。夫唯道，善貸且成。`,
     commentary: `上等的人得聞道，會努力不懈地去實踐；中等的人得聞道，似懂非懂，時而相信時而懷疑；下等資質的人得聞道，會大聲嘲笑，如果道不被嘲笑，那就不足以稱為真正的「道」了。所以古人曾說：明瞭道的人看起來昏庸愚昧；精進修道的人總是禮讓無爭，看起來像是退縮；真修道的人不標新立異，看起來平易近人；具有高尚品德的人能虛懷若谷；擁有潔淨的心靈，卻總是不計較是非得失，就像受侮辱；廣大的德性的人積極改過，看起來像老是做錯事；默默建功立德不令人見，就像小偷；本性純真質樸看起來卻像經歷了改變而混濁。包容萬物卻沒有稜角，不分黨結派；有用的器物需要耐心打磨而成；最偉大的聲音（成全）聽起來沒有聲響（以身作則），最大的形象看起來反而沒有形跡。道幽隱而沒有名稱，但也只有道，善於資助並成就萬物。`
+    discussion: ``
   },
   {
     num: 42,
@@ -792,6 +838,7 @@ const introSections = [
     english: `Everything under heaven had a beginning which may be called the Mother of all things. He who has found the Mother can from her know the children (the manifestations). He who, having known the children, still holds fast to the Mother, will be free from danger all his life. Close the mouth, shut the gates (of the senses), and to the end of life you will have no trouble. Open the mouth, meddle with affairs, and to the end of life there will be no help for you. To see the small is called Illumination; To hold on to the soft is called strength. Use the light, but return to your Inner Illumination (the Source); Then you will not leave yourself exposed to peril. This is called "clinging to the always-so."`,
     chinese: `道生一，一生二，二生三，三生萬物。<br>萬物負陰而抱陽，沖氣以為和。<br>人之所惡，唯孤、寡、不穀，而王公以為稱。<br>故物或損之而益，或益之而損。<br>人之所教，我亦教之。<br>強梁者，不得其死，吾將以為教父。`,
     commentary: `道生成了原始的統一體「一」，「一」分化出對立的陰陽兩氣「二」，陰陽兩氣交感產生了第三種中和的力量<br>「三」，再由這三者生成了宇宙間的萬事萬物。萬物背負著陰氣而懷抱著陽氣，在兩氣的互相激盪中達成和諧。人<br>們所厭惡的，往往是「孤」、「寡」、「不善」這些名詞，但王公貴族卻用這些詞來自我稱呼，作為自我警惕。所<br>以事物有時看似受損，結果反而得到補益；有時看似得到補益，結果反而受損。別人所教導的道理，我也用來教導<br>人：那些橫行霸道、強悍好勝的人，通常得不到好下場，我將把這條道理視為父親的教誨，永遠記住。`
+    discussion: ``
   },
   {
     num: 43,
@@ -800,6 +847,7 @@ const introSections = [
     english: `If I had but a little knowledge, I should walk in the Great Tao, and my only fear would be wandering from it. The Great Tao is very smooth and straight, but the people love the mountain paths. When the court is very clean, the fields are full of weeds, and the granaries are quite empty. To wear fine clothes, to carry sharp swords, to be filled with food and drink, and to have more wealth than one can use—this is what I call "the pride of robbers." It is certainly not the Tao.`,
     chinese: `天下之至柔，馳騁天下之至堅。無有入無間。<br>吾是以知無為之有益。<br>不言之教，無為之益，天下希及之。<br>`,
     commentary: `天下最柔弱的東⻄，竟然能穿梭在天下最堅硬的東⻄之中。無形的力量能進入沒有縫隙的空間，我因此體會到「無<br>為」的好處。這種不靠言語來教化、不帶目的而得到的益處，普天之下很少有人能趕得上這種境界。`
+    discussion: ``
   },
   {
     num: 44,
@@ -808,6 +856,7 @@ const introSections = [
     english: `What is well planted cannot be uprooted; what is well embraced cannot slip away. Through the Virtue (De) of the ancestors, the sacrifices will never cease. Cultivate it in your own person, and its Virtue will be real; Cultivate it in the family, and its Virtue will be abundant; Cultivate it in the village, and its Virtue will endure; Cultivate it in the state, and its Virtue will be flourishing; Cultivate it in the world, and its Virtue will be universal. Therefore, by one's own person, one may judge other persons; By one's own family, one may judge other families; By one's own village, one may judge other villages; By one's own state, one may judge other states; By one's own world, one may judge the world. How do I know that the world is so? By this.`,
     chinese: `名與身孰親？身與貨孰多？得與亡孰病？<br>是故甚愛必大費；多藏必厚亡。<br>故知足不辱，知止不殆，可以長久。`,
     commentary: `名聲與生命相比，哪一個更親切？生命與財富相比，哪一個更貴重？獲得名利與失去生命相比，哪一個更有害？所<br>以說，過分的貪名求愛必會付出巨大的代價，過多的財物收藏必會招致慘重的損失。因此，懂得滿足就不會受到羞<br>辱，懂得適可而止就不會遭遇危險，如此才能保持⻑久的平安。`
+    discussion: ``
   },
   {
     num: 45,
@@ -816,6 +865,7 @@ const introSections = [
     english: `He who possesses the fullness of Virtue (De) is like a little child. Poisonous insects will not sting him; wild beasts will not seize him; birds of prey will not strike him. His bones are soft, his sinews are weak, yet his grip is firm. He does not yet know the union of male and female, yet his organ can be stirred; this is because his Vital Essence is at its height. He can cry all day without becoming hoarse; this is because his Innate Harmony is at its height. To know harmony is to know the "always-so"; To know the "always-so" is to be Illumined. To force the growth of life is an ill omen; For the heart to direct the breath is called violence. Things that grow to their full strength soon begin to decay. This is called "not being in the Tao." Whatever is not in the Tao soon comes to an end.`,
     chinese: `大成若缺，其用不弊。<br>大盈若沖，其用不窮。<br>大直若屈，大巧若拙，大辯若訥。<br>躁勝寒，靜勝熱。清靜為天下正。`,
     commentary: `最圓滿的成就看起來好像有欠缺，但它的作用卻永遠不會衰竭；最充盈的狀態看起來好像很空虛，但它的作用卻無<br>窮無盡。最正直的東⻄看起來好像有彎曲，最靈巧的表現看起來好像很笨拙，最卓越的辯才看起來好像不善言辭。<br>縱使奔跑躁動可以戰勝寒冷，安靜守候可以克服炎熱。唯有清靜無為，才是治理天下的準則。`
+    discussion: ``
   },
   {
     num: 46,
@@ -824,6 +874,7 @@ const introSections = [
     english: `Those who know do not speak; those who speak do not know. Close the mouth; shut the gates (of the senses). Blunt the sharpness; unravel the knots; Temper the brightness; identify yourself with the dust. This is what is called Mysterious Unity (Xuan Tong). Therefore, no one can be intimate with him, nor can anyone be distant from him. No one can benefit him, nor can anyone harm him. No one can ennoble him, nor can anyone debase him. Therefore, he is the most noble thing under heaven.`,
     chinese: `天下有道，卻走馬以糞。<br>天下無道，戎馬生於郊。<br>禍莫大於不知足；咎莫大於欲得。<br>故知足之足，常足矣。`,
     commentary: `當天下太平、符合自然之道時，人們不需要戰爭，原本用來作戰的駿馬都被退還到田裡拉車、施肥耕種。當天下紛<br>亂、背離自然之道時，兵馬也難免要生死於荒郊野外。災禍沒有比不知足更嚴重的了，過錯沒有比貪得無厭更巨大<br>的了。所以，唯有明白「真正的滿足」而得到的滿足，才是永恆且恆久的滿足。`
+    discussion: ``
   },
   {
     num: 47,
@@ -832,6 +883,7 @@ const introSections = [
     english: `Govern a state with righteousness; conduct a war with craft; but win the world by Non-interference (Wu-Shi). How do I know this is so? By this: The more prohibitions there are, the poorer the people become. The more sharp weapons the people have, the more troubled is the state. The more cunning and skill man possesses, the more strange things happen. The more laws and edicts are multiplied, the more thieves and robbers there are. Therefore the Sage says: I take Non-action (Wu-Wei), and the people transform themselves; I love quietude, and the people right themselves; I do not meddle, and the people prosper by themselves; I have no desires, and the people return to Simplicity (the Uncarved Block).`,
     chinese: `不出戶，知天下；<br>不窺牖，見天道。<br>其出彌遠，其知彌少。<br>是以聖人不行而知，不見而明，不為而成。`,
     commentary: `不出門戶，就能推知天下大事的道理；不望向窗外，就能察覺自然運行的規律。向外奔波得越遠，對生命本質的體<br>認反而越少。因此，聖人不必親身奔波就能明瞭事理，不必親眼窺察就能洞見真相，不刻意妄為就能成就萬物。`
+    discussion: ``
   },
   {
     num: 48,
@@ -840,6 +892,7 @@ const introSections = [
     english: `When the government is muddled and dull, the people are simple and honest. When the government is alert and vigilant, the people are anxious and dissatisfied. Disaster is that on which happiness relies; Happiness is that in which disaster is hidden. Who knows where the end will be? Is there no "Right"? What is "Right" turns into "Strange," and what is "Good" turns into "Evil." Truly, man has been deluded for a long time. Therefore the Sage is square but does not cut; He has edges but does not wound; He is straight but not unrestrained; He is bright but does not dazzle.`,
     chinese: `為學日益，為道日損。<br>損之又損，以至於無為。無為而無不為矣。<br>故取天下，常以無事，<br>及其有事，不足以取天下。<br>`,
     commentary: `追求學問是每天都在增加知識與技能，但體悟大道卻是每天都在減損執念與欲求。不斷地減損再減損，直到進入不<br>刻意妄為的境界。達到「無為」之後，反而因為順應自然，沒有什麼事情是做不成的。所以，想要治理天下，通常<br>應當採取不干擾百姓、清靜無事的方法，如果非要將天下佔為己有，以私心行事，那就不具備治理天下的資格了。`
+    discussion: ``
   },
   {
     num: 49,
@@ -848,6 +901,7 @@ const introSections = [
     english: `In ruling men and serving Heaven, there is nothing like Frugality (Storing up the Virtue). Frugality means to prepare early. To prepare early means to accumulate an abundance of Virtue (De). If there is an abundance of Virtue, there is nothing that cannot be overcome. If there is nothing that cannot be overcome, then no one knows his limits. If no one knows his limits, he can possess the state. The Mother of the state (the Tao) can endure for long. This is called having "deep roots and a firm foundation." It is the way to long life and lasting vision.`,
     chinese: `聖人常無心，以百姓之心為心。<br>善者，吾善之；不善者，吾亦善之；德善矣。<br>信者，吾信之；不信者，吾亦信之；德信矣。<br>聖人之在天下，歙歙焉，<br>為天下渾其心，百姓皆注其耳目，聖人皆孩之。`,
     commentary: `聖人沒有私心，而是以百姓的意願作為自己的心願。良善的人，我善待他；不良善的人，我也善待他，如此便能使<br>眾人趨於向善，成就德性的圓滿。誠信的人，我信任他；不誠信的人，我也信任他，如此便能使眾人守信，成就信<br>實的本質。聖人活在世界上，總是為眾生擔憂，為了天下人的福祉而混濁自己清靜的性體；所以百姓們都專注地觀<br>看聆聽著聖人的教導，而聖人則像看待孩子一樣，慈愛且平等地呵護著每一位百姓。`
+    discussion: ``
   },
   {
     num: 50,
@@ -856,6 +910,7 @@ const introSections = [
     english: `Ruling a large state is like frying a small fish (it must not be over-handled). When the world is governed according to the Tao, the spirits of the dead do not show their power. It is not that they lack power, but that their power does not harm men. Not only does their power do no harm, but the Sage also does no harm to the people. Since neither does any harm, their Virtues (De) meet and return to the same Source.`,
     chinese: `出生入死。<br>生之徒，十有三；死之徒，十有三；<br>人之生，動之死地者，亦十有三。<br>夫何故？以其生生之厚。<br>蓋聞善攝生者，路行不遇兕虎，入軍不被甲兵；<br>兕無所投其角，虎無所用其爪，兵無所容其刃。<br>夫何故？以其無死地。`,
     commentary: `人生即是從出生到死亡。正在生⻑的孩子約佔十分之三，邁向死亡的老人也約佔十分之三；而原本可以⻑壽，卻因<br>為過度耽溺於養生享樂、反使自己走向死地的，也佔了十分之三。這是什麼原因呢？是因為他們汲汲營營謀求衣⻝，<br>而傷害了生命。聽說善於攝養生命的人，在陸地上行走不會遇到犀牛或猛虎，進入軍隊也不會受到兵刃傷害。犀牛<br>對他無處投以利角，猛虎對他無處施以利爪，武器對他無處刺以鋒刃。這是什麼原因呢？因為他順應自然，心中沒<br>有對立與殺機，所以他的生命中沒有進入死地的缺口。`
+    discussion: ``
   },
   {
     num: 51,
@@ -865,6 +920,7 @@ const introSections = [
     english: `A large state is like the low-lying land where all streams flow. It is the Universal Mother, the meeting-place of the world. The Feminine always overcomes the Masculine by stillness; and because she is still, she takes the lower place. Therefore, if a large state takes a lower place than a small state, it wins the small state. If a small state takes a lower place than a large state, it wins the large state. One wins by taking the lower place; the other wins by being already low. A large state only desires to protect and nourish all alike; a small state only desires to enter and serve. Both get what they wish; but it is for the great to practice humility (the lower place).`,
     chinese: `道生之，德畜之，物形之，勢成之。<br>是以萬物莫不尊道而貴德。<br>道之尊，德之貴，夫莫之命而常自然。<br>故道生之，德畜之；長之育之；成之熟之；養之覆之。<br>生而不有，為而不恃，長而不宰。是謂玄德。`,
     commentary: `萬物由「道」所化生，由「德」所撫育，由物質構成形態，由環境促成生⻑。因此，萬物沒有不尊崇道、不珍貴德<br>的。道之所以受尊崇，德之所以顯珍貴，是因為它們從不干涉萬物，而是任由萬物順應自然地生⻑。所以說，道生<br>化萬物，德養育萬物，使它們成⻑、發育，使它們成熟、結果，並對其愛護與庇蔭。生養了萬物而不據為己有，成<br>就了萬物而不自恃有功，引領著萬物而不主宰控制，這就是最深奧、最幽微的「玄德」。`
+    discussion: ``
   },
   {
     num: 52,
@@ -873,6 +929,7 @@ const introSections = [
     english: `The Tao is the sanctuary of all things; The treasure of the good man, the protector of the bad. Fine words may be used for marketing; noble deeds may be used to gain respect. Even if a man is bad, why should he be abandoned? Therefore, at the enthronement of an Emperor or the appointment of the Three Ministers, though one may have large jewels and a team of four horses to precede him, it is better to remain still and offer this Tao. Why did the ancients so highly value this Tao? Was it not because they said: "Seek and you shall find; sin and you shall be forgiven"? Therefore, it is the greatest treasure under heaven.`,
     chinese: `天下有始，以為天下母。<br>既得其母，以知其子，既知其子，復守其母，沒身不殆。<br>塞其兌，閉其門，終身不勤。<br>開其兌，濟其事，終身不救。<br>見小曰明，守柔曰強。<br>用其光，復歸其明，無遺身殃；是為襲常。`,
     commentary: `天地萬物的化生都有一個原始的開端，這個開端可以看作是天下萬物的⺟親。既然掌握了這位「⺟」，就能進一步<br>認識由它所衍生的「子」；而在認識了萬物之後，又能返回守住那根本的道，如此一生都不會遭遇危險。收斂感官<br>的孔竅，關閉欲念的門戶，一輩子都不會感到勞頓疲憊。相反地，如果放任感官去追求外物，並耗費心機去處理各<br>種繁雜的俗事，那這輩子就沒救了。能察覺到隱微的意念叫做「明」，能守住柔弱順應之姿的叫做「強」。運用智<br>慧的光芒，再返回來照徹內心的清明，不讓真我留下遺憾，這就是所謂的承襲永恆不變的自然法則。`
+    discussion: ``
   },
   {
     num: 53,
@@ -881,6 +938,7 @@ const introSections = [
     english: `Practice Non-action (Wu-Wei); attend to nothingness; taste the flavourless. Consider the small as large and the few as many; requite hatred with Virtue (De). Deal with the difficult while it is still easy; manage the great while it is still small. The difficult things of the world must once have been easy; the great things of the world must once have been small. Therefore, the Sage never attempts anything great, and thus his greatness is achieved. He who promises lightly will rarely keep his word; he who considers everything easy will find many difficulties. Therefore, the Sage considers everything difficult, and so in the end he finds no difficulty.`,
     chinese: `使我介然有知，行於大道，惟施是畏。大道甚夷，而民好捷徑。朝<br>甚除，田甚蕪，倉甚虛；服文采，帶利劍，厭飲食，財貨有餘；是<br>謂盜誇。非道也哉！`,
     commentary: `假使我稍微有一點覺悟與智慧，並行走於自然大道之中，我最擔心的就是怕自己走入歧路而流於炫耀。大道本來是<br>非常平坦好走的，但百姓卻偏偏喜歡走那些險峻的捷徑。看看現在的朝廷都不保了，田園卻荒蕪不堪，糧倉也空虛<br>無物。然而統治者仍穿著華美的衣服，佩帶著鋒利的寶劍，吃厭了精緻的美⻝，還囤積了剩餘過多的財物，這簡直<br>就是強盜自誇其富有。這完全是背離大道、違背自然規律的啊！`
+    discussion: ``
   },
   {
     num: 54,
@@ -889,6 +947,7 @@ const introSections = [
     english: `What is well planted cannot be uprooted; what is well embraced cannot slip away. Through the Virtue (De) of the ancestors, the sacrifices will never cease. Cultivate it in your own person, and its Virtue will be real; Cultivate it in the family, and its Virtue will be abundant; Cultivate it in the village, and its Virtue will endure; Cultivate it in the state, and its Virtue will be flourishing; Cultivate it in the world, and its Virtue will be universal. Therefore, by one's own person, one may judge other persons; By one's own family, one may judge other families; By one's own village, one may judge other villages; By one's own state, one may judge other states; By one's own world, one may judge the world. How do I know that the world is so? By this.`,
     chinese: `善建者不拔，善抱者不脫，子孫以祭祀不輟。<br>修之於身，其德乃真；修之於家，其德乃餘；<br>修之於鄉，其德乃長；修之於國，其德乃豐；<br>修之於天下，其德乃普。<br>故以身觀身，以家觀家，<br>以鄉觀鄉，以國觀國，以天下觀天下。<br>吾何以知天下之然哉？以此。`,
     commentary: `善於建立道德的人，其根基不會被拔除；善於持守道心的人，其信念堅定而不會脫失。如果能將這種精神傳承下去，<br>子孫的祭祀將會世代延續，永不間斷。將這種道的修養落實在自身，德性就會純真切實；落實在家庭，其德性能庇<br>蔭家人；落實在鄉里，鄉里就會德性增⻑；落實在國家，國家就會繁榮豐沛；落實在天下，天下就會使道普及。<br><br>所以，要以個人處境來觀察他人，以自己的家庭的來觀察他人的家庭，以自己的鄉里來觀察其他的鄉里，以自己的<br>國家來觀察其他的國家，以當今天下的動向來觀察天下的趨勢。我憑什麼知道天下運行的規律與現狀呢？就是這樣。`
+    discussion: ``
   },
   {
     num: 55,
@@ -897,6 +956,7 @@ const introSections = [
     english: `He who possesses the fullness of Virtue (De) is like a little child. Poisonous insects will not sting him; wild beasts will not seize him; birds of prey will not strike him. His bones are soft, his sinews are weak, yet his grip is firm. He does not yet know the union of male and female, yet his organ can be stirred; this is because his Vital Essence is at its height. He can cry all day without becoming hoarse; this is because his Innate Harmony is at its height. To know harmony is to know the "always-so"; To know the "always-so" is to be Illumined. To force the growth of life is an ill omen; For the heart to direct the breath is called violence. Things that grow to their full strength soon begin to decay. This is called "not being in the Tao." Whatever is not in the Tao soon comes to an end.`,
     chinese: `含德之厚，比於赤子。<br>毒蟲不螫，猛獸不據，攫鳥不搏。<br>骨弱筋柔而握固。未知牝牡之合而脧作，精之至也。<br>終日號而不嗄，和之至也。<br>知和曰常，知常曰明，益生曰祥。<br>心使氣曰強，物壯則老，是謂不道，不道早已。`,
     commentary: `道德涵養深厚的人，就如同剛出生的嬰兒一般純真質樸。毒蟲不會螫咬他，猛獸不會抓捕他，鳥禽也不會搏擊他。<br>他的筋骨雖然柔弱，但小手卻能握得很緊；他雖然還不懂男女交合之事，但陽物卻會自然勃起，這是因為精氣充沛<br>到了極點。他整天大聲啼哭，嗓子卻不會沙啞，這是因為體內的太和之氣達到了極致。能保守太和之器叫做「常」，<br>能體認永恆大道叫做「明」。能保養⻑生之道叫做「祥」。妄動暴躁，自以為剛強叫做「逞強」。事物如果強大壯<br>盛，就會走向衰老；背離了自然之道，生命就會提早終結。`
+    discussion: ``
   },
   {
     num: 56,
@@ -905,6 +965,7 @@ const introSections = [
     english: `Those who know do not speak; those who speak do not know. Close the mouth; shut the gates (of the senses). Blunt the sharpness; unravel the knots; Temper the brightness; identify yourself with the dust. This is what is called Mysterious Unity (Xuan Tong). Therefore, no one can be intimate with him, nor can anyone be distant from him. No one can benefit him, nor can anyone harm him. No one can ennoble him, nor can anyone debase him. Therefore, he is the most noble thing under heaven.`,
     chinese: `知者不言，言者不知。<br>塞其兌，閉其門，挫其銳，解其紛，和其光，同其塵，是謂玄同。<br>故不可得而親，亦不得而疏；<br>不可得而利，亦不可得而害；<br>不可得而貴，亦不可得而賤。故為天下貴。`,
     commentary: `真正領悟大道的人知道「道」無法用言語表達，而到處宣揚的人往往並非真正體悟。收斂感官的孔竅，關閉欲念的<br>門戶，消解原本銳利的鋒芒，排解紛擾的糾結，將光芒含藏而顯得柔和，將自己混同於塵世的平凡之中，這就叫做<br>深奧微妙的「玄同」境界。達到這種境界的人，已經超越了世俗的情感與利害，你既無法親近他，也無法疏遠他；<br>既無法給予他利益，也無法對他造成傷害；既無法使他變得尊貴，也無法使他顯得卑賤。正因為他超脫了這一切對<br>立與牽絆，所以才成為天下最尊貴的存在。`
+    discussion: ``
   },
   {
     num: 57,
@@ -913,6 +974,7 @@ const introSections = [
     english: `Govern a state with righteousness; conduct a war with craft; but win the world by Non-interference (Wu-Shi). How do I know this is so? By this: The more prohibitions there are, the poorer the people become. The more sharp weapons the people have, the more troubled is the state. The more cunning and skill man possesses, the more strange things happen. The more laws and edicts are multiplied, the more thieves and robbers there are. Therefore the Sage says: I take Non-action (Wu-Wei), and the people transform themselves; I love quietude, and the people right themselves; I do not meddle, and the people prosper by themselves; I have no desires, and the people return to Simplicity (the Uncarved Block).`,
     chinese: `以正治國，以奇用兵，以無事取天下。吾何以知其然哉？以此：<br>天下多忌諱，而民彌貧；人多利器，國家滋昏；<br>人多伎巧，奇物滋起；法令滋彰，盜賊多有。<br>故聖人云：<br>我無為而民自化；我無事而民自富；我好靜而民自正；<br>我無欲而民自樸；我無情而民自清。`,
     commentary: `治理國家要用光明正大的法制，帶兵作戰要用出奇制勝的謀略，而治理天下則要以使百性平安無事，來取得天下百姓的心。<br>我憑什麼知道是這樣呢？是根據這些：天下的禁令與忌諱越多，百姓就越陷於貧窮；民間的權謀與利器越多，國家就越陷入<br>昏亂；人們的鑽營巧思越多，各種稀奇古怪的事物就越層出不窮；法律條文制定得越繁瑣嚴苛，盜賊反而越加橫行。所以聖<br>人說：只要我守住「無為」，百姓自然會順應本性而自我化育；只要我不生事干擾，百姓自然會富庶康樂；只要我喜好清靜，<br>百姓自然會歸於端正；只要我沒有貪欲，百姓自然會回歸淳樸；只要我摒除私情偏執，百姓的心境自然會清澈安寧。`
+    discussion: ``
   },
   {
     num: 58,
@@ -921,6 +983,7 @@ const introSections = [
     english: `When the government is muddled and dull, the people are simple and honest. When the government is alert and vigilant, the people are anxious and dissatisfied. Disaster is that on which happiness relies; Happiness is that in which disaster is hidden. Who knows where the end will be? Is there no "Right"? What is "Right" turns into "Strange," and what is "Good" turns into "Evil." Truly, man has been deluded for a long time. Therefore the Sage is square but does not cut; He has edges but does not wound; He is straight but not unrestrained; He is bright but does not dazzle.`,
     chinese: `其政悶悶，其民淳淳；其政察察，其民缺缺。<br>禍兮福所倚，福兮禍所伏。孰知其極？其無正耶。<br>正復為奇，善復為妖。人之迷也，其日固久矣。<br>是以聖人，方而不割，廉而不劌，直而不肆，光而不耀。`,
     commentary: `政府的治理寬厚隨和，百姓就會淳樸敦厚；政府的治理嚴苛精明，百姓就會狡詐缺憾。災禍中往往依傍著福分，福分中也常常隱藏著災禍。誰能知道它們的究竟呢？難道沒有一個絕對的標準嗎？原本的正道會被當成奇怪的言論，原本的良善也被認為是為妖邪。人們對這種變幻無常的道理感到迷惘，確實經很久了。因此，聖人處事方正卻不割傷他人，銳利卻不傷人皮肉，直率卻不放肆傲慢，光亮卻不刺眼。`
+    discussion: ``
   },
   {
     num: 59,
@@ -929,6 +992,7 @@ const introSections = [
     english: `In ruling men and serving Heaven, there is nothing like Frugality (Storing up the Virtue). Frugality means to prepare early. To prepare early means to accumulate an abundance of Virtue (De). If there is an abundance of Virtue, there is nothing that cannot be overcome. If there is nothing that cannot be overcome, then no one knows his limits. If no one knows his limits, he can possess the state. The Mother of the state (the Tao) can endure for long. This is called having "deep roots and a firm foundation." It is the way to long life and lasting vision.`,
     chinese: `治人事天，莫若嗇。夫唯嗇，是謂早服；早服謂之重積德；重積德<br>則無不克；無不克，則莫知其極；莫知其極，可以有國；有國之母，<br>可以長久；是謂深根固蒂，長生久視之道。`,
     commentary: `治理百姓和事奉自然，沒有比即愛惜精神、不輕易外洩更重要的了。所謂愛惜精神，就是指早起穿衣服一樣，都是<br>每天必要的日常，而行善積德就像日常一樣，就能積累深厚德行。不斷積累深厚的德行，就沒有什麼困難是不能克<br>服的；既然沒有什麼不能克服，就沒有人能測量出他力量的極限。擁有了這種不可限量的力量，就可以擔負起治理<br>國家的重任。能勝任國家的保⺟，治理天下就能⻑治久安。這就是所謂的根基深厚、基礎牢固，是生命⻑久延續、<br>永恆存在的根本法則。`
+    discussion: ``
   },
   {
     num: 60,
@@ -937,6 +1001,7 @@ const introSections = [
     english: `Ruling a large state is like frying a small fish (it must not be over-handled). When the world is governed according to the Tao, the spirits of the dead do not show their power. It is not that they lack power, but that their power does not harm men. Not only does their power do no harm, but the Sage also does no harm to the people. Since neither does any harm, their Virtues (De) meet and return to the same Source.`,
     chinese: `治大國，若烹小鮮。<br>以道蒞天下，其鬼不神；<br>非其鬼不神，其神不傷民；<br>非其神不傷民，聖人亦不傷民。<br>夫惟兩不相傷，故德交歸焉。`,
     commentary: `治理大國就像烹煮小魚一樣，不能隨意翻動，否則魚肉就會碎掉，比喻治理應當清靜無為，不可朝令夕改。當以<br>「道」來治理天下時，那些鬼怪邪祟就不再顯靈作祟。不只鬼怪不作祟，神明也不再懲罰百姓。不僅神明不再懲罰<br>百姓，連有道的聖人也不會為了匡正百姓而去傷害百姓。因為鬼神與聖人都不傷害百姓，所以這份祥和的德性會相<br>互交融，最終歸結到百姓身上，使天下太平。`
+    discussion: ``
   },
   {
     num: 61,
@@ -945,6 +1010,7 @@ const introSections = [
     english: `A large state is like the low-lying land where all streams flow. It is the Universal Mother, the meeting-place of the world. The Feminine always overcomes the Masculine by stillness; and because she is still, she takes the lower place. Therefore, if a large state takes a lower place than a small state, it wins the small state. If a small state takes a lower place than a large state, it wins the large state. One wins by taking the lower place; the other wins by being already low. A large state only desires to protect and nourish all alike; a small state only desires to enter and serve. Both get what they wish; but it is for the great to practice humility (the lower place).`,
     chinese: `大國者下流，天下之交。<br>天下之交，牝常以靜勝牡，以靜為下。<br>故大國以下小國，則取小國；小國以下大國，則取大國。<br>故或下以取，或下而取。<br>大國不過欲兼畜人，小國不過欲入事人。<br>兩者各得所欲，故大者宜為下。`,
     commentary: `大國應該像江河的下游一樣，是天下交流匯聚之處。在天下的交際往來中，柔弱的雌性經常以寧靜勝過剛強的雄性，<br>因為其處於謙下的地位。所以，大國如果對小國表現謙下，就能贏得小國的信服；小國如果對大國表現謙下，就能<br>得到大國的接納與包容。所以，有的是透過謙下來取得對方的信任，有的是因為以卑下自處而獲得庇護。大國的願<br>望不過是想兼容並蓄，照顧天下，小國的願望不過是想事奉大國尋求百姓的安定。為了讓兩者都能各取所需、達成<br>願望，大國更應該展現謙下、包容的姿態。`
+    discussion: ``
   },
   {
     num: 62,
@@ -953,6 +1019,7 @@ const introSections = [
     english: `The Tao is the sanctuary of all things; The treasure of the good man, the protector of the bad. Fine words may be used for marketing; noble deeds may be used to gain respect. Even if a man is bad, why should he be abandoned? Therefore, at the enthronement of an Emperor or the appointment of the Three Ministers, though one may have large jewels and a team of four horses to precede him, it is better to remain still and offer this Tao. Why did the ancients so highly value this Tao? Was it not because they said: "Seek and you shall find; sin and you shall be forgiven"? Therefore, it is the greatest treasure under heaven.`,
     chinese: `道者萬物之奧。善人之寶，不善人之所保。<br>美言可以市，尊行可以加人。人之不善，何棄之有？<br>故立天子，置三公，雖有拱璧，以先駟馬，不如坐進此道。<br>古之所以貴此道者？何不曰求以得，有罪以免耶？故為天下貴。`,
     commentary: `「道」是萬物最深奧的歸宿，是善人的法寶，也是不善之人用來保全自己的依賴。美好良善的言語可以使人心悅誠<br>服，尊嚴高尚的行為可以讓人高於他人；未明理的不善之人，見了嘉言善行幡然改過，難道道有遺棄他們嗎？所以，<br>世人皆以成為天子，擁有文武百官為貴，雖然擁有巨大的玉璧、配備華麗車隊，這些榮耀，都遠遠不如坐下來潛心<br>進修這大道。古人之所以如此推崇這大道，是為什麼呢？不正是因為「道」能讓人求而得之，且能讓有罪的人能得<br>到洗滌與寬恕、免於禍害嗎？正因如此，「道」才是天下最尊貴的存在。`
+    discussion: ``
   },
   {
     num: 63,
@@ -961,6 +1028,7 @@ const introSections = [
     english: `Practice Non-action (Wu-Wei); attend to nothingness; taste the flavourless. Consider the small as large and the few as many; requite hatred with Virtue (De). Deal with the difficult while it is still easy; manage the great while it is still small. The difficult things of the world must once have been easy; the great things of the world must once have been small. Therefore, the Sage never attempts anything great, and thus his greatness is achieved. He who promises lightly will rarely keep his word; he who considers everything easy will find many difficulties. Therefore, the Sage considers everything difficult, and so in the end he finds no difficulty.`,
     chinese: `為無為，事無事，味無味。<br>大小多少，報怨以德。<br>圖難於其易，為大於其細；<br>天下難事，必作於易；天下大事，必作於細。<br>是以聖人，終不為其大，故能成其大。<br>夫輕諾必寡信，多易必多難。<br>是以聖人猶難之故，終無難。`,
     commentary: `以「無為」的態度去作為，以「不生事」的方式去處事，以「恬淡無味」去品味人生。無論面對的是大事或小事、多數或少<br>數，都應抱持平常心，甚至能以德報怨。想要解決困難的事，要從容易的地方著手；想要成就遠大的目標，要從微小的細節<br>開始。天下的難事，必定是從容易的地方發展而來的；天下的大事，也必定是從細微的地方累積而成的。因此，聖人始終不<br>刻意追求宏大，反而能成就其偉大。輕易許下諾言的人，必然缺乏誠信；把事情看得太過容易的人，必然會遭遇許多困難。<br>所以聖人遇事總能謹慎、嚴肅地看待其中的困難，最終反而能化險為夷，一生沒有解決不了的難題。`
+    discussion: ``
   },
   {
     num: 64,
@@ -969,6 +1037,7 @@ const introSections = [
     english: `What is at rest is easy to hold; what has not yet appeared is easy to prevent. What is frail is easy to break; what is minute is easy to scatter. Deal with a thing before it comes into being; put it in order before it becomes confused. A tree as big as a man's embrace grows from a tiny sprout; a tower nine stories high rises from a heap of earth; a journey of a thousand miles begins with a single step. He who acts, spoils it; he who grasps, loses it. Because the Sage does not act, he does not spoil; because he does not grasp, he does not lose. In their business, people often fail when they are on the verge of succeeding. If one is as careful at the end as at the beginning, there will be no failure. Therefore, the Sage desires to have no desire, and does not value rare treasures. He learns what is unlearned and returns to the source that the multitude has passed by. He helps the ten thousand creatures to find their own nature (Ziran), but he does not dare to act.`,
     chinese: `其安易持，其未兆易謀。其脆易泮，其微易散。<br>為之於未有，治之於未亂。<br>合抱之木，生於毫末；<br>九層之臺，起於累土；<br>千里之行，始於足下。<br><br>為者敗之，執者失之。<br>是以聖人無為故無敗，無執故無失。<br>民之從事，常幾於成而敗之。慎終如始，則無敗事。<br>是以聖人，<br>欲不欲，不貴難得之貨；學不學，復眾人之所過。<br>以輔萬物之自然，而不敢為。`,
     commentary: `事物在安定時容易持守，在徵兆未顯時容易謀劃。脆弱的容易消解，微小的容易散失。要在事情尚未發生前就先處<br>理，要在動亂尚未產生前就先治理。數人才能合抱的大樹是由細小的幼苗⻑成的；九層的高台是從第一筐泥土築起<br>的；千里的遠行是從腳下的第一步開始的。<br><br>刻意強求的人往往會失敗，執著不放的人往往會失去。因此聖人順應自然、不妄為，所以不會失敗；不偏執，所以<br>不會有損失。一般人做事，常在接近成功時卻失敗了。如果能像剛開始時那樣謹慎地對待結束，就不會有失敗的事<br>了。所以聖人追求眾人所不追求的，不珍視難得的財物；學習眾人所忽略的，去補救大眾常犯的過錯。他只是輔助<br>萬物順應自身的天性發展，而不敢依照私欲妄加干預。`
+    discussion: ``
   },
   {
     num: 65,
@@ -977,6 +1046,7 @@ const introSections = [
     english: `In ancient times, those who were skilled in the Tao did not use it to make the people clever, but to keep them simple. The reason why the people are difficult to govern is that they have too much (worldly) knowledge. Therefore, to govern a state by cleverness is to ruin the state; to govern a state without cleverness is a blessing to the state. He who knows these two things knows the Standard. To be always mindful of this Standard is what is called Mysterious Virtue (Xuan De). Mysterious Virtue is deep and far-reaching; it returns with all things to the Source. Only then is the Great Harmony achieved.`,
     chinese: `古之善為道者，非以明民，將以愚之。<br>民之難治，以其智多。<br>故以智治國，國之賊；不以智治國，國之福。知此兩者，亦楷式。<br>常知楷式，是謂玄德。<br>玄德深矣，遠矣，與物反矣，然後乃至大順。`,
     commentary: `古時候善於實踐大道的人，並不是教導百姓運用心機與巧詐，而是要讓他們回歸純真質樸的本性。百姓之所以難以<br>治理，是因為他們充滿了過多的心機與狡詐。所以，用權謀智慧來治理國家，反而是對國家的傷害；不用權謀、而<br>以淳樸自然來治理國家，才是國家的福氣。能明白這兩種治理方式的差別，就是成為了治國的榜樣。能恆常守住這<br>個榜樣準則，就稱為「玄德」。玄德是如此幽深、如此遼遠，它引導萬物回歸本真，雖然其表現與世俗的認知相反，<br>但最終能帶領世間達到最完美的和諧與順遂。`
+    discussion: ``
   },
   {
     num: 66,
@@ -985,6 +1055,7 @@ const introSections = [
     english: `The reason why the River and the Sea are able to be the kings of a hundred mountain streams is that they take the lower place. Therefore, they can be the kings of them all. So, if the Sage wishes to be above the people, he must speak as though he were below them; if he wishes to lead them, he must place himself behind them. In this way, though he is above them, the people do not feel his weight; though he is in front of them, the people do not feel his obstruction. Therefore, the whole world delights in praising him and never tires of him. Because he does not strive, no one in the world can strive against him.`,
     chinese: `江海之所以能為百谷之王者，以其善下之，故能為百谷王。<br>是以聖人，欲上民，必以言下之；欲先民，必以身後之。<br>是以聖人，處上而民不重，處前而民復害。<br>是以天下樂推而不厭。以其不爭，故天下莫能與之爭。`,
     commentary: `江海之所以能成為千百條河流匯聚的王者，是因為它甘願處於低下的地位，所以能成為百谷之王。因此，聖人若想<br>居於百姓之上，言談間必定對人謙下；若想領導百姓，行為上必定將自己的利益置於人後。因為聖人如此謙卑、無<br>私，所以他雖然身處高位，百姓也不會覺得沉重負累；雖然走在前面，百姓也不會感到受威脅或妨礙。正因如此，<br>普天下的人都樂意推舉他而不感到厭倦。因為他不與人競爭，所以天下也沒有人能跟他競爭。`
+    discussion: ``
   },
   {
     num: 67,
@@ -993,6 +1064,7 @@ const introSections = [
     english: `Every one under heaven says that my Tao is great, yet it seems unlike anything else. It is precisely because it is great that it seems unlike anything else. If it were like anything else, it would have become small long ago. I have Three Treasures which I hold fast and watch over: The first is Compassion (Ci); The second is Frugality (Jian); The third is Not daring to be first in the world. Because I am compassionate, I can be brave; Because I am frugal, I can be generous; Because I dare not be first in the world, I can become the leader of all vessels. Nowadays, people leave compassion and try to be brave; they leave frugality and try to be generous; they leave the hindmost place and try to be first. This leads only to death. For compassion wins in the attack and is firm in the defense. Heaven will arm with compassion those whom it would not see destroyed.`,
     chinese: `天下皆謂我道大，似不肖。夫唯大，故似不肖。<br>若肖久矣，其細也夫！<br>我有三寶，持而保之。一曰慈，二曰儉，三曰不敢為天下先。<br>夫慈故能勇；儉故能廣；不敢為天下先，故能成器長。<br>今捨其慈且勇；捨其儉且廣；捨其後且先；死矣！<br>夫慈以戰則勝，以守則固。天將救之，以慈衛之。`,
     commentary: `天下人都說我所說的道過於博大，以至於不像任何具體的東⻄；正因為它博大，所以才顯得不像具體之物，如果像<br>具體之物，它早就變得微不足道了。我有三件寶貝，始終持守著：一是仁慈，二是儉約，三是不敢居於天下人的領<br>先地位。因為仁慈所以能產生勇氣，因為儉約所以能蓄積廣大力量，因為不敢爭先所以能成為萬物的首⻑。如果現<br>在的人捨棄仁慈而追求勇敢、捨棄儉約而追求擴張、捨棄退後而爭取領先，那就是走向死亡。仁慈用來作戰就能獲<br>勝，用來守禦就能堅固，上天如果要救助誰，就會用慈愛來保護他。`
+    discussion: ``
   },
   {
     num: 68,
@@ -1001,6 +1073,7 @@ const introSections = [
     english: `A good warrior is not violent; A good fighter is not angry. A good winner does not strive; A good employer of men takes a lower place. This is called the Virtue of Non-striving; This is called the power of using men; This is called matching the sublimity of Heaven, the highest principle of old.`,
     chinese: `善為士者不武；善勝者不怒；<br>善戰敵者不與；善用人者為之下。<br>是謂不爭之德，<br>是謂用人之力，<br>是謂配天，古之極。`,
     commentary: `最好的勇士不逞強好勇；最好的戰士不輕易暴躁動怒；善於打勝仗的人不輕易與對方交鋒；善於用人的人待人謙卑<br>低下。這就叫作不與人爭的美德，這就是用人的真正力量，這就適配合天地的德行，順應古道最極致的表現。`
+    discussion: ``
   },
   {
     num: 69,
@@ -1009,6 +1082,7 @@ const introSections = [
     english: `The strategists have a saying: "I dare not be the host (take the offensive), but prefer to be the guest. I dare not advance an inch, but prefer to retreat a foot." This is called marching without moving; rolling up one's sleeves without baring the arms; capturing the enemy without a confrontation; arming oneself without weapons. There is no greater disaster than underestimating the enemy. To underestimate the enemy is to risk losing my Three Treasures. Therefore, when opposing armies meet, the one who feels pity (sorrow) will be the victor.`,
     chinese: `用兵有言：<br>吾不敢為主而為客；不敢進寸而退尺。<br>是謂行無行；扔無臂；仍無敵；執無兵。<br>禍莫大於輕敵，輕敵則幾喪吾寶。<br>故抗兵相加，哀者勝矣。`,
     commentary: `用兵的人有句名言：我不敢主動採取攻勢而是不得已而應戰，不敢前進一寸爭奪敵方地盤而寧願後退一尺。這就是<br>行軍佈陣沒有一定的行列陣式，雖然要舉臂卻像沒有手臂可舉；沒有敵意使敵人自願跟隨我方，雖然要執持武器卻<br>像沒有拿著兵器。災禍沒有比輕視敵人更大的了，輕視敵人幾乎會喪失我所珍視的三寶。所以當兩軍實力相當、陷<br>入僵持時，能悲天憫人的一方終能獲得勝利。`
+    discussion: ``
   },
   {
     num: 70,
@@ -1017,6 +1091,7 @@ const introSections = [
     english: `My words are very easy to understand and very easy to practice. Yet no one in the world can understand them or practice them. My words have an Ancestor (the Source); my deeds have a Master (the Tao). It is because people do not know this that they do not understand me. Because those who understand me are few, those who follow me are distinguished. Therefore, the Sage wears coarse cloth on the outside, but carries Jade (the True Essence) within his breast.`,
     chinese: `吾言甚易知，甚易行。天下莫能知，莫能行。<br>言有宗，事有君。<br>夫唯無知，是以不我知。知我者希，則我貴矣。<br>是以聖人被褐懷玉。`,
     commentary: `我的話非常容易理解，也非常容易實行，但天下卻沒有人能真正理解，也沒有人能真正實行。言語都有其宗旨，行<br>事都有其根據。正因為眾人不能理解這些道理，所以才不了解我。了解我的人越稀少，我的道也就越顯得珍貴。因<br>此聖人就像外表穿著粗布衣裳，卻懷抱著美玉。`
+    discussion: ``
   },
   {
     num: 71,
@@ -1025,6 +1100,7 @@ const introSections = [
     english: `To know that one does not know is the highest attainment. Not to know, yet to think that one knows, is a disease. Only by recognizing this disease as a disease can one be free from it. The Sage is free from this disease. Because he recognizes it as a disease, he is free from it.`,
     chinese: `知不知上；不知知病。<br>夫唯病病，是以不病。<br>聖人不病，以其病病。`,
     commentary: `知道自己還有所不知，這是最上等的；不知道卻自以為知道，這是嚴重的毛病。唯有把這種「自以為知」當作是病，<br>才能不犯這種病。聖人之所以沒有這種毛病，是因為他把這種毛病當作病來警惕，所以才不會犯病。`
+    discussion: ``
   },
   {
     num: 72,
@@ -1033,6 +1109,7 @@ const introSections = [
     english: `When the people do not fear your power, a greater power will descend upon them. Do not restrict their living space; do not weigh down their lives. It is only because you do not oppress them that they will not grow weary of you. Therefore, the Sage knows himself but does not show himself; He loves himself (his True Self) but does not exalt himself. He rejects the "one" (outward display) and chooses the "other" (inner reality).`,
     chinese: `民不畏威，則大威至。<br>無狹其所居，無厭其所生。<br>夫唯不厭，是以不厭。<br>是以聖人，自知不自見；自愛不自責。<br>故去彼取此。`,
     commentary: `當百姓不再畏懼統治者的威權時，那麼真正可怕的大災難或大變動就要降臨了。不要限制百姓的生存空間使其感到<br>狹隘，不要壓迫百姓的生活使其感到厭惡。正因為統治者不讓百姓感到厭惡，百姓才不會厭惡統治者。因此聖人有<br>自知之明，卻不自我顯揚；愛惜自己，卻不自顯尊貴。所以要捨棄自我顯揚與尊貴，採取自知與自愛的態度。`
+    discussion: ``
   },
   {
     num: 73,
@@ -1041,6 +1118,7 @@ const introSections = [
     english: `He who is brave in daring will be killed; He who is brave in not daring will survive. Of these two, one is profitable and the other is harmful. Who knows the reason for Heaven's dislikes? Even the Sage finds this a difficult question. The Tao of Heaven does not strive, yet it excels in conquering; It does not speak, yet it excels in responding; It does not summon, yet things come of their own accord; It is quiet, yet it excels in planning. The Net of Heaven is vast; its meshes are wide, yet nothing slips through.`,
     chinese: `勇於敢則殺，勇於不敢則活。<br>此兩者，或利或害。天下所惡。<br>孰知其故？是以聖人，猶難之矣。<br>天之道，不爭而善勝，不言而善應，不召而自來，<br>繟然而善謀。天網恢恢，疏而不失。`,
     commentary: `勇於表現剛強果敢的就會招致死亡，勇於表現柔弱退讓的就能活命。這兩種勇氣，一種有利，一種有害。上天所厭<br>惡的，誰能知道其中的原因呢？所以即使是聖人也感到難以解說。道的規律是：不與人爭卻讓萬物自然順應其發展，<br>不用說話但能得到萬物自然地響應，不召喚而萬物自動歸附。道總是從容不迫卻好像早已安排好了一切。上天的法<br>網廣大無邊，雖然網目稀疏，卻不會漏掉任何一件事。`
+    discussion: ``
   },
   {
     num: 74,
@@ -1049,6 +1127,7 @@ const introSections = [
     english: `If the people do not fear death, what is the use of trying to frighten them with death? If we make the people constantly fear death, and we seize and kill those who do wrong, who would dare to act? There is always the Master Executioner (Heavenly Law) who kills. To take the place of the Master Executioner is like trying to do the work of a master carpenter. He who tries to do the master carpenter's chipping will rarely escape cutting his own hands.`,
     chinese: `民常不畏死，奈何以死懼之。<br>若使民常畏死，而為奇者，吾得執而殺之，孰敢？<br>常有司殺者殺。<br>夫代司殺者，是謂代大匠斲，<br>夫代大匠斲者，希有不傷其手矣。`,
     commentary: `百姓如果已經窮困痛苦到不再害怕死亡，又怎麼能用死刑來威脅他們呢？假使百姓真的畏懼死亡，而對於那些作亂<br>違法的人，我們抓來處死，那麼還有誰敢作亂？冥冥中自有主宰殺伐的人負責執行。如果人要代替上天主掌殺伐，<br>就好比替高明的木匠砍伐木材；代替高明的木匠砍伐木材的人，很少有不傷到自己手的。`
+    discussion: ``
   },
   {
     num: 75,
@@ -1057,6 +1136,7 @@ const introSections = [
     english: `The people are starving because those above them eat too much in taxes; that is why they starve. The people are difficult to govern because those above them interfere too much; that is why they are difficult to govern. The people lightheartedly face death because those above them live too luxuriously; that is why they face death lightheartedly. Truly, only those who do not strive after the "fullness of life" are the truly wise in valuing life.`,
     chinese: `民之飢，以其上食稅之多，是以饑。<br>民之難治，以其上之有為，是以難治。<br>民之輕死，以其求生之厚，是以輕死。<br>夫唯無以生為者，是賢於貴生。`,
     commentary: `百姓之所以遭受飢荒，是因為統治者徵收的稅收太多，所以才陷入飢餓。百姓之所以難以治理，是因為統治者喜歡<br>多事妄為，所以才難以治理。百姓之所以輕視死亡，是因為統治者過度追求奢華的生活，厚斂民財，使得百姓生活<br>不下去，所以才輕視死亡。只有那種不為了生活享受而強作妄為的人，才比過於看重自身生命享樂的人更加賢明。`
+    discussion: ``
   },
   {
     num: 76,
@@ -1065,6 +1145,7 @@ const introSections = [
     english: `When a man is born, he is soft and weak; when he dies, he is stiff and hard. When the ten thousand creatures, the plants and trees, are born, they are soft and tender; when they die, they are withered and brittle. Therefore, the stiff and hard are the companions of death; The soft and weak are the companions of life. Thus, if an army is too strong, it will not conquer; If a tree is too stiff, it will break. The hard and strong will be brought low; the soft and weak will be exalted.`,
     chinese: `人之生也柔弱，其死也堅強。<br>萬物草木之生也柔脆，其死也枯槁。<br>故堅強者死之徒，柔弱者生之徒。<br>是以兵強則不勝，木強則拱。堅強居下，柔弱居上。<br>`,
     commentary: `人活著的時候身體是柔軟的，死後就變得僵硬；萬物草木活著的時候是柔嫩脆弱的，死後就變得乾枯凋零。所以，<br>堅硬強大是屬於死亡的一類，柔弱細嫩是屬於生存的一類。因此，軍隊過於強大就不能獲勝，樹木過於強大就會被<br>砍伐。堅強的處於劣勢，柔弱的反而佔據優勢。`
+    discussion: ``
   },
   {
     num: 77,
@@ -1073,6 +1154,7 @@ const introSections = [
     english: `Is not the Tao of Heaven like the drawing of a bow? It brings down that which is high and raises up that which is low. It takes from those who have too much and gives to those who have not enough. The Tao of Heaven takes from the surplus to supplement the deficient. The way of man is not so; it takes from the deficient to serve those who have a surplus. Who is there that can use his surplus to serve the world? Only he who possesses the Tao. Therefore, the Sage acts but does not rely on his own ability; His work is done, but he does not stay in it; He has no desire to display his merits.`,
     chinese: `天之道，其猶張弓乎？<br>高者抑之，下者舉之。有餘者損之，不足者與之。<br>天之道，損有餘而補不足。人之道則不然，損不足以奉有餘。<br>孰能以有餘奉天下？唯有道者。<br>是以聖人為而不恃，功成而不處，不欲見賢。`,
     commentary: `自然的規律，難道不像張開弓弦嗎？往上拉就被壓低，往下拉就被抬高；有多的就減少一些，不足就增加一些。道<br>的規律就是減少多餘的來補貼不足。但人類社會的規則卻不是這樣，反而是犧牲不足的人，來奉獻給富有餘裕的人。<br>誰能把多餘的力量奉獻給天下人呢？唯有領悟了大道的人才能做到。因此聖人有所作為，卻不自恃己能，成就了功<br>業卻不歸功於自己，他不希望彰顯自己的賢能。`
+    discussion: ``
   },
   {
     num: 78,
@@ -1081,6 +1163,7 @@ const introSections = [
     english: `Nothing in the world is softer and weaker than water. Yet, for attacking the hard and strong, nothing can surpass it, because nothing can change it. That the weak overcomes the strong, and the soft overcomes the hard—everyone in the world knows this, yet no one can practice it. Therefore, the Sage says: "He who takes upon himself the disgrace of the state is called the lord of the shrines; He who takes upon himself the misfortunes of the state is called the King of the world." True words often seem paradoxical.`,
     chinese: `天下柔弱，莫過乎水，<br>而攻堅強者，莫之能勝，其無以易之。<br>故柔勝剛，弱勝強，天下莫不知，天下莫能行。<br>故聖人云：受國之垢，是謂社稷主；受國不祥，是為天下。<br>正言若反。`,
     commentary: `天下萬物中沒有比水更柔弱的了，但在攻擊堅強的事物時，卻沒有什麼能勝過水，因為沒有什麼能取代它。所以柔<br>弱能戰勝剛強，這道理天下沒有人不知道，卻沒有人能真正實行。因此聖人說：肯承擔全國的屈辱，才稱得上是國<br>家的主人；肯承擔全國的災難，才稱得上是天下的君王。正直的真理聽起來往往像是反話。`
+    discussion: ``
   },
   {
     num: 79,
@@ -1089,6 +1172,7 @@ const introSections = [
     english: `When a great hatred is reconciled, some hatred is bound to remain. How can this be made good? Therefore, the Sage holds the left-hand tally (the debtor's side) and does not demand payment from others. The man of Virtue (De) attends to his obligations; the man without Virtue attends to his claims. The Tao of Heaven has no favourites; it is always on the side of the good man.`,
     chinese: `和大怨，必有餘怨；安可以為善。<br>是以聖人，執左契，而不責於人。<br>故有德司契，無德司徹。<br>天道無親，常與善人。`,
     commentary: `和解重大的怨恨，必然還會殘留餘怨；這樣又怎麼能算是完美的處置呢？ 因此聖人就像放款的官員，雖然持有放款<br>憑據，卻不要求他人償還。 也就是說，有德的人就像持有借據一樣，只管盡到自己的義務而不苛求他人；沒有德的<br>人就像負責徵稅的人一樣，只會一味地對人索取與苛責。 上天之道是對萬物公正無私的，但它卻經常眷顧並助益那<br>些遵循自然、心存良善的人。`
+    discussion: ``
   },
   {
     num: 80,
@@ -1097,6 +1181,7 @@ const introSections = [
     english: `Let the state be small and the people few. Even if there are tools that could do the work of ten or a hundred men, let them not be used. Let the people value their lives and not travel far. Though there be boats and carriages, let there be no occasion to ride in them; Though there be armour and weapons, let there be no occasion to display them. Let the people return to the use of knotted cords (simplicity). Let them find their food savoury, their clothes beautiful, their homes comfortable, and their customs joyful. Though the next state be within sight, and the crowing of cocks and the barking of dogs be heard from it, let the people grow old and die without ever having been there.`,
     chinese: `小國寡民。<br>使有什伯之器而不用；使民重死而不遠徙。<br>雖有舟車，無所乘之，雖有甲兵，無所陳之。<br>使民復結繩而用之。甘其食，美其服，安其居，樂其俗。<br>鄰國相望，雞犬之音相聞，民至老死，不相往來。<br>`,
     commentary: `最純樸的世界就是：國家很小，人口稀少。即使有各種效率極高的器械也不去使用；使百姓看重生命，而不向遠方<br>遷徙。雖然有船隻與車輛，卻沒有必要去乘坐；雖然有鎧甲與兵器，卻沒有地方去陳放。使百姓恢復到古代結繩記<br>事的生活方式。這時百姓就會覺得⻝物甘甜，衣服精美，居住安穩，體會風俗習慣的樂趣。鄰國之間可以互相望見，<br>雞鳴狗吠的聲音也都能聽聞，但百姓直到老死，彼此之間都不需要互相往來交易或爭鬥。`
+    discussion: ``
   },
   {
     num: 81,
@@ -1105,6 +1190,7 @@ const introSections = [
     english: `Sincere words are not beautiful; beautiful words are not sincere. The good man does not argue; the man who argues is not good. He who knows is not learned (in mere facts); he who is learned does not know (the Tao). The Sage does not hoard. The more he does for others, the more he has for himself; The more he gives to others, the more he possesses. The Tao of Heaven is to benefit and not to harm. The Way of the Sage is to act and not to strive.`,
     chinese: `信言不美，美言不信。<br>善者不辯，辯者不善。<br>知者不博，博者不知。<br>聖人不積，既以為人己愈有，既以與人己愈多。<br>天之道，利而不害；聖人之道，為而不爭。`,
     commentary: `真實的話不一定好聽，好聽的話往往不真實。善良的人不巧辯，巧辯的人不善良。真正通達真理的人不一定見聞廣<br>博，見聞廣博的人不一定通達真理。聖人沒有私藏，他盡力幫助別人，自己反而更充足；他盡力給予別人，自己反<br>而更豐富。自然的規律是利濟萬物而不加傷害；聖人的準則是施予作為而不與人競爭。`
+    discussion: ``
   },
 ];
 
@@ -1166,7 +1252,11 @@ chapters.forEach(ch => {
     `<div class="ch-section"><div class="ch-section-label">白話注釋 · Commentary</div>` +
     `<div class="ch-commentary" data-field="commentary">${ch.commentary}</div></div>` : '';
 
-  card.innerHTML = header + `<div class="ch-body">${engSec + cnSec + cmtSec}</div>`;
+  const disSec = ch.discussion ?
+    `<div class="ch-section"><div class="ch-section-label">道學讀書會 · Discussion</div>` +
+    `<div class="ch-discussion" data-field="discussion">${ch.discussion}</div></div>` : '';
+
+  card.innerHTML = header + `<div class="ch-body">${engSec + cnSec + cmtSec + disSec}</div>`;
   container.appendChild(card);
 });
 
@@ -1205,7 +1295,7 @@ function doSearch() {
   chapters.forEach(ch => {
     const card = document.getElementById('ch-'+ch.num);
     const nav  = document.getElementById('nav-'+ch.num);
-    const hay = [ch.english,ch.chinese,ch.commentary,ch.title,ch.classical,String(ch.num)].join(' ').toLowerCase();
+    const hay = [ch.english,ch.chinese,ch.commentary,ch.discussion,ch.title,ch.classical,String(ch.num)].join(' ').toLowerCase();
     if (hay.includes(lower)) {
       card.classList.remove('search-hidden'); nav.classList.remove('hidden');
       hlCard(card, q); vis++;
@@ -1255,7 +1345,7 @@ contentEl.addEventListener('scroll', () => {
    PRESENTATION MODE
 ══════════════════════════════════════ */
 let presentIdx = 0;       // current chapter index (0-based)
-let showEn = true, showCn = true, showCmt = true;
+let showEn = true, showCn = true, showCmt = true, showDis = true;
 
 // Populate chapter jump select
 const jumpSel = document.getElementById('present-chapter-jump');
@@ -1323,7 +1413,13 @@ function renderSlide() {
       `<div class="slide-commentary">${ch.commentary}</div>` +
     `</div>` : '';
 
-  document.getElementById('slide-content').innerHTML = header + engSec + cnSec + cmtSec;
+  const disSec = ch.discussion ?
+    `<div class="slide-section${showDis?'':' hidden'}" id="slide-dis">` +
+      `<div class="slide-section-label">道學讀書會 · Discussion</div>` +
+      `<div class="slide-discussion">${ch.discussion}</div>` +
+    `</div>` : '';
+
+  document.getElementById('slide-content').innerHTML = header + engSec + cnSec + cmtSec + disSec;
   document.getElementById('present-slide').scrollTop = 0;
 }
 
@@ -1342,6 +1438,7 @@ function toggleView(which) {
   if (which==='en')  { showEn  = !showEn;  document.getElementById('btn-show-en').classList.toggle('on',showEn); }
   if (which==='cn')  { showCn  = !showCn;  document.getElementById('btn-show-cn').classList.toggle('on',showCn); }
   if (which==='cmt') { showCmt = !showCmt; document.getElementById('btn-show-cmt').classList.toggle('on',showCmt); }
+  if (which==='dis') { showDis = !showDis; document.getElementById('btn-show-dis').classList.toggle('on',showDis); }
   renderSlide();
 }
 
