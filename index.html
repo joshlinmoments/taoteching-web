@@ -222,6 +222,49 @@
     #present-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px 28px; background: #fff; border-top: 1px solid var(--border); flex-shrink: 0; }
     #present-chapter-info { font-family: 'Spectral SC', serif; font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; min-width: 120px; text-align: center; }
     #present-hint { font-size: 11px; color: var(--text-light); font-style: italic; margin-left: auto; padding-right: 4px; }
+
+    /* ══ MOBILE ══ */
+    @media (max-width: 640px) {
+      /* Viewport height: use dvh so iOS browser chrome doesn't cut off */
+      #reader { height: 100dvh; }
+
+      /* Hide Present everywhere */
+      #btn-present, #l-btn-present { display: none !important; }
+
+      /* Topbar: hide Home + all view toggles, keep only ☰ */
+      #btn-home { display: none; }
+      .view-toggles { display: none; }
+      #reader-topbar { padding: 6px 12px; gap: 8px; }
+
+      /* Always show all content sections on mobile (toggles hidden) */
+      .reader-section.hidden { display: block !important; }
+      #sec-dis { display: block !important; }
+
+      /* Reduce inner padding for narrow screens */
+      .reader-inner { padding: 14px 10px 36px; }
+      .ch-header-main { padding: 12px 14px 10px; }
+      .reader-section { padding: 14px 14px; }
+      .dis-panel { padding: 14px; }
+      .dis-tab-btn { padding: 10px 12px; font-size: 10px; }
+
+      /* Bottom nav: safe area + compact */
+      #reader-nav {
+        padding: 8px 12px;
+        padding-bottom: max(8px, env(safe-area-inset-bottom));
+        gap: 8px;
+      }
+      .nav-btn { padding: 8px 18px; font-size: 12px; }
+      #reader-ch-info { min-width: 0; flex: 1; font-size: 11px; }
+
+      /* Desktop-only chapter info (long form) */
+      .ch-info-full { display: none; }
+      /* Mobile-only chapter info (short form) */
+      .ch-info-short { display: inline; }
+    }
+    @media (min-width: 641px) {
+      .ch-info-short { display: none; }
+      .ch-info-full  { display: inline; }
+    }
   </style>
 </head>
 <body>
@@ -1274,8 +1317,9 @@ function renderChapter() {
   view.innerHTML = header + engSec + cnSec + cmtSec + disSec;
   document.getElementById('reader-content').scrollTop = 0;
 
-  document.getElementById('reader-ch-info').textContent =
-    `${String(ch.num).padStart(2,'0')} · ${ch.classical || '第'+ch.num+'章'} · ${ch.title || ''}`;
+  document.getElementById('reader-ch-info').innerHTML =
+    `<span class="ch-info-full">${String(ch.num).padStart(2,'0')} · ${ch.classical || '第'+ch.num+'章'} · ${ch.title || ''}</span>` +
+    `<span class="ch-info-short">Chapter ${String(ch.num).padStart(2,'0')}</span>`;
   document.getElementById('btn-prev-ch').disabled = currentChIdx === 0;
   document.getElementById('btn-next-ch').disabled = currentChIdx === chapters.length - 1;
 
