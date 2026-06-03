@@ -207,7 +207,11 @@
     #present-slide { flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding: 28px 32px 48px; background: transparent; }
     #present-slide::-webkit-scrollbar { width: 5px; }
     #present-slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .slide-inner { width: 100%; max-width: min(94vw, 1280px); background: #fff; border: 1px solid var(--border); padding: 52px 72px 60px; height: auto; }
+    .slide-inner { width: 100%; max-width: min(98vw, 1920px); background: #fff; border: 1px solid var(--border); padding: 52px 72px 60px; height: auto; }
+    #present-font-ctrl { display: flex; align-items: center; gap: 4px; }
+    .font-ctrl-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-muted); cursor: pointer; font-family: 'Spectral SC', serif; font-size: 13px; line-height: 1; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
+    .font-ctrl-btn:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
+    #present-font-label { font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light); letter-spacing: 0.08em; min-width: 30px; text-align: center; }
     .slide-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--border-soft); }
     .slide-header-left { flex: 1; }
     .slide-chapter-label { font-family: 'Spectral SC', serif; font-size: 11px; letter-spacing: 0.3em; color: var(--teal); margin-bottom: 10px; }
@@ -338,6 +342,11 @@
     <button class="present-view-btn on" id="btn-show-dis"    onclick="toggleView('dis')">討論</button>
     <button class="present-view-btn on" id="btn-show-en-dis" onclick="toggleView('en-dis')">Eng Discussion</button>
     <span id="present-progress"></span>
+    <div id="present-font-ctrl">
+      <button class="font-ctrl-btn" onclick="adjustFont(-0.1)" title="字體縮小">A−</button>
+      <span id="present-font-label">100%</span>
+      <button class="font-ctrl-btn" onclick="adjustFont(0.1)" title="字體放大">A+</button>
+    </div>
     <button id="btn-exit-present" onclick="exitPresent()">✕ Exit</button>
   </div>
   <div id="present-slide">
@@ -457,7 +466,7 @@ const introSections = [
     num: 9,
     title: `The Principles of Being Human`,
     classical: `持盈章`,
-    english: `Better to stop in time than to fill a vessel to the brim. Over-sharpen a blade, and its edge will soon be lost. Fill your house with gold and jade, and you cannot guard it. To be rich, proud, and arrogant is to court your own ruin. When the work is done and fame is achieved, then withdraw; This is the Tao of Heaven.`,
+    english: `Better to stop in time than to fill a vessel to the brim. Over-sharpen a blade, and its edge cannot be long maintained. Even if a hall is filled with gold and jade, none can guard it forever. To be rich, proud, and arrogant is to court your own ruin. When merits are achieved and fame is won, to step back without taking credit is the Tao of Heaven.`,
     chinese: `持而盈之，不如其已；揣而銳之，不可長保。<br>金玉滿堂，莫之能守；富貴而驕，自遺其咎。<br>功遂身退，天之道。`,
     commentary: `執著於將容器裝得太滿，不如適可而止；將鋒芒磨得過於銳利，反而難以長久保持。即便金玉珍寶堆滿廳堂，也無法永遠守住；富貴時若表現得驕縱，只會給自己招來禍害。在立下功勳、名聲成就之後，懂得不戀棧，主動退居幕後而不居功，這才符合自然運行的天道規律。`,
     discussion: ``,
@@ -1379,8 +1388,18 @@ chapters.forEach((ch, i) => {
   jumpSel.appendChild(opt);
 });
 
+let fontScale = 1.0;
+function adjustFont(delta) {
+  fontScale = Math.round(Math.max(0.5, Math.min(2.5, fontScale + delta)) * 10) / 10;
+  document.getElementById('slide-content').style.zoom = fontScale;
+  document.getElementById('present-font-label').textContent = Math.round(fontScale * 100) + '%';
+}
+
 function enterPresent(startIdx) {
   presentIdx = (startIdx !== undefined) ? startIdx : (currentChIdx || 0);
+  fontScale = 1.0;
+  document.getElementById('slide-content').style.zoom = 1;
+  document.getElementById('present-font-label').textContent = '100%';
   document.getElementById('present-overlay').classList.add('active');
   document.getElementById('reader').style.visibility = 'hidden';
   document.getElementById('landing').style.visibility = 'hidden';
