@@ -202,16 +202,15 @@
     .present-view-btn { padding: 5px 12px; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-muted); cursor: pointer; font-family: 'Spectral SC', serif; font-size: 11px; letter-spacing: 0.08em; transition: all 0.15s; }
     .present-view-btn.on { background: var(--teal); color: #fff; border-color: var(--teal); }
     #present-progress { font-family: 'Spectral SC', serif; font-size: 11px; color: var(--text-light); letter-spacing: 0.1em; white-space: nowrap; }
-    #btn-exit-present { padding: 5px 14px; border-radius: 3px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; font-family: 'Spectral SC', serif; font-size: 11px; letter-spacing: 0.1em; transition: all 0.15s; margin-left: auto; }
+    #btn-exit-present { padding: 5px 14px; border-radius: 3px; background: transparent; color: var(--text-muted); border: 1px solid var(--border); cursor: pointer; font-family: 'Spectral SC', serif; font-size: 11px; letter-spacing: 0.1em; transition: all 0.15s; }
     #btn-exit-present:hover { background: var(--bg); color: var(--text); }
     #present-slide { flex: 1; overflow-y: auto; overflow-x: hidden; display: flex; flex-direction: column; align-items: center; padding: 28px 32px 48px; background: transparent; }
     #present-slide::-webkit-scrollbar { width: 5px; }
     #present-slide::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     .slide-inner { width: 100%; max-width: min(98vw, 1920px); background: #fff; border: 1px solid var(--border); padding: 52px 72px 60px; height: auto; }
-    #present-font-ctrl { display: flex; align-items: center; gap: 4px; }
-    .font-ctrl-btn { width: 28px; height: 28px; border: 1px solid var(--border); border-radius: 3px; background: #fff; color: var(--text-muted); cursor: pointer; font-family: 'Spectral SC', serif; font-size: 13px; line-height: 1; transition: all 0.15s; display: flex; align-items: center; justify-content: center; }
-    .font-ctrl-btn:hover { background: var(--teal); color: #fff; border-color: var(--teal); }
-    #present-font-label { font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light); letter-spacing: 0.08em; min-width: 30px; text-align: center; }
+    #present-font-ctrl { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+    #font-slider { width: 110px; accent-color: var(--teal); cursor: pointer; }
+    #present-font-label { font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light); letter-spacing: 0.08em; min-width: 32px; text-align: right; }
     .slide-header { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 36px; padding-bottom: 24px; border-bottom: 1px solid var(--border-soft); }
     .slide-header-left { flex: 1; }
     .slide-chapter-label { font-family: 'Spectral SC', serif; font-size: 11px; letter-spacing: 0.3em; color: var(--teal); margin-bottom: 10px; }
@@ -343,9 +342,8 @@
     <button class="present-view-btn on" id="btn-show-en-dis" onclick="toggleView('en-dis')">Eng Discussion</button>
     <span id="present-progress"></span>
     <div id="present-font-ctrl">
-      <button class="font-ctrl-btn" onclick="adjustFont(-0.1)" title="字體縮小">A−</button>
+      <input type="range" id="font-slider" min="50" max="250" step="10" value="100" oninput="adjustFont(this.value)">
       <span id="present-font-label">100%</span>
-      <button class="font-ctrl-btn" onclick="adjustFont(0.1)" title="字體放大">A+</button>
     </div>
     <button id="btn-exit-present" onclick="exitPresent()">✕ Exit</button>
   </div>
@@ -1389,10 +1387,10 @@ chapters.forEach((ch, i) => {
 });
 
 let fontScale = 1.0;
-function adjustFont(delta) {
-  fontScale = Math.round(Math.max(0.5, Math.min(2.5, fontScale + delta)) * 10) / 10;
+function adjustFont(val) {
+  fontScale = val / 100;
   document.getElementById('slide-content').style.zoom = fontScale;
-  document.getElementById('present-font-label').textContent = Math.round(fontScale * 100) + '%';
+  document.getElementById('present-font-label').textContent = val + '%';
 }
 
 function enterPresent(startIdx) {
@@ -1400,6 +1398,7 @@ function enterPresent(startIdx) {
   fontScale = 1.0;
   document.getElementById('slide-content').style.zoom = 1;
   document.getElementById('present-font-label').textContent = '100%';
+  document.getElementById('font-slider').value = 100;
   document.getElementById('present-overlay').classList.add('active');
   document.getElementById('reader').style.visibility = 'hidden';
   document.getElementById('landing').style.visibility = 'hidden';
