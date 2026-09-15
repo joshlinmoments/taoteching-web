@@ -1284,7 +1284,7 @@ function toggleSidebar() {
 /* ══════════════════════════════════════
    CHAPTER READER
 ══════════════════════════════════════ */
-function fmtEng(t) { return t.replace(/;[ \t]*(<br>)?[ \t]*/g, ';<br>'); }
+function fmtEng(t) { return t; }
 
 function renderChapter() {
   const ch = chapters[currentChIdx];
