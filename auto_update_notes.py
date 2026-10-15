@@ -98,14 +98,25 @@ _EN_NAME_COLON = re.compile(
     r'^([A-Z][a-z]+(?: [A-Z][a-z]+)?)\s*[：:]',
 )
 
-# Heuristic: track first speaker per paragraph block = 點傳師/Master
-# subsequent distinct speakers = 同修/Participant
-# Also replaces inline name mentions in body lines.
-_INLINE_NAME_RE = re.compile(r'[一-鿿]{2,4}')
+# Heuristic: first speaker = 點傳師, subsequent = 同修
+# Pre-scan body text for "由X主講" (teacher) and "X協助/帶領" (participant)
+_ZH_LEAD_RE = re.compile(r'由([一-鿿]{2,4})(?:主講|帶領|主持)')
+_ZH_ASSIST_RE = re.compile(r'([一-鿿]{2,4})(?:協助|協助解說|協助帶領|擔任)')
 
 def replace_names_zh(lines):
-    seen = {}   # name -> assigned role
-    out  = []
+    # Pre-scan: find names in sentence context before processing speaker labels
+    seen = {}
+    for line in lines:
+        for m in _ZH_LEAD_RE.finditer(line):
+            name = m.group(1)
+            if name not in seen:
+                seen[name] = "點傳師"
+        for m in _ZH_ASSIST_RE.finditer(line):
+            name = m.group(1)
+            if name not in seen:
+                seen[name] = "同修"
+
+    out = []
     for line in lines:
         m = _ZH_NAME_COLON.match(line)
         if m:
@@ -117,7 +128,7 @@ def replace_names_zh(lines):
             rest  = line[m.end():]
             out.append(f"{label}：{rest.lstrip()}")
         else:
-            # Replace inline occurrences of known speaker names
+            # Replace inline occurrences of all known speaker names
             processed = line
             for name, role in sorted(seen.items(), key=lambda x: -len(x[0])):
                 processed = processed.replace(name, role)
