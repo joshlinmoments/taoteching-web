@@ -289,6 +289,18 @@
     .slide-discussion { font-size: clamp(14px, 1.2vw, 17px); line-height: 1.95; color: var(--text-mid); font-weight: 300; }
     .slide-en-discussion { font-size: clamp(14px, 1.2vw, 17px); line-height: 2.1; color: var(--text-mid); font-weight: 300; }
     .slide-section.hidden { display: none; }
+    /* ── Split mode ── */
+    #present-slide.split-mode { flex-direction: row; align-items: stretch; padding: 0; overflow: hidden; gap: 0; }
+    .split-pane { overflow-y: auto; overflow-x: hidden; padding: 28px 28px 48px; flex-shrink: 0; }
+    .split-pane::-webkit-scrollbar { width: 5px; }
+    .split-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .split-pane-left { background: #fff; }
+    .split-pane-right { flex: 1 1 auto !important; background: var(--bg); }
+    .split-pane .slide-inner { max-width: none; border: none; padding: 40px 40px 40px; background: transparent; }
+    #split-divider { width: 8px; cursor: col-resize; background: var(--border-soft); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.15s; user-select: none; -webkit-user-select: none; }
+    #split-divider::after { content: ''; width: 2px; height: 48px; background: rgba(0,0,0,0.12); border-radius: 1px; pointer-events: none; }
+    #split-divider:hover, #split-divider.dragging { background: rgba(74,148,144,0.18); }
+    #split-divider:hover::after, #split-divider.dragging::after { background: var(--teal); }
     #present-nav { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 16px 28px; background: #fff; border-top: 1px solid var(--border); flex-shrink: 0; }
     #present-chapter-info { font-family: 'Spectral SC', serif; font-size: 12px; color: var(--text-muted); letter-spacing: 0.1em; min-width: 120px; text-align: center; }
     #present-hint { font-size: 11px; color: var(--text-light); font-style: italic; margin-left: auto; padding-right: 4px; }
@@ -415,6 +427,7 @@
     <button class="present-view-btn on" id="btn-show-cmt"    onclick="toggleView('cmt')">注釋</button>
     <button class="present-view-btn on" id="btn-show-dis"    onclick="toggleView('dis')">討論</button>
     <button class="present-view-btn on" id="btn-show-en-dis" onclick="toggleView('en-dis')">Eng Discussion</button>
+    <button class="present-view-btn" id="btn-split" onclick="toggleSplit()" title="Side-by-side English / Chinese">⇔ Split</button>
     <span id="present-progress"></span>
     <div id="present-font-ctrl">
       <input type="range" id="font-slider" min="50" max="250" step="10" value="100" oninput="adjustFont(this.value)">
@@ -1491,6 +1504,7 @@ document.addEventListener('keydown', e => {
 ══════════════════════════════════════ */
 let presentIdx = 0;
 let pShowEn = true, pShowCn = true, pShowCmt = true, pShowDis = true, pShowEnDis = true;
+let splitMode = false, splitPos = 50;
 
 const jumpSel = document.getElementById('present-chapter-jump');
 chapters.forEach((ch, i) => {
@@ -1569,8 +1583,30 @@ function renderSlide() {
       `<div class="slide-en-discussion">${ch.en_discussion}</div>` +
     `</div>` : '';
 
-  document.getElementById('slide-content').innerHTML = header + engSec + cnSec + cmtSec + disSec + enDisSec;
-  document.getElementById('present-slide').scrollTop = 0;
+  const slideEl = document.getElementById('present-slide');
+  if (splitMode) {
+    const leftHTML =
+      `<div class="slide-inner">` + header +
+      `<div class="slide-section" id="slide-en">` +
+        `<div class="slide-section-label">English Translation</div>` +
+        `<div class="slide-english">${fmtEng(ch.english)}</div>` +
+      `</div></div>`;
+    const rightHTML = ch.chinese ?
+      `<div class="slide-inner">` +
+      `<div class="slide-section" id="slide-cn">` +
+        `<div class="slide-section-label">原文 · Original Text</div>` +
+        `<div class="slide-chinese">${ch.chinese}</div>` +
+      `</div></div>` : `<div class="slide-inner"></div>`;
+    slideEl.innerHTML =
+      `<div class="split-pane split-pane-left" id="split-left" style="width:${splitPos}%">${leftHTML}</div>` +
+      `<div id="split-divider"></div>` +
+      `<div class="split-pane split-pane-right" id="split-right">${rightHTML}</div>`;
+    attachDividerDrag();
+  } else {
+    slideEl.innerHTML = `<div class="slide-inner" id="slide-content"></div>`;
+    document.getElementById('slide-content').innerHTML = header + engSec + cnSec + cmtSec + disSec + enDisSec;
+  }
+  slideEl.scrollTop = 0;
 }
 
 function nextSlide() { if (presentIdx < chapters.length-1) { presentIdx++; renderSlide(); } }
@@ -1584,6 +1620,51 @@ function toggleView(which) {
   if (which==='dis')    { pShowDis    = !pShowDis;    document.getElementById('btn-show-dis').classList.toggle('on',pShowDis); }
   if (which==='en-dis') { pShowEnDis  = !pShowEnDis;  document.getElementById('btn-show-en-dis').classList.toggle('on',pShowEnDis); }
   renderSlide();
+}
+
+function toggleSplit() {
+  splitMode = !splitMode;
+  document.getElementById('btn-split').classList.toggle('on', splitMode);
+  document.getElementById('present-slide').classList.toggle('split-mode', splitMode);
+  renderSlide();
+}
+
+function attachDividerDrag() {
+  const divider = document.getElementById('split-divider');
+  if (!divider) return;
+  const slideEl = document.getElementById('present-slide');
+
+  function onMove(e) {
+    const rect = slideEl.getBoundingClientRect();
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const pos = Math.min(80, Math.max(20, (clientX - rect.left) / rect.width * 100));
+    splitPos = pos;
+    const leftPane = document.getElementById('split-left');
+    if (leftPane) leftPane.style.width = pos + '%';
+    e.preventDefault();
+  }
+  function onUp() {
+    divider.classList.remove('dragging');
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onUp);
+  }
+  divider.addEventListener('mousedown', e => {
+    e.preventDefault();
+    divider.classList.add('dragging');
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onUp);
+  });
+  divider.addEventListener('touchstart', e => {
+    divider.classList.add('dragging');
+    document.addEventListener('touchmove', onMove, { passive: false });
+    document.addEventListener('touchend', onUp);
+  }, { passive: true });
 }
 
 document.addEventListener('keydown', e => {
