@@ -1515,16 +1515,26 @@ chapters.forEach((ch, i) => {
 });
 
 let fontScale = 1.0;
+function applyFontScale() {
+  if (splitMode) {
+    const left  = document.getElementById('split-left');
+    const right = document.getElementById('split-right');
+    if (left)  left.style.zoom  = fontScale;
+    if (right) right.style.zoom = fontScale * 0.9;
+  } else {
+    const sc = document.getElementById('slide-content');
+    if (sc) sc.style.zoom = fontScale;
+  }
+}
 function adjustFont(val) {
   fontScale = val / 100;
-  document.getElementById('slide-content').style.zoom = fontScale;
   document.getElementById('present-font-label').textContent = val + '%';
+  applyFontScale();
 }
 
 function enterPresent(startIdx) {
   presentIdx = (startIdx !== undefined) ? startIdx : (currentChIdx || 0);
   fontScale = 1.0;
-  document.getElementById('slide-content').style.zoom = 1;
   document.getElementById('present-font-label').textContent = '100%';
   document.getElementById('font-slider').value = 100;
   document.getElementById('present-overlay').classList.add('active');
@@ -1602,6 +1612,7 @@ function renderSlide() {
       `<div id="split-divider"></div>` +
       `<div class="split-pane split-pane-right" id="split-right">${rightHTML}</div>`;
     attachDividerDrag();
+    applyFontScale();
   } else {
     slideEl.innerHTML = `<div class="slide-inner" id="slide-content"></div>`;
     document.getElementById('slide-content').innerHTML = header + engSec + cnSec + cmtSec + disSec + enDisSec;
