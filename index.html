@@ -295,8 +295,9 @@
     .split-pane::-webkit-scrollbar { width: 5px; }
     .split-pane::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     .split-pane-left { background: #fff; }
-    .split-pane-right { flex: 1 1 auto !important; background: var(--bg); }
-    .split-pane .slide-inner { max-width: none; border: none; padding: 40px 40px 40px; background: transparent; }
+    .split-pane-right { flex: 1 1 auto !important; background: var(--bg); padding-left: 14px; padding-right: 14px; }
+    .split-pane .slide-inner { max-width: none; border: none; padding: 28px 20px 40px; background: transparent; }
+    .split-pane-right .slide-inner { padding: 28px 12px 40px; }
     #split-divider { width: 8px; cursor: col-resize; background: var(--border-soft); flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: background 0.15s; user-select: none; -webkit-user-select: none; }
     #split-divider::after { content: ''; width: 2px; height: 48px; background: rgba(0,0,0,0.12); border-radius: 1px; pointer-events: none; }
     #split-divider:hover, #split-divider.dragging { background: rgba(74,148,144,0.18); }
