@@ -1356,6 +1356,7 @@ const introSections = [
 let currentChIdx = null;
 let showEn = true, showCn = true, showCmt = true;
 let editMode = false;
+let editOriginChIdx = null;
 let currentDis = 'zh';
 
 function loadEditsFromStorage() {
@@ -1674,6 +1675,11 @@ function toggleEditMode() {
   if (!editMode) {
     const pw = prompt('Edit password:');
     if (!pw || pw.toLowerCase() !== 'tao') return;
+    editOriginChIdx = currentChIdx;
+  } else {
+    saveCurrentEdit();
+    currentChIdx = editOriginChIdx;
+    editOriginChIdx = null;
   }
   editMode = !editMode;
   const btn = document.getElementById('btn-edit');
