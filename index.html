@@ -348,6 +348,41 @@
       .ch-info-short { display: none; }
       .ch-info-full  { display: inline; }
     }
+    /* ══ INTERLEAVED VIEW ══ */
+    .il-block { margin-bottom: 1.0em; }
+    .il-primary.il-cn { font-size: 16px; line-height: 1.9; color: var(--text); letter-spacing: 0.06em; }
+    .il-primary.il-en { font-size: 15.5px; line-height: 1.9; color: var(--text-mid); font-weight: 300; }
+    .il-sub { margin-top: 0.1em; padding-left: 0.6em; border-left: 2px solid var(--teal-pale); }
+    .il-sub.il-en { font-size: 12.5px; line-height: 1.6; color: var(--text-muted); font-style: italic; font-weight: 300; }
+    .il-sub.il-cn { font-size: 12px; line-height: 1.6; color: var(--text-muted); letter-spacing: 0.04em; }
+
+    /* ══ EDIT MODE ══ */
+    .edit-form { padding: 20px 24px; background: var(--surface); border: 1px solid var(--border); border-top: none; }
+    .edit-field { margin-bottom: 20px; }
+    .edit-label { font-family:'Spectral SC',serif; font-size:9px; letter-spacing:0.3em; color:var(--text-light); margin-bottom:6px; display:block; text-transform:uppercase; }
+    .edit-input { width:100%; padding:10px 12px; border:1px solid var(--border); border-radius:3px; font-family:'Spectral',serif; font-size:14px; color:var(--text); background:#fff; resize:vertical; outline:none; min-height:80px; line-height:1.6; }
+    .edit-input:focus { border-color:var(--teal); box-shadow:0 0 0 2px rgba(98,149,149,0.12); }
+    .edit-input.edit-short { min-height:36px; resize:none; }
+    .edit-actions { display:flex; gap:10px; align-items:center; margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--border-soft); }
+    .edit-save-btn { padding:7px 18px; background:var(--teal); color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.1em; transition:background 0.15s; }
+    .edit-save-btn:hover { background:var(--teal-light); }
+    .edit-export-btn { padding:7px 16px; background:#fff; color:var(--text-mid); border:1px solid var(--border); border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; transition:all 0.15s; }
+    .edit-export-btn:hover { background:var(--bg); }
+    .edit-saved-msg { font-size:12px; color:var(--teal); font-style:italic; opacity:0; transition:opacity 0.4s; }
+    .edit-saved-msg.show { opacity:1; }
+    #btn-edit { padding:5px 14px; border-radius:3px; background:#fff; color:var(--text-muted); border:1px solid var(--border); cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; transition:all 0.15s; flex-shrink:0; }
+    #btn-edit:hover { background:var(--bg); color:var(--text); }
+    #btn-edit.on { background:var(--blue); color:#fff; border-color:var(--blue); }
+    #edit-export-modal { display:none; position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.55); align-items:center; justify-content:center; }
+    #edit-export-modal.open { display:flex; }
+    #edit-export-inner { background:#fff; border-radius:4px; padding:24px; max-width:700px; width:90%; max-height:80vh; display:flex; flex-direction:column; gap:12px; }
+    #edit-export-inner h3 { font-family:'Spectral SC',serif; font-size:14px; color:var(--blue); letter-spacing:0.08em; }
+    #edit-export-ta { flex:1; min-height:300px; font-family:monospace; font-size:11px; resize:none; border:1px solid var(--border); border-radius:3px; padding:10px; color:var(--text); outline:none; }
+    .modal-btn-row { display:flex; gap:8px; justify-content:flex-end; }
+    .modal-btn { padding:7px 18px; border:1px solid var(--border); border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; background:#fff; color:var(--text-mid); transition:all 0.15s; }
+    .modal-btn:hover { background:var(--bg); }
+    .modal-btn.primary { background:var(--teal); color:#fff; border-color:var(--teal); }
+    .modal-btn.primary:hover { background:var(--teal-light); }
   </style>
 </head>
 <body>
@@ -398,10 +433,13 @@
       <button id="btn-home" onclick="goHome()">← Home</button>
       <button id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
       <div class="view-toggles">
-        <button class="view-tog on" id="tog-en"  onclick="toggleSection('en')">English</button>
-        <button class="view-tog on" id="tog-cn"  onclick="toggleSection('cn')">原文</button>
-        <button class="view-tog on" id="tog-cmt" onclick="toggleSection('cmt')">注釋</button>
+        <button class="view-tog on" id="tog-en"         onclick="toggleSection('en')">English</button>
+        <button class="view-tog on" id="tog-cn"         onclick="toggleSection('cn')">原文</button>
+        <button class="view-tog"    id="tog-cn-primary" onclick="setInterleaved('cn-primary')">中文為主</button>
+        <button class="view-tog"    id="tog-en-primary" onclick="setInterleaved('en-primary')">英文為主</button>
+        <button class="view-tog on" id="tog-cmt"        onclick="toggleSection('cmt')">注釋</button>
       </div>
+      <button id="btn-edit" onclick="toggleEditMode()">✎ Edit</button>
       <button id="btn-present" onclick="enterPresent()">▶ Present</button>
     </div>
 
@@ -444,6 +482,18 @@
     <div id="present-chapter-info"></div>
     <button class="nav-btn" id="btn-next" onclick="nextSlide()">Next →</button>
     <span id="present-hint">← → arrow keys to navigate · Esc to exit</span>
+  </div>
+</div>
+
+<!-- ══ EDIT EXPORT MODAL ══ -->
+<div id="edit-export-modal">
+  <div id="edit-export-inner">
+    <h3>Chapter Data — Copy &amp; paste to replace the chapter object in index.html</h3>
+    <textarea id="edit-export-ta" readonly></textarea>
+    <div class="modal-btn-row">
+      <button class="modal-btn primary" onclick="copyExport(this)">Copy</button>
+      <button class="modal-btn" onclick="closeExport()">Close</button>
+    </div>
   </div>
 </div>
 
@@ -1288,7 +1338,21 @@ const introSections = [
 ══════════════════════════════════════ */
 let currentChIdx = null;
 let showEn = true, showCn = true, showCmt = true;
+let interleavedMode = null; // null | 'cn-primary' | 'en-primary'
+let editMode = false;
 let currentDis = 'zh';
+
+function loadEditsFromStorage() {
+  try {
+    const saved = JSON.parse(localStorage.getItem('ttc-edits-v1') || '{}');
+    Object.keys(saved).forEach(numStr => {
+      const num = parseInt(numStr);
+      const idx = chapters.findIndex(c => c.num === num);
+      if (idx >= 0) Object.assign(chapters[idx], saved[numStr]);
+    });
+  } catch(e) {}
+}
+loadEditsFromStorage();
 let sidebarBuilt = false;
 
 /* ══════════════════════════════════════
@@ -1407,6 +1471,46 @@ function toggleSidebar() {
 ══════════════════════════════════════ */
 function fmtEng(t) { return t.replace(/\. ([A-Z])/g, '.<br>$1'); }
 
+function splitBr(html) {
+  return html.split(/<br\s*\/?>/gi).map(s => s.trim()).filter(s => s.length > 0);
+}
+
+function buildInterleaved(cnHtml, enHtml, primaryLang) {
+  const cnLines = splitBr(cnHtml);
+  const enLines = splitBr(fmtEng(enHtml));
+  const maxLen = Math.max(cnLines.length, enLines.length);
+  let html = '';
+  for (let i = 0; i < maxLen; i++) {
+    const cn = cnLines[i] || '';
+    const en = enLines[i] || '';
+    if (primaryLang === 'cn') {
+      if (cn) {
+        html += `<div class="il-block"><div class="il-primary il-cn">${cn}</div>`;
+        if (en) html += `<div class="il-sub il-en">${en}</div>`;
+        html += `</div>`;
+      } else if (en) {
+        html += `<div class="il-block"><div class="il-sub il-en">${en}</div></div>`;
+      }
+    } else {
+      if (en) {
+        html += `<div class="il-block"><div class="il-primary il-en">${en}</div>`;
+        if (cn) html += `<div class="il-sub il-cn">${cn}</div>`;
+        html += `</div>`;
+      } else if (cn) {
+        html += `<div class="il-block"><div class="il-sub il-cn">${cn}</div></div>`;
+      }
+    }
+  }
+  return html;
+}
+
+function htmlToTa(html) {
+  return html.replace(/<br\s*\/?><br\s*\/?>/gi, '\n\n').replace(/<br\s*\/?>/gi, '\n');
+}
+function taToHtml(text) {
+  return text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+}
+
 function renderChapter() {
   const ch = chapters[currentChIdx];
   const view = document.getElementById('chapter-view');
@@ -1421,17 +1525,28 @@ function renderChapter() {
       `<div class="ch-header-num">${String(ch.num).padStart(2,'0')}</div>` +
     `</div>`;
 
-  const engSec = ch.english ?
-    `<div class="reader-section${showEn?'':' hidden'}" id="sec-en">` +
-      `<div class="reader-sec-label">English Translation</div>` +
-      `<div class="reader-english">${fmtEng(ch.english)}</div>` +
-    `</div>` : '';
-
-  const cnSec = ch.chinese ?
-    `<div class="reader-section${showCn?'':' hidden'}" id="sec-cn">` +
-      `<div class="reader-sec-label">原文 · Original Text</div>` +
-      `<div class="reader-chinese">${ch.chinese}</div>` +
-    `</div>` : '';
+  // ── Interleaved or separate text sections ──
+  let textSecs = '';
+  if (interleavedMode && ch.english && ch.chinese) {
+    const primary = interleavedMode === 'cn-primary' ? '中文為主 · Chinese Primary' : '英文為主 · English Primary';
+    textSecs =
+      `<div class="reader-section" id="sec-interleaved">` +
+        `<div class="reader-sec-label">${primary}</div>` +
+        `<div>${buildInterleaved(ch.chinese, ch.english, interleavedMode === 'cn-primary' ? 'cn' : 'en')}</div>` +
+      `</div>`;
+  } else {
+    const engSec = ch.english ?
+      `<div class="reader-section${showEn?'':' hidden'}" id="sec-en">` +
+        `<div class="reader-sec-label">English Translation</div>` +
+        `<div class="reader-english">${fmtEng(ch.english)}</div>` +
+      `</div>` : '';
+    const cnSec = ch.chinese ?
+      `<div class="reader-section${showCn?'':' hidden'}" id="sec-cn">` +
+        `<div class="reader-sec-label">原文 · Original Text</div>` +
+        `<div class="reader-chinese">${ch.chinese}</div>` +
+      `</div>` : '';
+    textSecs = engSec + cnSec;
+  }
 
   const cmtSec = ch.commentary ?
     `<div class="reader-section${showCmt?'':' hidden'}" id="sec-cmt">` +
@@ -1457,7 +1572,27 @@ function renderChapter() {
       `<div class="dis-panel${currentDis==='en'?'':' hidden'}" id="dis-en">${enContent}</div>` +
     `</div>` : '';
 
-  view.innerHTML = header + engSec + cnSec + cmtSec + disSec;
+  // ── Edit mode form ──
+  let editForm = '';
+  if (editMode) {
+    editForm =
+      `<div class="edit-form">` +
+        `<div class="edit-actions">` +
+          `<button class="edit-save-btn" onclick="saveCurrentEdit()">✓ Save Changes</button>` +
+          `<button class="edit-export-btn" onclick="showExport()">⬇ Export JS</button>` +
+          `<span class="edit-saved-msg" id="edit-saved-msg">Saved!</span>` +
+        `</div>` +
+        `<div class="edit-field"><label class="edit-label">English Title</label><textarea class="edit-input edit-short" id="edit-title">${escHtml(ch.title||'')}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">Classical Title (中文篇名)</label><textarea class="edit-input edit-short" id="edit-classical">${escHtml(ch.classical||'')}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">English Translation</label><textarea class="edit-input" id="edit-english" rows="8">${escHtml(htmlToTa(ch.english||''))}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">中文原文</label><textarea class="edit-input" id="edit-chinese" rows="6">${escHtml(htmlToTa(ch.chinese||''))}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">白話注釋 Commentary</label><textarea class="edit-input" id="edit-commentary" rows="6">${escHtml(htmlToTa(ch.commentary||''))}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">中文讀書會討論 (HTML)</label><textarea class="edit-input" id="edit-discussion" rows="6">${escHtml(ch.discussion||'')}</textarea></div>` +
+        `<div class="edit-field"><label class="edit-label">English Discussion (HTML)</label><textarea class="edit-input" id="edit-en_discussion" rows="6">${escHtml(ch.en_discussion||'')}</textarea></div>` +
+      `</div>`;
+  }
+
+  view.innerHTML = header + textSecs + cmtSec + disSec + editForm;
   document.getElementById('reader-content').scrollTop = 0;
 
   document.getElementById('reader-ch-info').innerHTML =
@@ -1476,11 +1611,86 @@ function nextChapter() {
   if (currentChIdx < chapters.length - 1) { currentChIdx++; renderChapter(); }
 }
 
+function updateToggleButtons() {
+  document.getElementById('tog-en').classList.toggle('on', showEn && !interleavedMode);
+  document.getElementById('tog-cn').classList.toggle('on', showCn && !interleavedMode);
+  document.getElementById('tog-cn-primary').classList.toggle('on', interleavedMode === 'cn-primary');
+  document.getElementById('tog-en-primary').classList.toggle('on', interleavedMode === 'en-primary');
+  document.getElementById('tog-cmt').classList.toggle('on', showCmt);
+}
+
 function toggleSection(which) {
-  if (which === 'en')  { showEn  = !showEn;  document.getElementById('tog-en').classList.toggle('on',showEn); }
-  if (which === 'cn')  { showCn  = !showCn;  document.getElementById('tog-cn').classList.toggle('on',showCn); }
-  if (which === 'cmt') { showCmt = !showCmt; document.getElementById('tog-cmt').classList.toggle('on',showCmt); }
+  if (which === 'en' || which === 'cn') {
+    if (interleavedMode) { interleavedMode = null; showEn = true; showCn = true; }
+    else if (which === 'en') showEn = !showEn;
+    else showCn = !showCn;
+  }
+  if (which === 'cmt') showCmt = !showCmt;
+  updateToggleButtons();
   renderChapter();
+}
+
+function setInterleaved(mode) {
+  interleavedMode = (interleavedMode === mode) ? null : mode;
+  if (!interleavedMode) { showEn = true; showCn = true; }
+  updateToggleButtons();
+  renderChapter();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function toggleEditMode() {
+  editMode = !editMode;
+  const btn = document.getElementById('btn-edit');
+  btn.classList.toggle('on', editMode);
+  btn.textContent = editMode ? '✕ Done' : '✎ Edit';
+  renderChapter();
+}
+
+function saveCurrentEdit() {
+  const ch = chapters[currentChIdx];
+  const textFields = ['title', 'classical', 'english', 'chinese', 'commentary'];
+  const htmlFields = ['discussion', 'en_discussion'];
+  textFields.forEach(f => {
+    const el = document.getElementById('edit-' + f);
+    if (el) ch[f] = (f === 'title' || f === 'classical') ? el.value.trim() : taToHtml(el.value);
+  });
+  htmlFields.forEach(f => {
+    const el = document.getElementById('edit-' + f);
+    if (el) ch[f] = el.value;
+  });
+  try {
+    const saved = JSON.parse(localStorage.getItem('ttc-edits-v1') || '{}');
+    saved[ch.num] = { title: ch.title, classical: ch.classical, english: ch.english, chinese: ch.chinese, commentary: ch.commentary, discussion: ch.discussion, en_discussion: ch.en_discussion };
+    localStorage.setItem('ttc-edits-v1', JSON.stringify(saved));
+  } catch(e) {}
+  const msg = document.getElementById('edit-saved-msg');
+  if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2000); }
+  // Update header without losing edit form
+  const ch2 = chapters[currentChIdx];
+  const headerEl = document.querySelector('.ch-header-en');
+  if (headerEl) headerEl.textContent = ch2.title || '—';
+}
+
+function showExport() {
+  const ch = chapters[currentChIdx];
+  const esc = s => (s||'').replace(/`/g,'\\`').replace(/\$\{/g,'\\${');
+  const fields = ['title','classical','english','chinese','commentary','discussion','en_discussion'];
+  let js = `// Chapter ${ch.num} — replace the matching entry in the chapters array\n{\n  num: ${ch.num},\n`;
+  fields.forEach(f => { if (ch[f]) js += `  ${f}: \`${esc(ch[f])}\`,\n`; });
+  js += `}`;
+  document.getElementById('edit-export-ta').value = js;
+  document.getElementById('edit-export-modal').classList.add('open');
+}
+function closeExport() { document.getElementById('edit-export-modal').classList.remove('open'); }
+function copyExport(btn) {
+  const ta = document.getElementById('edit-export-ta');
+  ta.select(); document.execCommand('copy');
+  const orig = btn.textContent;
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = orig, 1500);
 }
 
 function switchDis(which) {
