@@ -358,13 +358,27 @@
 
     /* ══ EDIT MODE ══ */
     .edit-form { background: var(--surface); border: 1px solid var(--border); border-top: none; }
-    .edit-toolbar { position:sticky; top:0; z-index:20; display:flex; gap:8px; align-items:center; padding:9px 18px; background:#fff; border-bottom:2px solid var(--teal-pale); }
+    .edit-toolbar { position:sticky; top:0; z-index:20; display:flex; flex-wrap:wrap; gap:8px; align-items:center; padding:9px 18px; background:#fff; border-bottom:2px solid var(--teal-pale); }
     .edit-save-btn { padding:6px 16px; background:var(--teal); color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.1em; transition:background 0.15s; }
     .edit-save-btn:hover { background:var(--teal-light); }
     .edit-export-btn { padding:6px 14px; background:#fff; color:var(--text-mid); border:1px solid var(--border); border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; transition:all 0.15s; }
     .edit-export-btn:hover { background:var(--bg); }
     .edit-saved-msg { font-size:11px; color:var(--teal); font-style:italic; opacity:0; transition:opacity 0.4s; }
     .edit-saved-msg.show { opacity:1; }
+    .publish-btn { padding:6px 16px; background:var(--blue); color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.1em; transition:background 0.15s; }
+    .publish-btn:hover:not(:disabled) { background:var(--blue-light); }
+    .publish-btn:disabled { opacity:0.55; cursor:default; }
+    .publish-status { font-size:11px; font-style:italic; color:var(--text-muted); }
+    .publish-status.ok  { color:var(--teal); }
+    .publish-status.err { color:#cc4444; }
+    .token-row { display:flex; gap:6px; align-items:center; width:100%; padding-top:4px; border-top:1px solid var(--border-soft); margin-top:2px; }
+    .token-row.hidden { display:none; }
+    .token-label { font-family:'Spectral SC',serif; font-size:9px; letter-spacing:0.2em; color:var(--text-light); white-space:nowrap; }
+    .token-input { flex:1; min-width:0; border:1px solid var(--border); border-radius:3px; padding:4px 8px; font-size:12px; font-family:monospace; color:var(--text); outline:none; }
+    .token-input:focus { border-color:var(--blue); }
+    .token-set-btn { padding:4px 12px; background:var(--blue); color:#fff; border:none; border-radius:3px; cursor:pointer; font-family:'Spectral SC',serif; font-size:10px; letter-spacing:0.1em; white-space:nowrap; }
+    .token-clear-btn { padding:4px 10px; background:#fff; color:var(--text-muted); border:1px solid var(--border); border-radius:3px; cursor:pointer; font-size:10px; white-space:nowrap; }
+    .token-row.hidden { display:none; }
     .edit-titles { display:flex; border-bottom:1px solid var(--border); }
     .edit-title-cell { flex:1; padding:9px 16px; display:flex; flex-direction:column; gap:3px; }
     .edit-title-cell:first-child { border-right:1px solid var(--border); }
@@ -1598,8 +1612,19 @@ function renderChapter() {
       `<div class="edit-form">` +
         `<div class="edit-toolbar">` +
           `<button class="edit-save-btn" onclick="saveCurrentEdit()">✓ Save</button>` +
-          `<button class="edit-export-btn" onclick="showExport()">⬇ Export JS</button>` +
+          `<button class="publish-btn" id="btn-publish" onclick="publishToGitHub()">🌐 Publish</button>` +
+          `<span class="publish-status" id="publish-status"></span>` +
           `<span class="edit-saved-msg" id="edit-saved-msg">Saved!</span>` +
+          `<button class="edit-export-btn" onclick="showExport()" style="margin-left:auto">⬇ Export JS</button>` +
+          `<div class="token-row${getGHToken()?' hidden':''}" id="token-row">` +
+            `<span class="token-label">GitHub Token</span>` +
+            `<input class="token-input" id="token-input" type="password" placeholder="ghp_xxxxxxxxxxxx">` +
+            `<button class="token-set-btn" onclick="saveGHToken()">Set</button>` +
+          `</div>` +
+          `<div class="token-row${getGHToken()?'':' hidden'}" id="token-set-row" style="justify-content:flex-end">` +
+            `<span class="token-label" style="color:var(--teal)">Token set ✓</span>` +
+            `<button class="token-clear-btn" onclick="clearGHToken()">Change</button>` +
+          `</div>` +
         `</div>` +
         `<div class="edit-titles">` +
           `<div class="edit-title-cell">` +
@@ -1799,6 +1824,133 @@ function copyExport(btn) {
   const orig = btn.textContent;
   btn.textContent = 'Copied!';
   setTimeout(() => btn.textContent = orig, 1500);
+}
+
+/* ══════════════════════════════════════
+   GITHUB DIRECT PUBLISH
+══════════════════════════════════════ */
+const GH_REPO = 'joshlinmoments/taoteching-web';
+const GH_FILE = 'index.html';
+
+function getGHToken() {
+  try { return localStorage.getItem('ttc-gh-token') || ''; } catch(e) { return ''; }
+}
+function saveGHToken() {
+  const inp = document.getElementById('token-input');
+  const val = inp ? inp.value.trim() : '';
+  if (!val) return;
+  try { localStorage.setItem('ttc-gh-token', val); } catch(e) {}
+  document.getElementById('token-row').classList.add('hidden');
+  document.getElementById('token-set-row').classList.remove('hidden');
+  setPublishStatus('Token saved.', 'ok');
+}
+function clearGHToken() {
+  try { localStorage.removeItem('ttc-gh-token'); } catch(e) {}
+  document.getElementById('token-row').classList.remove('hidden');
+  document.getElementById('token-set-row').classList.add('hidden');
+}
+function setPublishStatus(msg, type) {
+  const el = document.getElementById('publish-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'publish-status' + (type ? ' ' + type : '');
+  if (msg && type === 'ok') setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 5000);
+}
+
+function utf8ToBase64(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function base64ToUtf8(b64) {
+  return decodeURIComponent(escape(atob(b64.replace(/\n/g, ''))));
+}
+
+function generateChBlock(ch) {
+  const esc = s => (s || '').replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$\{/g, '\\${');
+  const fields = ['title','classical','english','chinese','commentary','discussion','en_discussion'];
+  let block = `  {\n    num: ${ch.num},\n`;
+  fields.forEach(f => { if (ch[f]) block += `    ${f}: \`${esc(ch[f])}\`,\n`; });
+  block += `  },`;
+  return block;
+}
+
+function replaceChapterInHtml(html, ch) {
+  const N = ch.num;
+  const startMarker = `\n  {\n    num: ${N},`;
+  const markerPos = html.indexOf(startMarker);
+  if (markerPos < 0) return null;
+  const blockStart = markerPos + 1; // skip leading \n
+
+  // Scan forward tracking template literal depth to find end of block
+  let pos = markerPos + startMarker.length;
+  let inTpl = false;
+  let end = -1;
+  while (pos < html.length - 1) {
+    if (html[pos] === '`') { inTpl = !inTpl; }
+    if (!inTpl) {
+      if (html.slice(pos, pos + 5) === '\n  },') { end = pos + 5; break; }
+      if (html.slice(pos, pos + 4) === '\n  }' && !/,/.test(html[pos + 4])) { end = pos + 4; break; }
+    }
+    pos++;
+  }
+  if (end < 0) return null;
+  return html.slice(0, blockStart) + generateChBlock(ch) + html.slice(end);
+}
+
+async function publishToGitHub() {
+  const token = getGHToken();
+  if (!token) {
+    setPublishStatus('Please set your GitHub token first.', 'err');
+    return;
+  }
+
+  // Auto-save first
+  saveCurrentEdit();
+
+  const btn = document.getElementById('btn-publish');
+  if (btn) btn.disabled = true;
+  setPublishStatus('Fetching file…');
+
+  try {
+    const apiBase = `https://api.github.com/repos/${GH_REPO}/contents/${GH_FILE}`;
+    const headers = { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' };
+
+    const getRes = await fetch(apiBase, { headers });
+    if (!getRes.ok) {
+      if (getRes.status === 401) {
+        clearGHToken();
+        throw new Error('Token invalid or expired — please re-enter.');
+      }
+      throw new Error(`GitHub error ${getRes.status}`);
+    }
+    const fileData = await getRes.json();
+    const sha = fileData.sha;
+    const currentHtml = base64ToUtf8(fileData.content);
+
+    setPublishStatus('Updating chapter…');
+    const ch = chapters[currentChIdx];
+    const newHtml = replaceChapterInHtml(currentHtml, ch);
+    if (!newHtml) throw new Error('Could not locate chapter in file — structure may have changed.');
+
+    const putRes = await fetch(apiBase, {
+      method: 'PUT',
+      headers: { ...headers, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: `Edit ch${ch.num}: ${ch.title || ''} via website editor`,
+        content: utf8ToBase64(newHtml),
+        sha
+      })
+    });
+    if (!putRes.ok) {
+      const err = await putRes.json().catch(() => ({}));
+      throw new Error(err.message || `GitHub write error ${putRes.status}`);
+    }
+
+    setPublishStatus('✓ Published! Live in ~1 min.', 'ok');
+  } catch(e) {
+    setPublishStatus('✕ ' + e.message, 'err');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
 }
 
 function switchDis(which) {
