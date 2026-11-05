@@ -398,6 +398,16 @@
     .edit-lower-label { font-family:'Spectral SC',serif; font-size:8.5px; letter-spacing:0.3em; color:var(--text-light); margin-bottom:7px; display:block; text-transform:uppercase; }
     .edit-lower-ta { width:100%; border:1px solid var(--border-soft); border-radius:3px; padding:9px 12px; font-size:13px; color:var(--text); font-family:'Spectral',serif; line-height:1.65; resize:vertical; outline:none; min-height:68px; }
     .edit-lower-ta:focus { border-color:var(--teal); }
+    .reader-inner.edit-active { max-width: min(1600px, 98vw); padding-left: 18px; padding-right: 18px; }
+    .edit-pair-row.is-sep { background: var(--bg); border-bottom: 1px dashed var(--border-soft); }
+    .edit-pair-row.is-sep .edit-cn-cell, .edit-pair-row.is-sep .edit-en-cell { min-height: 18px !important; }
+    .disc-edit-container { border: 1px solid var(--border-soft); border-radius: 3px; overflow: hidden; }
+    .disc-edit-sh { font-weight: 600; font-size: 12px; padding: 6px 12px; background: var(--bg); color: var(--teal); border-bottom: 1px solid var(--border-soft); letter-spacing: 0.03em; cursor: default; }
+    .disc-edit-row { display: flex; align-items: flex-start; border-bottom: 1px solid var(--border-soft); }
+    .disc-edit-row:last-child { border-bottom: none; }
+    .disc-edit-badge { font-size: 10px; font-weight: 700; color: var(--text-light); padding: 10px 4px 0; min-width: 20px; text-align: center; flex-shrink: 0; }
+    .disc-edit-ta { flex: 1; border: none; padding: 8px 12px; font-size: 13px; line-height: 1.65; resize: none; outline: none; background: transparent; min-height: 32px; overflow: hidden; font-family: 'Spectral', serif; color: var(--text); }
+    .disc-edit-ta:focus { background: rgba(98,149,149,0.04); }
     #btn-edit { padding:5px 14px; border-radius:3px; background:#fff; color:var(--text-muted); border:1px solid var(--border); cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; transition:all 0.15s; flex-shrink:0; }
     #btn-edit:hover { background:var(--bg); color:var(--text); }
     #btn-edit.on { background:var(--blue); color:#fff; border-color:var(--blue); }
@@ -461,9 +471,10 @@
       <button id="btn-home" onclick="goHome()">← Home</button>
       <button id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
       <div class="view-toggles">
-        <button class="view-tog on" id="tog-en"  onclick="toggleSection('en')">English</button>
-        <button class="view-tog on" id="tog-cn"  onclick="toggleSection('cn')">原文</button>
-        <button class="view-tog on" id="tog-cmt" onclick="toggleSection('cmt')">注釋</button>
+        <button class="view-tog on" id="rtog-cn-en" onclick="setReaderMode('cn-en')">中/En</button>
+        <button class="view-tog"    id="rtog-en-cn" onclick="setReaderMode('en-cn')">En/中</button>
+        <button class="view-tog"    id="rtog-cn"    onclick="setReaderMode('cn')">中</button>
+        <button class="view-tog"    id="rtog-en"    onclick="setReaderMode('en')">En</button>
       </div>
       <button id="btn-edit" onclick="toggleEditMode()">✎ Edit</button>
       <button id="btn-present" onclick="enterPresent()">▶ Present</button>
@@ -1365,7 +1376,7 @@ Weakening their worldly ambitions and strengthening their physical foundation.<b
    STATE
 ══════════════════════════════════════ */
 let currentChIdx = null;
-let showEn = true, showCn = true, showCmt = true;
+let readerMode = 'cn-en'; // 'cn-en' | 'en-cn' | 'cn' | 'en'
 let editMode = false;
 let editOriginChIdx = null;
 let currentDis = 'zh';
@@ -1539,6 +1550,67 @@ function taToHtml(text) {
   return text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
 }
 
+function splitBrAll(html) {
+  return html.split(/<br\s*\/?>/gi).map(s => s.trim());
+}
+function trimEdgeEmpties(arr) {
+  let s = 0, e = arr.length - 1;
+  while (s <= e && !arr[s]) s++;
+  while (e >= s && !arr[e]) e--;
+  return arr.slice(s, e + 1);
+}
+
+function buildDiscEditor(html) {
+  if (!html) return '<div style="padding:10px 12px;font-size:13px;color:var(--text-light)">（尚無內容）</div>';
+  const items = [];
+  const re = /<div class="(disc-[a-z]+)">([\s\S]*?)<\/div>/g;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    items.push({ cls: m[1], text: m[2].replace(/<br\s*\/?>/gi, '\n').trim() });
+  }
+  if (!items.length) return `<div class="disc-edit-row"><textarea class="disc-edit-ta" oninput="autoResizeTa(this)">${escHtml(htmlToTa(html))}</textarea></div>`;
+  return items.map(item => {
+    if (item.cls === 'disc-sh' || item.cls === 'disc-h') {
+      return `<div class="disc-edit-sh" data-cls="${item.cls}" data-text="${escHtml(item.text)}">${escHtml(item.text)}</div>`;
+    }
+    const badge = item.cls === 'disc-q' ? '問' : item.cls === 'disc-a' ? '答' : '';
+    return `<div class="disc-edit-row" data-cls="${item.cls}">` +
+      (badge ? `<span class="disc-edit-badge">${badge}</span>` : '') +
+      `<textarea class="disc-edit-ta" oninput="autoResizeTa(this)">${escHtml(item.text)}</textarea>` +
+      `</div>`;
+  }).join('');
+}
+
+function collectDiscHtml(containerId) {
+  const el = document.getElementById(containerId);
+  if (!el) return '';
+  let html = '';
+  el.querySelectorAll('[data-cls]').forEach(node => {
+    const cls = node.dataset.cls;
+    if (node.classList.contains('disc-edit-sh')) {
+      html += `<div class="${cls}">${node.dataset.text || node.textContent}</div>`;
+    } else {
+      const ta = node.querySelector('textarea') || node;
+      const txt = (ta.value || '').trim().replace(/\n/g, '<br>');
+      if (txt) html += `<div class="${cls}">${txt}</div>`;
+    }
+  });
+  return html;
+}
+
+function initDiscEditors(ch) {
+  const init = (id, html) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = buildDiscEditor(html || '');
+    el.querySelectorAll('.disc-edit-ta').forEach(ta => {
+      autoResizeTa(ta);
+    });
+  };
+  init('disc-edit-zh', ch.discussion);
+  init('disc-edit-en', ch.en_discussion);
+}
+
 function renderChapter() {
   const ch = chapters[currentChIdx];
   const view = document.getElementById('chapter-view');
@@ -1553,21 +1625,31 @@ function renderChapter() {
       `<div class="ch-header-num">${String(ch.num).padStart(2,'0')}</div>` +
     `</div>`;
 
-  // ── Text sections ──
-  const engSec = ch.english ?
-    `<div class="reader-section${showEn?'':' hidden'}" id="sec-en">` +
-      `<div class="reader-sec-label">English Translation</div>` +
-      `<div class="reader-english">${fmtEng(ch.english)}</div>` +
-    `</div>` : '';
-  const cnSec = ch.chinese ?
-    `<div class="reader-section${showCn?'':' hidden'}" id="sec-cn">` +
-      `<div class="reader-sec-label">原文 · Original Text</div>` +
-      `<div class="reader-chinese">${ch.chinese}</div>` +
-    `</div>` : '';
-  const textSecs = engSec + cnSec;
+  // ── Text sections by readerMode ──
+  let textSecs;
+  if ((readerMode === 'cn-en' || readerMode === 'en-cn') && ch.english && ch.chinese) {
+    const label = readerMode === 'cn-en' ? '中文為主 · Chinese Primary' : '英文為主 · English Primary';
+    const lang  = readerMode === 'cn-en' ? 'cn' : 'en';
+    textSecs = `<div class="reader-section" id="sec-interleaved">` +
+      `<div class="reader-sec-label">${label}</div>` +
+      `<div>${buildInterleaved(ch.chinese, ch.english, lang)}</div>` +
+      `</div>`;
+  } else if (readerMode === 'cn') {
+    textSecs = ch.chinese ?
+      `<div class="reader-section" id="sec-cn">` +
+        `<div class="reader-sec-label">原文 · Original Text</div>` +
+        `<div class="reader-chinese">${ch.chinese}</div>` +
+      `</div>` : '';
+  } else {
+    textSecs = ch.english ?
+      `<div class="reader-section" id="sec-en">` +
+        `<div class="reader-sec-label">English Translation</div>` +
+        `<div class="reader-english">${fmtEng(ch.english)}</div>` +
+      `</div>` : '';
+  }
 
   const cmtSec = ch.commentary ?
-    `<div class="reader-section${showCmt?'':' hidden'}" id="sec-cmt">` +
+    `<div class="reader-section" id="sec-cmt">` +
       `<div class="reader-sec-label">白話注釋 · Commentary</div>` +
       `<div class="reader-commentary">${ch.commentary}</div>` +
     `</div>` : '';
@@ -1634,18 +1716,19 @@ function renderChapter() {
           `<textarea class="edit-lower-ta" id="edit-commentary" rows="4">${escHtml(htmlToTa(ch.commentary||''))}</textarea>` +
         `</div>` +
         `<div class="edit-lower-field">` +
-          `<label class="edit-lower-label">中文讀書會討論 (HTML)</label>` +
-          `<textarea class="edit-lower-ta" id="edit-discussion" rows="3">${escHtml(ch.discussion||'')}</textarea>` +
+          `<label class="edit-lower-label">中文讀書會討論</label>` +
+          `<div class="disc-edit-container" id="disc-edit-zh"></div>` +
         `</div>` +
         `<div class="edit-lower-field">` +
-          `<label class="edit-lower-label">English Discussion (HTML)</label>` +
-          `<textarea class="edit-lower-ta" id="edit-en_discussion" rows="3">${escHtml(ch.en_discussion||'')}</textarea>` +
+          `<label class="edit-lower-label">English Discussion</label>` +
+          `<div class="disc-edit-container" id="disc-edit-en"></div>` +
         `</div>` +
       `</div>`;
   }
 
   view.innerHTML = header + (editMode ? editForm : textSecs + cmtSec + disSec);
-  if (editMode) initEditPairs(ch);
+  document.querySelector('.reader-inner').classList.toggle('edit-active', editMode);
+  if (editMode) { initEditPairs(ch); initDiscEditors(ch); }
   document.getElementById('reader-content').scrollTop = 0;
 
   document.getElementById('reader-ch-info').innerHTML =
@@ -1664,17 +1747,11 @@ function nextChapter() {
   if (currentChIdx < chapters.length - 1) { currentChIdx++; renderChapter(); }
 }
 
-function updateToggleButtons() {
-  document.getElementById('tog-en').classList.toggle('on', showEn);
-  document.getElementById('tog-cn').classList.toggle('on', showCn);
-  document.getElementById('tog-cmt').classList.toggle('on', showCmt);
-}
-
-function toggleSection(which) {
-  if (which === 'en') showEn = !showEn;
-  else if (which === 'cn') showCn = !showCn;
-  else if (which === 'cmt') showCmt = !showCmt;
-  updateToggleButtons();
+function setReaderMode(mode) {
+  readerMode = mode;
+  ['cn-en','en-cn','cn','en'].forEach(m =>
+    document.getElementById('rtog-' + m).classList.toggle('on', readerMode === m)
+  );
   renderChapter();
 }
 
@@ -1700,8 +1777,8 @@ function toggleEditMode() {
 }
 
 function initEditPairs(ch) {
-  const cnLines = splitBr(ch.chinese || '');
-  const enLines = splitBr(ch.english || '');
+  const cnLines = splitBrAll(ch.chinese || '');
+  const enLines = splitBrAll(ch.english || '');
   const maxLen = Math.max(cnLines.length, enLines.length, 1);
   const body = document.getElementById('edit-pairs-body');
   if (!body) return;
@@ -1750,6 +1827,16 @@ function onPairCellKeydown(e) {
 function autoResizeTa(ta) {
   ta.style.height = 'auto';
   ta.style.height = ta.scrollHeight + 'px';
+  const row = ta.closest('.edit-pair-row');
+  if (row) checkRowSep(row);
+}
+
+function checkRowSep(row) {
+  const cn = row.querySelector('.edit-cn-cell');
+  const en = row.querySelector('.edit-en-cell');
+  const isSep = cn && en && !cn.value.trim() && !en.value.trim();
+  row.classList.toggle('is-sep', isSep);
+  if (isSep) { if (cn) cn.style.height='18px'; if (en) en.style.height='18px'; }
 }
 
 function addPairRow() {
@@ -1792,16 +1879,14 @@ function saveCurrentEdit() {
       const enV = (row.querySelector('.edit-en-cell')?.value || '').trim();
       cnParts.push(cnV); enParts.push(enV);
     });
-    ch.chinese = cnParts.filter(s => s).join('<br>');
-    ch.english = enParts.filter(s => s).join('<br>');
+    ch.chinese = trimEdgeEmpties(cnParts).join('<br>');
+    ch.english = trimEdgeEmpties(enParts).join('<br>');
   }
 
   const cmtEl = document.getElementById('edit-commentary');
-  const disEl = document.getElementById('edit-discussion');
-  const enDisEl = document.getElementById('edit-en_discussion');
   if (cmtEl) ch.commentary = taToHtml(cmtEl.value);
-  if (disEl) ch.discussion = disEl.value;
-  if (enDisEl) ch.en_discussion = enDisEl.value;
+  ch.discussion    = collectDiscHtml('disc-edit-zh');
+  ch.en_discussion = collectDiscHtml('disc-edit-en');
 
   try {
     const saved = JSON.parse(localStorage.getItem('ttc-edits-v1') || '{}');
