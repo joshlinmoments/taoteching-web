@@ -479,13 +479,11 @@
 <div id="present-overlay">
   <div id="present-bar">
     <select id="present-chapter-jump" onchange="jumpToSlide(+this.value)"></select>
-    <button class="present-view-btn on" id="btn-show-en"       onclick="toggleView('en')">English</button>
-    <button class="present-view-btn on" id="btn-show-cn"       onclick="toggleView('cn')">原文</button>
-    <button class="present-view-btn on" id="btn-show-cmt"      onclick="toggleView('cmt')">注釋</button>
-    <button class="present-view-btn on" id="btn-show-dis"      onclick="toggleView('dis')">討論</button>
-    <button class="present-view-btn on" id="btn-show-en-dis"   onclick="toggleView('en-dis')">Eng Discussion</button>
-    <button class="present-view-btn"    id="btn-p-cn-primary"  onclick="setPresentInterleaved('cn-primary')">中文為主</button>
-    <button class="present-view-btn"    id="btn-p-en-primary"  onclick="setPresentInterleaved('en-primary')">英文為主</button>
+    <button class="present-view-btn on" id="btn-p-cn-en" onclick="setPTextMode('cn-en')">中/En</button>
+    <button class="present-view-btn"    id="btn-p-en-cn" onclick="setPTextMode('en-cn')">En/中</button>
+    <button class="present-view-btn"    id="btn-p-cn"    onclick="setPTextMode('cn')">中</button>
+    <button class="present-view-btn"    id="btn-p-en"    onclick="setPTextMode('en')">En</button>
+    <button class="present-view-btn on" id="btn-show-cmt" onclick="togglePCmt()">注釋</button>
     <span id="present-progress"></span>
     <div id="present-font-ctrl">
       <input type="range" id="font-slider" min="50" max="250" step="10" value="100" oninput="adjustFont(this.value)">
@@ -1965,8 +1963,8 @@ document.addEventListener('keydown', e => {
    PRESENTATION MODE
 ══════════════════════════════════════ */
 let presentIdx = 0;
-let pShowEn = true, pShowCn = true, pShowCmt = true, pShowDis = true, pShowEnDis = true;
-let pInterleavedMode = null;
+let pTextMode = 'cn-en'; // 'cn-en' | 'en-cn' | 'cn' | 'en'
+let pShowCmt = true;
 
 const jumpSel = document.getElementById('present-chapter-jump');
 chapters.forEach((ch, i) => {
@@ -2022,48 +2020,38 @@ function renderSlide() {
       `</div>` +
     `</div>`;
 
-  const engSec =
-    `<div class="slide-section${pShowEn?'':' hidden'}" id="slide-en">` +
-      `<div class="slide-section-label">English Translation</div>` +
-      `<div class="slide-english">${fmtEng(ch.english)}</div>` +
-    `</div>`;
-  const cnSec = ch.chinese ?
-    `<div class="slide-section${pShowCn?'':' hidden'}" id="slide-cn">` +
-      `<div class="slide-section-label">原文 · Original Text</div>` +
-      `<div class="slide-chinese">${ch.chinese}</div>` +
-    `</div>` : '';
-  const cmtSec = ch.commentary ?
-    `<div class="slide-section${pShowCmt?'':' hidden'}" id="slide-cmt">` +
-      `<div class="slide-section-label">白話注釋 · Commentary</div>` +
-      `<div class="slide-commentary">${ch.commentary}</div>` +
-    `</div>` : '';
-  const disSec = ch.discussion ?
-    `<div class="slide-section${pShowDis?'':' hidden'}" id="slide-dis">` +
-      `<div class="slide-section-label">道學讀書會討論摘要</div>` +
-      `<div class="slide-discussion">${ch.discussion}</div>` +
-    `</div>` : '';
-  const enDisSec = ch.en_discussion ?
-    `<div class="slide-section${pShowEnDis?'':' hidden'}" id="slide-en-dis">` +
-      `<div class="slide-section-label">English Discussion</div>` +
-      `<div class="slide-en-discussion">${ch.en_discussion}</div>` +
-    `</div>` : '';
-
   let textSecs;
-  if (pInterleavedMode && ch.english && ch.chinese) {
-    const label = pInterleavedMode === 'cn-primary' ? '中文為主 · Chinese Primary' : '英文為主 · English Primary';
-    const lang  = pInterleavedMode === 'cn-primary' ? 'cn' : 'en';
+  if ((pTextMode === 'cn-en' || pTextMode === 'en-cn') && ch.english && ch.chinese) {
+    const label = pTextMode === 'cn-en' ? '中文為主 · Chinese Primary' : '英文為主 · English Primary';
+    const lang  = pTextMode === 'cn-en' ? 'cn' : 'en';
     textSecs =
       `<div class="slide-section" id="slide-interleaved">` +
         `<div class="slide-section-label">${label}</div>` +
         `<div>${buildInterleaved(ch.chinese, ch.english, lang)}</div>` +
       `</div>`;
+  } else if (pTextMode === 'cn') {
+    textSecs = ch.chinese ?
+      `<div class="slide-section" id="slide-cn">` +
+        `<div class="slide-section-label">原文 · Original Text</div>` +
+        `<div class="slide-chinese">${ch.chinese}</div>` +
+      `</div>` : '';
   } else {
-    textSecs = engSec + cnSec;
+    textSecs =
+      `<div class="slide-section" id="slide-en">` +
+        `<div class="slide-section-label">English Translation</div>` +
+        `<div class="slide-english">${fmtEng(ch.english)}</div>` +
+      `</div>`;
   }
+
+  const cmtSec = ch.commentary ?
+    `<div class="slide-section${pShowCmt?'':' hidden'}" id="slide-cmt">` +
+      `<div class="slide-section-label">白話注釋 · Commentary</div>` +
+      `<div class="slide-commentary">${ch.commentary}</div>` +
+    `</div>` : '';
 
   const slideEl = document.getElementById('present-slide');
   slideEl.innerHTML = `<div class="slide-inner" id="slide-content"></div>`;
-  document.getElementById('slide-content').innerHTML = header + textSecs + cmtSec + disSec + enDisSec;
+  document.getElementById('slide-content').innerHTML = header + textSecs + cmtSec;
   slideEl.scrollTop = 0;
 }
 
@@ -2071,19 +2059,17 @@ function nextSlide() { if (presentIdx < chapters.length-1) { presentIdx++; rende
 function prevSlide() { if (presentIdx > 0) { presentIdx--; renderSlide(); } }
 function jumpToSlide(idx) { presentIdx = idx; renderSlide(); }
 
-function toggleView(which) {
-  if (which==='en')     { pShowEn     = !pShowEn;     document.getElementById('btn-show-en').classList.toggle('on',pShowEn); }
-  if (which==='cn')     { pShowCn     = !pShowCn;     document.getElementById('btn-show-cn').classList.toggle('on',pShowCn); }
-  if (which==='cmt')    { pShowCmt    = !pShowCmt;    document.getElementById('btn-show-cmt').classList.toggle('on',pShowCmt); }
-  if (which==='dis')    { pShowDis    = !pShowDis;    document.getElementById('btn-show-dis').classList.toggle('on',pShowDis); }
-  if (which==='en-dis') { pShowEnDis  = !pShowEnDis;  document.getElementById('btn-show-en-dis').classList.toggle('on',pShowEnDis); }
+function setPTextMode(mode) {
+  pTextMode = mode;
+  ['cn-en','en-cn','cn','en'].forEach(m =>
+    document.getElementById('btn-p-' + m).classList.toggle('on', pTextMode === m)
+  );
   renderSlide();
 }
 
-function setPresentInterleaved(mode) {
-  pInterleavedMode = (pInterleavedMode === mode) ? null : mode;
-  document.getElementById('btn-p-cn-primary').classList.toggle('on', pInterleavedMode === 'cn-primary');
-  document.getElementById('btn-p-en-primary').classList.toggle('on', pInterleavedMode === 'en-primary');
+function togglePCmt() {
+  pShowCmt = !pShowCmt;
+  document.getElementById('btn-show-cmt').classList.toggle('on', pShowCmt);
   renderSlide();
 }
 
