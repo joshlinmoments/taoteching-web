@@ -237,6 +237,7 @@
     .disc-a  { padding-left: 1em; margin: 0 0 0.4em; border-left: 2px solid var(--teal-pale); }
     .disc-ul { margin: 0.3em 0 0.6em 1.5em; padding: 0; list-style: disc; }
     .disc-ul li { margin-bottom: 0.25em; }
+    .disc-h3 { font-weight: 600; color: var(--text-muted); font-size: 13.5px; margin: 0.6em 0 0.15em; }
     .disc-heading { font-weight: 600; color: var(--teal); font-size: 15px; letter-spacing: 0.04em; }
     .dis-coming-soon { color: var(--text-light); font-style: italic; font-size: 14px; }
 
@@ -408,6 +409,27 @@
     .disc-edit-badge { font-size: 10px; font-weight: 700; color: var(--text-light); padding: 10px 4px 0; min-width: 20px; text-align: center; flex-shrink: 0; }
     .disc-edit-ta { flex: 1; border: none; padding: 8px 12px; font-size: 13px; line-height: 1.65; resize: none; outline: none; background: transparent; min-height: 32px; overflow: hidden; font-family: 'Spectral', serif; color: var(--text); }
     .disc-edit-ta:focus { background: rgba(98,149,149,0.04); }
+    .edit-disc-cols { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--border-soft); min-height: 120px; }
+    .edit-disc-col { display: flex; flex-direction: column; }
+    .edit-disc-col:first-child { border-right: 1px solid var(--border-soft); }
+    .edit-disc-col-label { font-family:'Spectral SC',serif; font-size:8.5px; letter-spacing:0.3em; color:var(--text-light); padding:8px 14px 6px; text-transform:uppercase; border-bottom:1px solid var(--border-soft); background:var(--bg); }
+    .disc-toolbar { display:flex; gap:3px; padding:5px 10px; background:var(--bg); border-bottom:1px solid var(--border-soft); flex-wrap:wrap; align-items:center; }
+    .disc-toolbar-btn { padding:2px 7px; border:1px solid var(--border); border-radius:2px; cursor:pointer; font-family:'Spectral SC',serif; font-size:10px; font-weight:700; letter-spacing:0.03em; background:#fff; color:var(--text-muted); transition:all 0.1s; min-width:22px; text-align:center; }
+    .disc-toolbar-btn:hover { background:var(--bg); color:var(--text); border-color:var(--teal); }
+    .disc-toolbar-btn.dt-active { background:var(--teal); color:#fff; border-color:var(--teal); }
+    .disc-edit-container { flex:1; }
+    .disc-edit-row { border-left: 3px solid transparent; }
+    .disc-edit-row[data-cls="disc-h"]  { border-left-color: var(--teal); }
+    .disc-edit-row[data-cls="disc-sh"] { border-left-color: var(--blue); }
+    .disc-edit-row[data-cls="disc-h3"] { border-left-color: var(--border); }
+    .disc-edit-row[data-cls="disc-q"]  { border-left-color: #d4860a; }
+    .disc-edit-row[data-cls="disc-a"]  { border-left-color: #4a9458; }
+    .disc-edit-row[data-cls="disc-h"]  .disc-edit-ta { font-weight:700; color:var(--teal); }
+    .disc-edit-row[data-cls="disc-sh"] .disc-edit-ta { font-weight:600; color:var(--text); }
+    .disc-edit-row[data-cls="disc-h3"] .disc-edit-ta { font-weight:600; color:var(--text-muted); }
+    .disc-edit-row[data-cls="disc-q"]  .disc-edit-ta { font-weight:500; color:var(--text); }
+    .disc-edit-row.disc-focused { background:rgba(98,149,149,0.06); }
+    .disc-fixed { cursor:default; background:var(--bg); }
     #btn-edit { padding:5px 14px; border-radius:3px; background:#fff; color:var(--text-muted); border:1px solid var(--border); cursor:pointer; font-family:'Spectral SC',serif; font-size:11px; letter-spacing:0.08em; transition:all 0.15s; flex-shrink:0; }
     #btn-edit:hover { background:var(--bg); color:var(--text); }
     #btn-edit.on { background:var(--blue); color:#fff; border-color:var(--blue); }
@@ -1380,6 +1402,8 @@ let readerMode = 'cn-en'; // 'cn-en' | 'en-cn' | 'cn' | 'en'
 let editMode = false;
 let editOriginChIdx = null;
 let currentDis = 'zh';
+let discFocus = {};   // { zh: rowEl, en: rowEl }
+let discHistory = {}; // { zh: [...snapshots], en: [...] }
 
 function loadEditsFromStorage() {
   try {
@@ -1560,38 +1584,123 @@ function trimEdgeEmpties(arr) {
   return arr.slice(s, e + 1);
 }
 
-function buildDiscEditor(html) {
-  if (!html) return '<div style="padding:10px 12px;font-size:13px;color:var(--text-light)">（尚無內容）</div>';
+function isFixedHeading(text) {
+  return text.includes('知道') || /^Class\s+\d+/i.test(text);
+}
+
+function buildDiscEditor(html, colId) {
+  if (!html) return '';
   const items = [];
-  const re = /<div class="(disc-[a-z]+)">([\s\S]*?)<\/div>/g;
+  const re = /<div class="(disc-[a-z0-9]+)">([\s\S]*?)<\/div>/g;
   let m;
   while ((m = re.exec(html)) !== null) {
     items.push({ cls: m[1], text: m[2].replace(/<br\s*\/?>/gi, '\n').trim() });
   }
-  if (!items.length) return `<div class="disc-edit-row"><textarea class="disc-edit-ta" oninput="autoResizeTa(this)">${escHtml(htmlToTa(html))}</textarea></div>`;
+  if (!items.length) {
+    return `<div class="disc-edit-row" data-cls="disc-p">` +
+      `<textarea class="disc-edit-ta" oninput="autoResizeTa(this)" onfocus="onDiscFocus(this,'${colId}')">${escHtml(htmlToTa(html))}</textarea></div>`;
+  }
   return items.map(item => {
-    if (item.cls === 'disc-sh' || item.cls === 'disc-h') {
-      return `<div class="disc-edit-sh" data-cls="${item.cls}" data-text="${escHtml(item.text)}">${escHtml(item.text)}</div>`;
+    if (isFixedHeading(item.text)) {
+      return `<div class="disc-edit-sh disc-fixed" data-cls="${item.cls}" data-text="${escHtml(item.text)}">${escHtml(item.text)}</div>`;
     }
     const badge = item.cls === 'disc-q' ? '問' : item.cls === 'disc-a' ? '答' : '';
     return `<div class="disc-edit-row" data-cls="${item.cls}">` +
       (badge ? `<span class="disc-edit-badge">${badge}</span>` : '') +
-      `<textarea class="disc-edit-ta" oninput="autoResizeTa(this)">${escHtml(item.text)}</textarea>` +
-      `</div>`;
+      `<textarea class="disc-edit-ta" oninput="autoResizeTa(this)" onfocus="onDiscFocus(this,'${colId}')">${escHtml(item.text)}</textarea></div>`;
   }).join('');
+}
+
+function onDiscFocus(ta, colId) {
+  const row = ta.closest('.disc-edit-row');
+  if (!row) return;
+  const prev = discFocus[colId];
+  if (prev && prev !== row) prev.classList.remove('disc-focused');
+  discFocus[colId] = row;
+  row.classList.add('disc-focused');
+  const tb = document.getElementById('dtb-' + colId);
+  if (!tb) return;
+  const cls = row.dataset.cls || 'disc-p';
+  tb.querySelectorAll('.disc-toolbar-btn[data-t]').forEach(btn =>
+    btn.classList.toggle('dt-active', btn.dataset.t === cls)
+  );
+}
+
+function pushDiscHistory(colId) {
+  if (!discHistory[colId]) discHistory[colId] = [];
+  const container = document.getElementById('disc-edit-' + colId);
+  if (!container) return;
+  discHistory[colId].push(container.innerHTML);
+  if (discHistory[colId].length > 30) discHistory[colId].shift();
+}
+
+function setDiscType(colId, cls) {
+  const row = discFocus[colId];
+  if (!row) return;
+  pushDiscHistory(colId);
+  row.dataset.cls = cls;
+  const badge = row.querySelector('.disc-edit-badge');
+  if (cls === 'disc-q' || cls === 'disc-a') {
+    const label = cls === 'disc-q' ? '問' : '答';
+    if (badge) { badge.textContent = label; }
+    else {
+      const sp = document.createElement('span');
+      sp.className = 'disc-edit-badge'; sp.textContent = label;
+      const ta2 = row.querySelector('textarea');
+      if (ta2) row.insertBefore(sp, ta2);
+    }
+  } else { if (badge) badge.remove(); }
+  const tb = document.getElementById('dtb-' + colId);
+  if (tb) tb.querySelectorAll('.disc-toolbar-btn[data-t]').forEach(btn =>
+    btn.classList.toggle('dt-active', btn.dataset.t === cls)
+  );
+  const ta = row.querySelector('textarea');
+  if (ta) ta.focus();
+}
+
+function addDiscRow(colId) {
+  pushDiscHistory(colId);
+  const container = document.getElementById('disc-edit-' + colId);
+  if (!container) return;
+  const row = document.createElement('div');
+  row.className = 'disc-edit-row'; row.dataset.cls = 'disc-p';
+  const ta = document.createElement('textarea');
+  ta.className = 'disc-edit-ta';
+  ta.setAttribute('oninput', 'autoResizeTa(this)');
+  ta.setAttribute('onfocus', `onDiscFocus(this,'${colId}')`);
+  row.appendChild(ta);
+  container.appendChild(row);
+  autoResizeTa(ta); ta.focus();
+}
+
+function delDiscRow(colId) {
+  const row = discFocus[colId];
+  if (!row) return;
+  pushDiscHistory(colId);
+  discFocus[colId] = null;
+  row.remove();
+}
+
+function undoDisc(colId) {
+  if (!discHistory[colId] || !discHistory[colId].length) return;
+  const container = document.getElementById('disc-edit-' + colId);
+  if (!container) return;
+  container.innerHTML = discHistory[colId].pop();
+  discFocus[colId] = null;
+  container.querySelectorAll('.disc-edit-ta').forEach(ta => autoResizeTa(ta));
 }
 
 function collectDiscHtml(containerId) {
   const el = document.getElementById(containerId);
   if (!el) return '';
   let html = '';
-  el.querySelectorAll('[data-cls]').forEach(node => {
-    const cls = node.dataset.cls;
-    if (node.classList.contains('disc-edit-sh')) {
-      html += `<div class="${cls}">${node.dataset.text || node.textContent}</div>`;
+  el.querySelectorAll('.disc-edit-sh.disc-fixed, .disc-edit-row').forEach(node => {
+    const cls = node.dataset.cls || 'disc-p';
+    if (node.classList.contains('disc-fixed')) {
+      html += `<div class="${cls}">${node.dataset.text || node.textContent.trim()}</div>`;
     } else {
-      const ta = node.querySelector('textarea') || node;
-      const txt = (ta.value || '').trim().replace(/\n/g, '<br>');
+      const ta = node.querySelector('textarea');
+      const txt = ta ? (ta.value || '').trim().replace(/\n/g, '<br>') : '';
       if (txt) html += `<div class="${cls}">${txt}</div>`;
     }
   });
@@ -1599,16 +1708,15 @@ function collectDiscHtml(containerId) {
 }
 
 function initDiscEditors(ch) {
-  const init = (id, html) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    el.innerHTML = buildDiscEditor(html || '');
-    el.querySelectorAll('.disc-edit-ta').forEach(ta => {
-      autoResizeTa(ta);
-    });
+  discFocus = {}; discHistory = {};
+  const init = (colId, html) => {
+    const container = document.getElementById('disc-edit-' + colId);
+    if (!container) return;
+    container.innerHTML = buildDiscEditor(html || '', colId);
+    container.querySelectorAll('.disc-edit-ta').forEach(ta => autoResizeTa(ta));
   };
-  init('disc-edit-zh', ch.discussion);
-  init('disc-edit-en', ch.en_discussion);
+  init('zh', ch.discussion);
+  init('en', ch.en_discussion);
 }
 
 function renderChapter() {
@@ -1715,13 +1823,37 @@ function renderChapter() {
           `<label class="edit-lower-label">白話注釋 Commentary</label>` +
           `<textarea class="edit-lower-ta" id="edit-commentary" rows="4">${escHtml(htmlToTa(ch.commentary||''))}</textarea>` +
         `</div>` +
-        `<div class="edit-lower-field">` +
-          `<label class="edit-lower-label">中文讀書會討論</label>` +
-          `<div class="disc-edit-container" id="disc-edit-zh"></div>` +
-        `</div>` +
-        `<div class="edit-lower-field">` +
-          `<label class="edit-lower-label">English Discussion</label>` +
-          `<div class="disc-edit-container" id="disc-edit-en"></div>` +
+        `<div class="edit-disc-cols">` +
+          `<div class="edit-disc-col">` +
+            `<div class="edit-disc-col-label">中文讀書會討論</div>` +
+            `<div class="disc-toolbar" id="dtb-zh">` +
+              `<button class="disc-toolbar-btn" data-t="disc-h"  onclick="setDiscType('zh','disc-h')">H1</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-sh" onclick="setDiscType('zh','disc-sh')">H2</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-h3" onclick="setDiscType('zh','disc-h3')">H3</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-p"  onclick="setDiscType('zh','disc-p')">P</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-q"  onclick="setDiscType('zh','disc-q')">Q</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-a"  onclick="setDiscType('zh','disc-a')">A</button>` +
+              `<button class="disc-toolbar-btn" onclick="addDiscRow('zh')" style="margin-left:6px">＋</button>` +
+              `<button class="disc-toolbar-btn" onclick="delDiscRow('zh')" title="Delete row">✕</button>` +
+              `<button class="disc-toolbar-btn" onclick="undoDisc('zh')" title="Undo" style="margin-left:auto">↩</button>` +
+            `</div>` +
+            `<div class="disc-edit-container" id="disc-edit-zh"></div>` +
+          `</div>` +
+          `<div class="edit-disc-col">` +
+            `<div class="edit-disc-col-label">English Discussion</div>` +
+            `<div class="disc-toolbar" id="dtb-en">` +
+              `<button class="disc-toolbar-btn" data-t="disc-h"  onclick="setDiscType('en','disc-h')">H1</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-sh" onclick="setDiscType('en','disc-sh')">H2</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-h3" onclick="setDiscType('en','disc-h3')">H3</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-p"  onclick="setDiscType('en','disc-p')">P</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-q"  onclick="setDiscType('en','disc-q')">Q</button>` +
+              `<button class="disc-toolbar-btn" data-t="disc-a"  onclick="setDiscType('en','disc-a')">A</button>` +
+              `<button class="disc-toolbar-btn" onclick="addDiscRow('en')" style="margin-left:6px">＋</button>` +
+              `<button class="disc-toolbar-btn" onclick="delDiscRow('en')" title="Delete row">✕</button>` +
+              `<button class="disc-toolbar-btn" onclick="undoDisc('en')" title="Undo" style="margin-left:auto">↩</button>` +
+            `</div>` +
+            `<div class="disc-edit-container" id="disc-edit-en"></div>` +
+          `</div>` +
         `</div>` +
       `</div>`;
   }
