@@ -491,7 +491,6 @@
     <button class="present-view-btn"    id="btn-p-en-cn" onclick="setPTextMode('en-cn')">En/中</button>
     <button class="present-view-btn"    id="btn-p-cn"    onclick="setPTextMode('cn')">中</button>
     <button class="present-view-btn"    id="btn-p-en"    onclick="setPTextMode('en')">En</button>
-    <button class="present-view-btn on" id="btn-show-cmt" onclick="togglePCmt()">注釋</button>
     <span id="present-progress"></span>
     <div id="present-font-ctrl">
       <input type="range" id="font-slider" min="50" max="250" step="10" value="100" oninput="adjustFont(this.value)">
@@ -1978,7 +1977,6 @@ document.addEventListener('keydown', e => {
 ══════════════════════════════════════ */
 let presentIdx = 0;
 let pTextMode = 'cn-en'; // 'cn-en' | 'en-cn' | 'cn' | 'en'
-let pShowCmt = true;
 
 const jumpSel = document.getElementById('present-chapter-jump');
 chapters.forEach((ch, i) => {
@@ -2058,7 +2056,7 @@ function renderSlide() {
   }
 
   const cmtSec = ch.commentary ?
-    `<div class="slide-section${pShowCmt?'':' hidden'}" id="slide-cmt">` +
+    `<div class="slide-section" id="slide-cmt">` +
       `<div class="slide-section-label">白話注釋 · Commentary</div>` +
       `<div class="slide-commentary">${ch.commentary}</div>` +
     `</div>` : '';
@@ -2081,11 +2079,6 @@ function setPTextMode(mode) {
   renderSlide();
 }
 
-function togglePCmt() {
-  pShowCmt = !pShowCmt;
-  document.getElementById('btn-show-cmt').classList.toggle('on', pShowCmt);
-  renderSlide();
-}
 
 document.addEventListener('keydown', e => {
   const overlay = document.getElementById('present-overlay');
