@@ -339,16 +339,16 @@
     .il-block { margin-bottom: 1.0em; }
     .il-primary.il-cn { font-size: 16px; line-height: 1.9; color: var(--text); letter-spacing: 0.06em; }
     .il-primary.il-en { font-size: 15.5px; line-height: 1.9; color: var(--text-mid); font-weight: 300; }
-    .il-sub { margin-top: 0.1em; padding-left: 0.6em; border-left: 2px solid var(--teal-pale); }
-    .il-sub.il-en { font-size: 12.5px; line-height: 1.6; color: var(--text-muted); font-style: italic; font-weight: 300; }
-    .il-sub.il-cn { font-size: 12px; line-height: 1.6; color: var(--text-muted); letter-spacing: 0.04em; }
+    .il-sub { margin-top: 0.1em; }
+    .il-sub.il-en { font-size: 12.5px; line-height: 1.6; color: var(--text-light); font-style: normal; font-weight: 300; }
+    .il-sub.il-cn { font-size: 12px; line-height: 1.6; color: var(--text-light); letter-spacing: 0.04em; }
     /* Present mode: primary language matches full-mode slide size */
     #present-slide .il-primary.il-cn { font-size: clamp(18px, 1.6vw, 24px); line-height: 2.1; letter-spacing: 0.08em; }
     #present-slide .il-primary.il-en { font-size: clamp(17px, 1.5vw, 22px); line-height: 2.1; }
-    /* Present mode: sub-line — flush left, no border, tight top gap, smaller + lighter */
-    #present-slide .il-sub { padding-left: 0; border-left: none; margin-top: 0; }
-    #present-slide .il-sub.il-en { font-size: clamp(12px, 1.0vw, 15px); line-height: 1.2; font-style: normal; color: var(--text-light); font-weight: 300; }
-    #present-slide .il-sub.il-cn { font-size: clamp(12px, 1.0vw, 15px); line-height: 1.2; letter-spacing: 0.05em; color: var(--text-light); }
+    /* Present mode: sub-line — tight top gap, smaller */
+    #present-slide .il-sub { margin-top: 0; }
+    #present-slide .il-sub.il-en { font-size: clamp(12px, 1.0vw, 15px); line-height: 1.2; }
+    #present-slide .il-sub.il-cn { font-size: clamp(12px, 1.0vw, 15px); line-height: 1.2; letter-spacing: 0.05em; }
     #present-slide .il-block { margin-bottom: 0.35em; }
 
     /* ══ EDIT MODE ══ */
