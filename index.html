@@ -1737,8 +1737,32 @@ function makePairRow(num, cn, en) {
     `<textarea class="edit-cn-cell" oninput="autoResizeTa(this)">${escHtml(cn)}</textarea>` +
     `<textarea class="edit-en-cell" oninput="autoResizeTa(this)">${escHtml(en)}</textarea>` +
     `<button class="edit-row-del" onclick="delPairRow(this)" title="Delete row">×</button>`;
-  setTimeout(() => row.querySelectorAll('textarea').forEach(ta => autoResizeTa(ta)), 0);
+  setTimeout(() => row.querySelectorAll('textarea').forEach(ta => {
+    autoResizeTa(ta);
+    ta.addEventListener('keydown', onPairCellKeydown);
+  }), 0);
   return row;
+}
+
+function onPairCellKeydown(e) {
+  if (e.key !== 'Enter' || e.shiftKey) return;
+  e.preventDefault();
+  const ta = e.target;
+  const row = ta.closest('.edit-pair-row');
+  const isCn = ta.classList.contains('edit-cn-cell');
+  const cut = ta.selectionStart;
+  const after = ta.value.slice(cut);
+  ta.value = ta.value.slice(0, cut);
+  autoResizeTa(ta);
+  const body = document.getElementById('edit-pairs-body');
+  const rows = [...body.querySelectorAll('.edit-pair-row')];
+  const newRow = makePairRow(rows.indexOf(row) + 2, isCn ? after : '', isCn ? '' : after);
+  row.after ? row.after(newRow) : body.insertBefore(newRow, row.nextSibling);
+  updateRowNums();
+  setTimeout(() => {
+    const newTa = newRow.querySelector(isCn ? '.edit-cn-cell' : '.edit-en-cell');
+    if (newTa) { newTa.focus(); newTa.setSelectionRange(0, 0); }
+  }, 10);
 }
 
 function autoResizeTa(ta) {
