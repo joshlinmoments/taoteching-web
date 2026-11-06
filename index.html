@@ -2189,6 +2189,8 @@ function switchDis(which) {
 document.addEventListener('keydown', e => {
   if (document.getElementById('present-overlay').classList.contains('active')) return;
   if (document.activeElement === document.getElementById('l-select')) return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable) return;
   if (!document.getElementById('reader').classList.contains('active')) return;
   if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); nextChapter(); }
   if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); prevChapter(); }
@@ -2305,6 +2307,8 @@ function setPTextMode(mode) {
 document.addEventListener('keydown', e => {
   const overlay = document.getElementById('present-overlay');
   if (!overlay.classList.contains('active')) return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || document.activeElement.isContentEditable) return;
   if (e.key==='ArrowRight'||e.key==='ArrowDown') { e.preventDefault(); nextSlide(); }
   if (e.key==='ArrowLeft' ||e.key==='ArrowUp')   { e.preventDefault(); prevSlide(); }
   if (e.key==='Escape') exitPresent();
