@@ -1541,7 +1541,7 @@ function splitBr(html) {
 
 function buildInterleaved(cnHtml, enHtml, primaryLang) {
   const cnLines = splitBr(cnHtml);
-  const enLines = splitBr(fmtEng(enHtml));
+  const enLines = splitBr(enHtml).map(line => fmtEng(line));
   const maxLen = Math.max(cnLines.length, enLines.length);
   let html = '';
   for (let i = 0; i < maxLen; i++) {
