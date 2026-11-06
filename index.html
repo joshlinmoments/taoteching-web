@@ -35,14 +35,15 @@
     /* ══ LANDING ══ */
     #landing {
       position: fixed; inset: 0;
-      display: flex; align-items: center; justify-content: center;
+      display: flex; align-items: flex-start; justify-content: center;
+      overflow-y: auto;
       background: rgba(8,18,18,0.32); z-index: 10;
       transition: opacity 0.3s;
     }
     #landing.hidden { display: none; }
     #landing-inner {
       position: relative; z-index: 2;
-      text-align: center; width: 100%; max-width: 640px; padding: 20px 28px;
+      text-align: center; width: 100%; max-width: 680px; padding: 40px 28px 60px;
     }
     #l-calligraphy { height: 130px; width: auto; margin-bottom: 14px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.4)); }
     .l-en  { font-family: 'Spectral SC', serif; font-size: 20px; color: rgba(255,255,255,0.80); font-weight: 300; letter-spacing: 0.18em; margin-bottom: 18px; }
@@ -78,6 +79,48 @@
       transition: all 0.2s;
     }
     #l-btn-intro:hover { background: var(--blue); color: #fff; border-color: var(--blue); }
+    .l-ch-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-top: 28px; margin-bottom: 14px;
+    }
+    .l-ch-divider::before, .l-ch-divider::after {
+      content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.15);
+    }
+    .l-ch-divider-label {
+      font-family: 'Spectral SC', serif; font-size: 9.5px; letter-spacing: 0.28em;
+      color: rgba(255,255,255,0.35); white-space: nowrap;
+    }
+    #l-chapters {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; width: 100%;
+    }
+    .l-ch-btn {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 9px 6px 8px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 4px; cursor: pointer;
+      transition: background 0.18s, border-color 0.18s;
+      text-align: center; font-family: inherit;
+    }
+    .l-ch-btn:hover {
+      background: rgba(98,149,149,0.28);
+      border-color: rgba(122,173,173,0.55);
+    }
+    .l-ch-btn-num {
+      font-family: 'Spectral SC', serif; font-size: 8.5px; letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.35); margin-bottom: 4px;
+    }
+    .l-ch-btn-cn {
+      font-size: 12px; letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.78); margin-bottom: 3px; line-height: 1.3;
+    }
+    .l-ch-btn-en {
+      font-size: 9px; font-style: italic;
+      color: rgba(255,255,255,0.40); line-height: 1.35;
+    }
+    @media (max-width: 480px) {
+      #l-chapters { grid-template-columns: repeat(2, 1fr); gap: 5px; }
+    }
 
     /* ══ INTRO VIEW ══ */
     #intro-view {
@@ -461,6 +504,8 @@
       <option value="">— Select a Chapter —</option>
     </select>
     <button id="l-btn-present" onclick="enterPresent(0)">▶ Present Mode</button>
+    <div class="l-ch-divider"><span class="l-ch-divider-label">All 81 Chapters</span></div>
+    <div id="l-chapters"></div>
   </div>
 </div>
 
@@ -1430,6 +1475,21 @@ let sidebarBuilt = false;
     opt.value = i;
     opt.textContent = `${String(ch.num).padStart(2,'0')} · ${ch.classical || '第'+ch.num+'章'}　${ch.title || ''}`;
     sel.appendChild(opt);
+  });
+})();
+
+(function buildLandingChapters() {
+  const grid = document.getElementById('l-chapters');
+  chapters.forEach((ch, i) => {
+    if (!ch.num) return;
+    const btn = document.createElement('button');
+    btn.className = 'l-ch-btn';
+    btn.onclick = () => openChapter(i);
+    btn.innerHTML =
+      `<span class="l-ch-btn-num">${String(ch.num).padStart(2,'0')}</span>` +
+      `<span class="l-ch-btn-cn">${ch.classical || '第'+ch.num+'章'}</span>` +
+      `<span class="l-ch-btn-en">${ch.title || ''}</span>`;
+    grid.appendChild(btn);
   });
 })();
 
