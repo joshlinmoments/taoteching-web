@@ -157,6 +157,22 @@
       font-size: 15.5px; line-height: 1.85; color: var(--text); margin-bottom: 14px;
       font-weight: 300;
     }
+    .intro-portrait {
+      float: right; margin: 0 0 20px 32px; width: 220px;
+      border: 1px solid var(--border);
+    }
+    .intro-portrait img {
+      width: 100%; display: block; opacity: 0.88;
+    }
+    .intro-portrait figcaption {
+      font-size: 11px; color: var(--text-mid); text-align: center;
+      padding: 7px 10px; font-family: 'Spectral', serif; font-style: italic;
+      border-top: 1px solid var(--border); line-height: 1.5;
+    }
+    .intro-sec::after { content: ''; display: table; clear: both; }
+    @media (max-width: 540px) {
+      .intro-portrait { float: none; width: 100%; margin: 0 0 20px; }
+    }
 
     /* Sidebar intro item */
     #nav-intro {
@@ -606,6 +622,8 @@
 const introSections = [
   {
     title: `Laozi`,
+    image: `laozi.png`,
+    imageCaption: `Laozi riding an ox · Traditional ink painting`,
     paragraphs: [
     `Laozi was a great Chinese thinker and philosopher. He is the founder of Taoism (Daoism) and the progenitor of the Taoist school of thought, revered as the Supreme Patriarch of Taoism. In the lineage of the Great Tao (Tao Tong), he is honored as the 14th Patriarch of the Former Oriental Generation.`,
     `Laozi’s masterpiece, the Tao Te Ching (The Classic of the Way and Virtue), encompasses core philosophies such as "Tao follows nature" (The Way follows its own self-nature) and "Wu Wei" (Governance through non-action). His teachings were later inherited and expanded upon by Zhuangzi, and the two are collectively known as "Lao-Zhuang" (the foundational figures of Taoism).`,
@@ -1448,7 +1466,10 @@ function openIntro() {
     introSections.forEach(sec => {
       const div = document.createElement('div');
       div.className = 'intro-sec';
-      div.innerHTML = `<h3>${sec.title}</h3>` +
+      const portrait = sec.image
+        ? `<figure class="intro-portrait"><img src="${sec.image}" alt="${sec.title}"><figcaption>${sec.imageCaption}</figcaption></figure>`
+        : '';
+      div.innerHTML = `<h3>${sec.title}</h3>${portrait}` +
         sec.paragraphs.map(p => `<p>${p}</p>`).join('');
       body.appendChild(div);
     });
