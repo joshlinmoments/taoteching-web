@@ -239,7 +239,9 @@
       transition: all 0.15s; flex-shrink: 0; line-height: 1;
     }
     #btn-toggle-sidebar:hover { color: var(--teal); border-color: var(--border); }
-    .view-toggles { display: flex; gap: 6px; margin-left: auto; }
+    .view-toggles { display: flex; gap: 6px; }
+    .rtb-left { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .rtb-right { display: flex; align-items: center; gap: 10px; flex: 1; justify-content: flex-end; }
     .view-tog {
       padding: 5px 14px; border: 1px solid var(--border); border-radius: 3px;
       background: #fff; color: var(--text-muted); cursor: pointer;
@@ -255,18 +257,9 @@
     #btn-present:hover { background: var(--teal-light); }
 
     /* Reader font control */
-    #reader-font-ctrl { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
-    .rfc-btn {
-      padding: 4px 8px; border-radius: 3px; border: 1px solid var(--border);
-      background: #fff; color: var(--text-muted); cursor: pointer;
-      font-family: 'Spectral SC', serif; font-size: 11px;
-      transition: all 0.15s; line-height: 1;
-    }
-    .rfc-btn:hover { color: var(--teal); border-color: var(--teal); }
-    #reader-font-label {
-      font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light);
-      letter-spacing: 0.08em; min-width: 32px; text-align: center;
-    }
+    #reader-font-ctrl { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+    #reader-font-slider { width: 80px; accent-color: var(--teal); cursor: pointer; }
+    #reader-font-label { font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light); letter-spacing: 0.08em; min-width: 30px; text-align: right; }
 
     /* Reader content */
     #reader-content { flex: 1; overflow-y: auto; scroll-behavior: smooth; }
@@ -380,6 +373,8 @@
       #btn-home { display: none; }
       .view-toggles { display: none; }
       #reader-topbar { padding: 6px 12px; gap: 8px; }
+      #reader-font-label { display: none; }
+      #reader-font-slider { width: 60px; }
 
       /* Always show all content sections on mobile (toggles hidden) */
       .reader-section.hidden { display: block !important; }
@@ -568,21 +563,24 @@
   <!-- Reader main -->
   <div id="reader-main">
     <div id="reader-topbar">
-      <button id="btn-home" onclick="goHome()">← Home</button>
-      <button id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+      <div class="rtb-left">
+        <button id="btn-home" onclick="goHome()">← Home</button>
+        <button id="btn-toggle-sidebar" onclick="toggleSidebar()" title="Toggle sidebar">☰</button>
+      </div>
       <div class="view-toggles">
         <button class="view-tog on" id="rtog-cn-en" onclick="setReaderMode('cn-en')">中/En</button>
         <button class="view-tog"    id="rtog-en-cn" onclick="setReaderMode('en-cn')">En/中</button>
         <button class="view-tog"    id="rtog-cn"    onclick="setReaderMode('cn')">中</button>
         <button class="view-tog"    id="rtog-en"    onclick="setReaderMode('en')">En</button>
       </div>
-      <div id="reader-font-ctrl">
-        <button class="rfc-btn" onclick="readerFontStep(-10)" title="Decrease font size">A−</button>
-        <span id="reader-font-label">100%</span>
-        <button class="rfc-btn" onclick="readerFontStep(10)" title="Increase font size">A+</button>
+      <div class="rtb-right">
+        <div id="reader-font-ctrl">
+          <input type="range" id="reader-font-slider" min="70" max="200" step="10" value="100" oninput="readerFontSlide(this.value)">
+          <span id="reader-font-label">100%</span>
+        </div>
+        <button id="btn-edit" onclick="toggleEditMode()">✎ Edit</button>
+        <button id="btn-present" onclick="enterPresent()">▶ Present</button>
       </div>
-      <button id="btn-edit" onclick="toggleEditMode()">✎ Edit</button>
-      <button id="btn-present" onclick="enterPresent()">▶ Present</button>
     </div>
 
     <div id="reader-content">
@@ -1436,6 +1434,8 @@ function openChapter(idx) {
   }
   var rfs = parseInt(localStorage.getItem('readerFontScale') || '100', 10);
   document.querySelector('.reader-inner').style.zoom = rfs / 100;
+  var rfSlider = document.getElementById('reader-font-slider');
+  if (rfSlider) rfSlider.value = rfs;
   document.getElementById('reader-font-label').textContent = rfs + '%';
 }
 
@@ -2221,13 +2221,11 @@ function adjustFont(val) {
   document.getElementById('present-font-label').textContent = val + '%';
   applyFontScale();
 }
-function readerFontStep(delta) {
-  var lbl = document.getElementById('reader-font-label');
-  var cur = parseInt(lbl.textContent) || 100;
-  var next = Math.max(70, Math.min(200, cur + delta));
-  lbl.textContent = next + '%';
-  document.querySelector('.reader-inner').style.zoom = next / 100;
-  try { localStorage.setItem('readerFontScale', next); } catch(e) {}
+function readerFontSlide(val) {
+  val = parseInt(val, 10);
+  document.getElementById('reader-font-label').textContent = val + '%';
+  document.querySelector('.reader-inner').style.zoom = val / 100;
+  try { localStorage.setItem('readerFontScale', val); } catch(e) {}
 }
 
 function enterPresent(startIdx) {
