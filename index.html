@@ -254,26 +254,18 @@
     }
     #btn-present:hover { background: var(--teal-light); }
 
-    /* Reader font bar */
-    #reader-font-bar {
-      display: flex; align-items: center; gap: 8px;
-      padding: 5px 24px; border-top: 1px solid var(--border);
-      background: rgba(255,255,255,0.88); backdrop-filter: blur(4px); flex-shrink: 0;
+    /* Reader font control */
+    #reader-font-ctrl { display: flex; align-items: center; gap: 5px; flex-shrink: 0; }
+    .rfc-btn {
+      padding: 4px 8px; border-radius: 3px; border: 1px solid var(--border);
+      background: #fff; color: var(--text-muted); cursor: pointer;
+      font-family: 'Spectral SC', serif; font-size: 11px;
+      transition: all 0.15s; line-height: 1;
     }
-    .rfb-a {
-      font-family: 'Spectral SC', serif; color: var(--text-light);
-      user-select: none; line-height: 1; flex-shrink: 0;
-    }
-    .rfb-sm { font-size: 10px; }
-    .rfb-lg { font-size: 15px; }
-    #reader-font-slider {
-      flex: 1; cursor: pointer; accent-color: var(--teal);
-      min-width: 0; height: 4px;
-    }
-    #reader-font-pct {
-      font-family: 'Spectral SC', serif; font-size: 10px;
-      color: var(--text-light); min-width: 30px; text-align: right;
-      letter-spacing: 0.05em; flex-shrink: 0;
+    .rfc-btn:hover { color: var(--teal); border-color: var(--teal); }
+    #reader-font-label {
+      font-family: 'Spectral SC', serif; font-size: 10px; color: var(--text-light);
+      letter-spacing: 0.08em; min-width: 32px; text-align: center;
     }
 
     /* Reader content */
@@ -401,7 +393,6 @@
       .dis-tab-btn { padding: 10px 12px; font-size: 10px; }
 
       /* Bottom nav: safe area + compact */
-      #reader-font-bar { padding: 4px 12px; }
       #reader-nav {
         padding: 8px 12px;
         padding-bottom: max(8px, env(safe-area-inset-bottom));
@@ -585,6 +576,11 @@
         <button class="view-tog"    id="rtog-cn"    onclick="setReaderMode('cn')">中</button>
         <button class="view-tog"    id="rtog-en"    onclick="setReaderMode('en')">En</button>
       </div>
+      <div id="reader-font-ctrl">
+        <button class="rfc-btn" onclick="readerFontStep(-10)" title="Decrease font size">A−</button>
+        <span id="reader-font-label">100%</span>
+        <button class="rfc-btn" onclick="readerFontStep(10)" title="Increase font size">A+</button>
+      </div>
       <button id="btn-edit" onclick="toggleEditMode()">✎ Edit</button>
       <button id="btn-present" onclick="enterPresent()">▶ Present</button>
     </div>
@@ -593,13 +589,6 @@
       <div class="reader-inner">
         <div id="chapter-view"></div>
       </div>
-    </div>
-
-    <div id="reader-font-bar">
-      <span class="rfb-a rfb-sm">A</span>
-      <input type="range" id="reader-font-slider" min="70" max="200" step="5" value="100" oninput="readerFontSlide(this.value)">
-      <span class="rfb-a rfb-lg">A</span>
-      <span id="reader-font-pct">100%</span>
     </div>
 
     <div id="reader-nav">
@@ -1447,9 +1436,7 @@ function openChapter(idx) {
   }
   var rfs = parseInt(localStorage.getItem('readerFontScale') || '100', 10);
   document.querySelector('.reader-inner').style.zoom = rfs / 100;
-  var rfSlider = document.getElementById('reader-font-slider');
-  if (rfSlider) rfSlider.value = rfs;
-  document.getElementById('reader-font-pct').textContent = rfs + '%';
+  document.getElementById('reader-font-label').textContent = rfs + '%';
 }
 
 function goHome() {
@@ -2234,11 +2221,13 @@ function adjustFont(val) {
   document.getElementById('present-font-label').textContent = val + '%';
   applyFontScale();
 }
-function readerFontSlide(val) {
-  val = parseInt(val, 10);
-  document.getElementById('reader-font-pct').textContent = val + '%';
-  document.querySelector('.reader-inner').style.zoom = val / 100;
-  try { localStorage.setItem('readerFontScale', val); } catch(e) {}
+function readerFontStep(delta) {
+  var lbl = document.getElementById('reader-font-label');
+  var cur = parseInt(lbl.textContent) || 100;
+  var next = Math.max(70, Math.min(200, cur + delta));
+  lbl.textContent = next + '%';
+  document.querySelector('.reader-inner').style.zoom = next / 100;
+  try { localStorage.setItem('readerFontScale', next); } catch(e) {}
 }
 
 function enterPresent(startIdx) {
