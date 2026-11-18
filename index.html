@@ -1565,33 +1565,48 @@ function splitBr(html) {
   return html.split(/<br\s*\/?>/gi).map(s => s.trim()).filter(s => s.length > 0);
 }
 
+function distributeGroups(items, numGroups) {
+  const q = Math.floor(items.length / numGroups);
+  const r = items.length % numGroups;
+  const groups = [];
+  let idx = 0;
+  for (let i = 0; i < numGroups; i++) {
+    const size = i < r ? q + 1 : q;
+    groups.push(items.slice(idx, idx + size));
+    idx += size;
+  }
+  return groups;
+}
+
 function buildInterleaved(cnHtml, enHtml, primaryLang) {
   const cnLines = splitBrAll(cnHtml).map(s => s.trim()).filter(s => s);
   const enLines = splitBrAll(enHtml).map(s => fmtEng(s.trim())).filter(s => s);
+  const cnLen = cnLines.length;
+  const enLen = enLines.length;
 
-  if (cnLines.length === enLines.length) {
-    // Perfect match: interleave line by line
-    let html = '';
-    for (let i = 0; i < cnLines.length; i++) {
-      if (primaryLang === 'cn') {
-        html += `<div class="il-block"><div class="il-primary il-cn">${cnLines[i]}</div><div class="il-sub il-en">${enLines[i]}</div></div>`;
-      } else {
-        html += `<div class="il-block"><div class="il-primary il-en">${enLines[i]}</div><div class="il-sub il-cn">${cnLines[i]}</div></div>`;
-      }
-    }
-    return html;
-  }
-
-  // Line counts differ: show primary block first, then secondary block below
-  if (primaryLang === 'cn') {
-    return cnLines.map(l => `<div class="il-block"><div class="il-primary il-cn">${l}</div></div>`).join('') +
-           `<div class="il-stacked-sep"></div>` +
-           enLines.map(l => `<div class="il-block"><div class="il-sec il-en">${l}</div></div>`).join('');
+  // Shorter side drives block count; longer side distributed evenly across blocks.
+  const pairs = [];
+  if (cnLen <= enLen) {
+    const enGroups = distributeGroups(enLines, cnLen);
+    for (let i = 0; i < cnLen; i++) pairs.push({ cn: [cnLines[i]], en: enGroups[i] });
   } else {
-    return enLines.map(l => `<div class="il-block"><div class="il-primary il-en">${l}</div></div>`).join('') +
-           `<div class="il-stacked-sep"></div>` +
-           cnLines.map(l => `<div class="il-block"><div class="il-sec il-cn">${l}</div></div>`).join('');
+    const cnGroups = distributeGroups(cnLines, enLen);
+    for (let i = 0; i < enLen; i++) pairs.push({ cn: cnGroups[i], en: [enLines[i]] });
   }
+
+  let html = '';
+  for (const { cn, en } of pairs) {
+    html += `<div class="il-block">`;
+    if (primaryLang === 'cn') {
+      cn.forEach(l => { html += `<div class="il-primary il-cn">${l}</div>`; });
+      en.forEach(l => { html += `<div class="il-sub il-en">${l}</div>`; });
+    } else {
+      en.forEach(l => { html += `<div class="il-primary il-en">${l}</div>`; });
+      cn.forEach(l => { html += `<div class="il-sub il-cn">${l}</div>`; });
+    }
+    html += `</div>`;
+  }
+  return html;
 }
 
 function htmlToTa(html) {
