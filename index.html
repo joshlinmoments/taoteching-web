@@ -413,6 +413,10 @@
     .il-sub { margin-top: -0.3em; }
     .il-sub.il-en { font-size: 12.5px; line-height: 1.6; color: var(--text-light); font-style: normal; font-weight: 300; }
     .il-sub.il-cn { font-size: 12px; line-height: 1.6; color: var(--text-light); letter-spacing: 0.04em; }
+    /* stacked fallback when cn/en line counts differ */
+    .il-stacked-sep { height: 1px; background: var(--border); margin: 0.4em 0 1.0em; }
+    .il-sec.il-en { font-size: 13.5px; line-height: 1.75; color: var(--text-light); font-weight: 300; }
+    .il-sec.il-cn { font-size: 13px; line-height: 1.9; color: var(--text-light); letter-spacing: 0.05em; }
     /* Present mode: primary language matches full-mode slide size */
     #present-slide .il-primary.il-cn { font-size: clamp(18px, 1.6vw, 24px); line-height: 2.1; letter-spacing: 0.08em; }
     #present-slide .il-primary.il-en { font-size: clamp(17px, 1.5vw, 22px); line-height: 2.1; }
@@ -1562,36 +1566,32 @@ function splitBr(html) {
 }
 
 function buildInterleaved(cnHtml, enHtml, primaryLang) {
-  const cnLines = splitBrAll(cnHtml).map(s => s.trim());
-  const enLines = splitBrAll(enHtml).map(s => fmtEng(s.trim()));
-  const maxLen = Math.max(cnLines.length, enLines.length);
-  let html = '';
-  for (let i = 0; i < maxLen; i++) {
-    const cn = cnLines[i] || '';
-    const en = enLines[i] || '';
-    if (!cn && !en) {
-      html += `<div class="il-spacer"></div>`;
-      continue;
-    }
-    if (primaryLang === 'cn') {
-      if (cn) {
-        html += `<div class="il-block"><div class="il-primary il-cn">${cn}</div>`;
-        if (en) html += `<div class="il-sub il-en">${en}</div>`;
-        html += `</div>`;
-      } else if (en) {
-        html += `<div class="il-block"><div class="il-sub il-en">${en}</div></div>`;
-      }
-    } else {
-      if (en) {
-        html += `<div class="il-block"><div class="il-primary il-en">${en}</div>`;
-        if (cn) html += `<div class="il-sub il-cn">${cn}</div>`;
-        html += `</div>`;
-      } else if (cn) {
-        html += `<div class="il-block"><div class="il-sub il-cn">${cn}</div></div>`;
+  const cnLines = splitBrAll(cnHtml).map(s => s.trim()).filter(s => s);
+  const enLines = splitBrAll(enHtml).map(s => fmtEng(s.trim())).filter(s => s);
+
+  if (cnLines.length === enLines.length) {
+    // Perfect match: interleave line by line
+    let html = '';
+    for (let i = 0; i < cnLines.length; i++) {
+      if (primaryLang === 'cn') {
+        html += `<div class="il-block"><div class="il-primary il-cn">${cnLines[i]}</div><div class="il-sub il-en">${enLines[i]}</div></div>`;
+      } else {
+        html += `<div class="il-block"><div class="il-primary il-en">${enLines[i]}</div><div class="il-sub il-cn">${cnLines[i]}</div></div>`;
       }
     }
+    return html;
   }
-  return html;
+
+  // Line counts differ: show primary block first, then secondary block below
+  if (primaryLang === 'cn') {
+    return cnLines.map(l => `<div class="il-block"><div class="il-primary il-cn">${l}</div></div>`).join('') +
+           `<div class="il-stacked-sep"></div>` +
+           enLines.map(l => `<div class="il-block"><div class="il-sec il-en">${l}</div></div>`).join('');
+  } else {
+    return enLines.map(l => `<div class="il-block"><div class="il-primary il-en">${l}</div></div>`).join('') +
+           `<div class="il-stacked-sep"></div>` +
+           cnLines.map(l => `<div class="il-block"><div class="il-sec il-cn">${l}</div></div>`).join('');
+  }
 }
 
 function htmlToTa(html) {
